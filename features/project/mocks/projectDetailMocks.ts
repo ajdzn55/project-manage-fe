@@ -1,0 +1,72 @@
+import type { ProjectDetail, ProjectTask } from '../types/projectDetail.type';
+import {
+  ProjectStatusEnum,
+  TaskPriorityEnum,
+  TaskStatusEnum,
+} from '@/features/project/types/enums';
+import { members } from '@/features/project/mocks/projectMocks';
+
+export const mockProjectDetail: ProjectDetail = {
+  id: '019ff467-b5c8-766f-a984-8f5b334216d5',
+  name: '웹사이트 리뉴얼',
+  description: '회사 웹사이트 개편 프로젝트',
+  status: ProjectStatusEnum.InProgress,
+  startDate: '2026-06-01',
+  endDate: '2026-08-31',
+  createdBy: '11000000-0000-0000-0000-000000000001',
+  createdAt: '2026-05-20T09:00:00Z',
+  updatedAt: '2026-06-12T09:00:00Z',
+  Members: members,
+  TaskSummary: {
+    totalCount: 100,
+    todoCount: 10,
+    inProgressCount: 25,
+    doneCount: 65,
+    progressRate: 65,
+  },
+};
+
+export const mockProjectTasks: ProjectTask[] = [
+  {
+    id: '019ff4ea-1a5e-72fc-a3eb-c5bdf3f790e4',
+    projectId: mockProjectDetail.id,
+    title: '메인 페이지 디자인',
+    description: null,
+    status: TaskStatusEnum.InProgress,
+    priority: TaskPriorityEnum.High,
+    assigneeId: 'cmjeong',
+    assigneeName: '정찬미',
+    dueDate: '2026-06-15',
+    createdBy: 'jhcho',
+    createdAt: '2026-06-01T09:00:00Z',
+    updatedAt: '2026-06-12T09:00:00Z',
+  },
+  {
+    id: '019ff4ea-1a5e-72fc-a3eb-cb524304890a',
+    projectId: mockProjectDetail.id,
+    title: 'API 연동 개발',
+    description: null,
+    status: TaskStatusEnum.InProgress,
+    priority: TaskPriorityEnum.Medium,
+    assigneeId: 'jhcho',
+    assigneeName: '조준형',
+    dueDate: '2026-06-20',
+    createdBy: 'jhcho',
+    createdAt: '2026-06-02T09:00:00Z',
+    updatedAt: '2026-06-11T09:00:00Z',
+  },
+  {
+    id: '019ff4ea-1a5e-72fc-a3eb-cfa32cf93a8a',
+    projectId: mockProjectDetail.id,
+    title: '테스트 및 QA',
+    description: null,
+    status: TaskStatusEnum.Todo,
+    priority: TaskPriorityEnum.Medium,
+    assigneeId: 'jeonhm',
+    assigneeName: '전해민',
+    dueDate: '2026-06-25',
+    createdBy: 'jhcho',
+    createdAt: '2026-06-03T09:00:00Z',
+    updatedAt: '2026-06-03T09:00:00Z',
+  },
+];
