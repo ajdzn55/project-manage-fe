@@ -8,7 +8,7 @@ interface AlertOptions {
   cancelButtonText?: string;
 }
 
-export async function alert(options: AlertOptions) {
+export async function myAlert(options: AlertOptions) {
   const { type, content, width, confirmButtonText, cancelButtonText } = options;
 
   return await Swal.fire({
