@@ -5,14 +5,14 @@ import { UseFormRegisterReturn } from 'react-hook-form';
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
-  labelClass?: string;
+  labelWidth?: string;
   register?: UseFormRegisterReturn<any>;
 }
 
 const TextInput = ({
   label,
   type = 'text',
-  labelClass = '',
+  labelWidth = '0px',
   register,
   ...inputProps
 }: Props) => {
@@ -22,14 +22,21 @@ const TextInput = ({
   const inputType = isPassword && showPassword ? 'text' : type;
 
   return (
-    <div className="w-full">
+    <div
+      className="flex items-center gap-[3px]"
+      style={{
+        width: inputProps.width ? inputProps.width : 'auto',
+        height: inputProps.height ? inputProps.height : 'auto',
+      }}
+    >
       <label
         htmlFor={label}
-        className={`mb-2 block text-sm font-semibold text-slate-700 ${labelClass}`}
+        style={{ width: labelWidth }}
+        className="mb-2 block text-sm font-semibold text-slate-700"
       >
         {label}
       </label>
-      <div className="relative">
+      <div className="relative min-w-0 flex-1">
         <input
           {...register}
           id={label ?? ''}
@@ -43,6 +50,7 @@ const TextInput = ({
         {isPassword && (
           <button
             type="button"
+            aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 표시'}
             onClick={() => setShowPassword((previous) => !previous)}
             className="absolute inset-y-0 right-0 flex w-11 items-center justify-center p-2 text-slate-400 hover:text-slate-600"
           >
