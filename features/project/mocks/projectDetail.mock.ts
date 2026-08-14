@@ -4,7 +4,7 @@ import {
   TaskPriorityEnum,
   TaskStatusEnum,
 } from '@/features/project/types/enums';
-import { members } from '@/features/project/mocks/projectMocks';
+import { members } from './project.mock';
 
 export const mockProjectDetail: ProjectDetail = {
   id: '019ff467-b5c8-766f-a984-8f5b334216d5',
