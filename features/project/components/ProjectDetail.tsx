@@ -4,7 +4,7 @@ import StatusBadge from './StatusBadge';
 import {
   mockProjectDetail,
   mockProjectTasks,
-} from '@/features/project/mocks/projectDetailMocks';
+} from '../mocks/projectDetail.mock';
 
 const tabs = ['개요', '작업', '보드', '일정', '파일', '설정'];
 
@@ -30,9 +30,10 @@ const ProjectDetail = () => {
                   {mockProjectDetail.endDate ?? '미정'}
                 </span>
                 <MemberAvatars
-                  members={mockProjectDetail.Members.map(
-                    (member) => member.name,
-                  )}
+                  members={mockProjectDetail.Members.map((member) => ({
+                    id: member.userId,
+                    name: member.name,
+                  }))}
                 />
               </div>
             </div>
@@ -40,14 +41,12 @@ const ProjectDetail = () => {
           <div className="flex gap-2">
             <button
               type="button"
-              aria-label="프로젝트 공유"
               className="flex size-9 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50"
             >
               ↗
             </button>
             <button
               type="button"
-              aria-label="더보기"
               className="flex size-9 items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50"
             >
               ⋮
@@ -120,7 +119,6 @@ const ProjectDetail = () => {
                 </time>
                 <button
                   type="button"
-                  aria-label={`${task.title} 더보기`}
                   className="text-slate-400 hover:text-slate-700"
                 >
                   ⋮

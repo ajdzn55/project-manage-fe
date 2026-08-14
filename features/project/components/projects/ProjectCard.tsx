@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import MemberAvatars from './MemberAvatars';
-import StatusBadge from './StatusBadge';
-import type { Project } from '../types/project.type';
+import MemberAvatars from '../MemberAvatars';
+import StatusBadge from '../StatusBadge';
+import type { Project } from '../../types/project.type';
 
 interface Props {
   project: Project;
@@ -11,7 +11,7 @@ interface Props {
 const ProjectCard = ({ project, selected = false }: Props) => {
   return (
     <Link
-      href={`/project/${project.id}`}
+      href={`/project/detail/${project.id}`}
       className={`rounded-xl border p-5 transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md ${selected ? 'border-blue-400 bg-blue-50/40' : 'border-slate-200 bg-white'}`}
     >
       <div className="flex items-start gap-3">
@@ -29,7 +29,12 @@ const ProjectCard = ({ project, selected = false }: Props) => {
         {project.startDate ?? '미정'} - {project.endDate ?? '미정'}
       </p>
       <div className="mt-5">
-        <MemberAvatars members={project.Members.map((member) => member.name)} />
+        <MemberAvatars
+          members={project.Members.map((member) => ({
+            id: member.userId,
+            name: member.name,
+          }))}
+        />
       </div>
     </Link>
   );
