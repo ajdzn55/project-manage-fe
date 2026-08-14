@@ -14,12 +14,26 @@ const SignUpForm = () => {
       </header>
 
       <form className="space-y-5">
-        <TextInput label="아이디" placeholder="아이디를 입력하세요" />
-        <TextInput label="이름" placeholder="이름을 입력하세요" />
+        <TextInput
+          label="아이디"
+          labelWidth="80px"
+          placeholder="아이디를 입력하세요"
+        />
         <TextInput
           label="비밀번호"
+          labelWidth="80px"
           type="password"
           placeholder="비밀번호를 입력하세요"
+        />
+        <TextInput
+          label="이름"
+          labelWidth="80px"
+          placeholder="이름을 입력하세요"
+        />
+        <TextInput
+          label="이메일"
+          labelWidth="80px"
+          placeholder="이메일을 입력하세요"
         />
         <Button text="회원가입" type="submit" width="100%" height="40px" />
       </form>

@@ -6,15 +6,17 @@ import TextInput from '@/components/TextInput';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { User } from '@/features/project/types/user.type';
-import { mockUsers } from '@/features/auth/mocks/userMocks';
-import { alert as myAlert } from '@/utils/alert';
+import { User } from '../../user/types/user.type';
+import { mockUsers } from '../mocks/user.mock';
+import { myAlert } from '@/utils/alert';
+import { useAuth } from '@/features/auth/hooks/useAuth';
 
 type LoginFormType = Pick<User, 'id' | 'password'>;
 
 const LoginForm = () => {
   const { register, handleSubmit } = useForm<LoginFormType>();
   const router = useRouter();
+  const { login } = useAuth();
 
   const invalidAlert = async () => {
     await myAlert({
@@ -35,7 +37,9 @@ const LoginForm = () => {
       await invalidAlert();
       return;
     }
-    router.push('/project');
+
+    login(targetUser);
+    router.replace('/project');
   };
 
   return (
@@ -54,12 +58,14 @@ const LoginForm = () => {
         <TextInput
           register={register('id')}
           label="아이디"
+          labelWidth="80px"
           placeholder="아이디를 입력하세요"
           required
         />
         <TextInput
           register={register('password')}
           label="비밀번호"
+          labelWidth="80px"
           type="password"
           placeholder="비밀번호를 입력하세요"
           required
