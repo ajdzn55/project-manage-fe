@@ -1,7 +1,8 @@
 'use client';
 
-import { type InputHTMLAttributes, useState } from 'react';
+import React, { type InputHTMLAttributes, useState } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
+import InputLabel from '@/components/InputLabel';
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -29,19 +30,14 @@ const TextInput = ({
         height: inputProps.height ? inputProps.height : 'auto',
       }}
     >
-      <label
-        htmlFor={label}
-        style={{ width: labelWidth }}
-        className="mb-2 block text-sm font-semibold text-slate-700"
-      >
-        {label}
-      </label>
+      <InputLabel label={label} labelWidth={labelWidth} />
+
       <div className="relative min-w-0 flex-1">
         <input
           {...register}
           id={label ?? ''}
           type={inputType}
-          className={`h-11 w-full rounded-lg border border-slate-200 bg-white px-3.5 text-sm text-slate-900 transition outline-none placeholder:text-slate-400 focus:border-blue-500 focus:ring-3 focus:ring-blue-100 ${
+          className={`h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-900 transition outline-none placeholder:text-slate-400 focus:border-blue-500 focus:ring-3 focus:ring-blue-100 ${
             isPassword ? 'pr-11' : ''
           }`}
           {...inputProps}
@@ -50,7 +46,6 @@ const TextInput = ({
         {isPassword && (
           <button
             type="button"
-            aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 표시'}
             onClick={() => setShowPassword((previous) => !previous)}
             className="absolute inset-y-0 right-0 flex w-11 items-center justify-center p-2 text-slate-400 hover:text-slate-600"
           >

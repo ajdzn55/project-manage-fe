@@ -1,8 +1,7 @@
-'use client';
-
-import React, { SelectHTMLAttributes } from 'react';
-import { UseFormRegisterReturn } from 'react-hook-form';
+import type { SelectHTMLAttributes } from 'react';
+import type { UseFormRegisterReturn } from 'react-hook-form';
 import { SelectArrowIcon } from '@/components/Icons';
+import InputLabel from '@/components/InputLabel';
 
 export interface SelectInputOption {
   label: string;
@@ -31,28 +30,29 @@ const SelectInput = ({
     <div
       className="relative flex items-center gap-[3px]"
       style={{
-        width: width ?? '100%',
-        height: height ?? '40px',
+        width: width ? width : 'auto',
+        height: height ? height : 'auto',
       }}
     >
-      <label htmlFor={label} style={{ width: labelWidth }}>
-        {label}
-      </label>
-      <select
-        {...register}
-        id={label}
-        className="h-full w-full appearance-none rounded-md border border-slate-200 bg-white px-3 pr-9 text-sm text-slate-700 transition outline-none hover:border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-        {...inputProps}
-      >
-        {options.map((v) => (
-          <option key={v.value} value={v.value}>
-            {v.label}
-          </option>
-        ))}
-      </select>
-      <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
-        <SelectArrowIcon />
-      </span>
+      <InputLabel label={label} labelWidth={labelWidth} />
+
+      <div className="relative min-w-0 flex-1">
+        <select
+          {...register}
+          id={label}
+          className="h-11 w-full appearance-none rounded-lg border border-slate-200 bg-white px-3 pr-9 text-sm text-slate-700 transition outline-none hover:border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+          {...inputProps}
+        >
+          {options.map((v) => (
+            <option key={v.value} value={v.value}>
+              {v.label}
+            </option>
+          ))}
+        </select>
+        <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+          <SelectArrowIcon />
+        </span>
+      </div>
     </div>
   );
 };
