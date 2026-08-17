@@ -3,16 +3,11 @@ import MemberAvatars from '../MemberAvatars';
 import StatusBadge from '../StatusBadge';
 import type { Project } from '../../types/project.type';
 
-interface Props {
-  project: Project;
-  selected?: boolean;
-}
-
-const ProjectCard = ({ project, selected = false }: Props) => {
+const ProjectCard = ({ project }: { project: Project }) => {
   return (
     <Link
       href={`/project/detail/${project.id}`}
-      className={`rounded-xl border p-5 transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md ${selected ? 'border-blue-400 bg-blue-50/40' : 'border-slate-200 bg-white'}`}
+      className="rounded-xl border border-slate-200 bg-white p-5 transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md"
     >
       <div className="flex items-start gap-3">
         <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-blue-100 font-bold text-blue-600">
