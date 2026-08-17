@@ -13,8 +13,6 @@ const ProjectMobileMenu = () => {
     <>
       <button
         type="button"
-        aria-expanded={isOpen}
-        aria-controls="project-mobile-menu"
         onClick={() => setIsOpen(true)}
         className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 md:hidden"
       >
@@ -38,10 +36,7 @@ const ProjectMobileMenu = () => {
             className="absolute inset-0 bg-slate-950/40"
           />
 
-          <aside
-            id="project-mobile-menu"
-            className="relative flex h-full w-70 max-w-[85vw] flex-col bg-white shadow-xl"
-          >
+          <aside className="relative flex h-full w-70 max-w-[85vw] flex-col bg-white shadow-xl">
             <div className="flex items-center justify-between border-b border-slate-100 px-5 py-5">
               <Link
                 href="/"

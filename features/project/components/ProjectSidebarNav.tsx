@@ -5,7 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import {
   projectAccountMenuItems,
   projectMenuItems,
-} from '@/features/project/constants/projectNavigation';
+} from '../constants/project.const';
 import { myAlert } from '@/utils/alert';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 
@@ -50,7 +50,6 @@ const ProjectSidebarNav = ({ onNavigate }: Props) => {
             key={item.href}
             href={item.href}
             onClick={onNavigate}
-            aria-current={isActive(item.href) ? 'page' : undefined}
             className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition ${isActive(item.href) ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
           >
             <span className="w-5 text-center">{item.icon}</span>
@@ -65,7 +64,6 @@ const ProjectSidebarNav = ({ onNavigate }: Props) => {
             key={item.href}
             href={item.href}
             onClick={onNavigate}
-            aria-current={isActive(item.href) ? 'page' : undefined}
             className={`flex items-center gap-3 rounded-lg px-3 py-2.5 transition ${isActive(item.href) ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
           >
             <span className="w-5 text-center">{item.icon}</span>
