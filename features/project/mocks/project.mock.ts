@@ -1,29 +1,32 @@
-import type { Project } from '../types/project.type';
+import type { Project, ProjectMember } from '../types/project.type';
 import {
   ProjectMemberRoleEnum,
   ProjectStatusEnum,
 } from '@/features/project/types/enums';
 
-export const members = [
-  {
-    id: '019ff4db-5c4d-75ff-a673-1643892203e2',
-    userId: 'jhcho',
-    name: '조준형',
-    role: ProjectMemberRoleEnum.Owner,
-  },
-  {
-    id: '019ff4db-5c4d-75ff-a673-12472102fbd5',
-    userId: 'cmjeong',
-    name: '정찬미',
-    role: ProjectMemberRoleEnum.Member,
-  },
-  {
-    id: '019ff4db-5c4d-75ff-a673-12472102fbd5',
-    userId: 'jeonhm',
-    name: '전해민',
-    role: ProjectMemberRoleEnum.Member,
-  },
-];
+const memberA: ProjectMember = {
+  // id: '019ff4db-5c4d-75ff-a673-1643892203e2',
+  userId: 'jhcho',
+  name: '조준형',
+  email: 'jhcho@liss.co.kr',
+  role: ProjectMemberRoleEnum.Owner,
+};
+const memberB: ProjectMember = {
+  // id: '019ff4db-5c4d-75ff-a673-12472102fbd5',
+  userId: 'cmjeong',
+  name: '정찬미',
+  email: 'cmjeong@liss.co.kr',
+  role: ProjectMemberRoleEnum.Member,
+};
+const memberC: ProjectMember = {
+  // id: '019ff4db-5c4d-75ff-a673-12472102fbd5',
+  userId: 'jeonhm',
+  name: '전해민',
+  email: 'jeonhm@liss.co.kr',
+  role: ProjectMemberRoleEnum.Member,
+};
+
+export const members: ProjectMember[] = [memberA, memberB, memberC];
 
 export const mockProjects: Project[] = [
   {
@@ -42,16 +45,16 @@ export const mockProjects: Project[] = [
     status: ProjectStatusEnum.InProgress,
     startDate: '2026-05-15',
     endDate: '2026-10-30',
-    Members: members,
+    Members: [memberB],
   },
   {
     id: '019ff467-b5c8-766f-a984-9609eabc99b6',
     name: '마케팅 캠페인',
     description: null,
     status: ProjectStatusEnum.Planned,
-    startDate: '2026-07-01',
+    startDate: '2026-09-01',
     endDate: '2026-09-30',
-    Members: members,
+    Members: [],
   },
   {
     id: '019ff467-b5c8-766f-a984-9a3ee5d8ef82',
@@ -60,7 +63,7 @@ export const mockProjects: Project[] = [
     status: ProjectStatusEnum.InProgress,
     startDate: '2026-04-01',
     endDate: '2026-07-15',
-    Members: members,
+    Members: [memberA],
   },
   {
     id: '019ff467-b5c8-766f-a984-9c7ff22a77eb',
@@ -69,7 +72,7 @@ export const mockProjects: Project[] = [
     status: ProjectStatusEnum.InProgress,
     startDate: '2026-06-10',
     endDate: '2026-09-10',
-    Members: members,
+    Members: [memberC],
   },
   {
     id: '019ff467-b5c8-766f-a984-a19d7f3bed9e',

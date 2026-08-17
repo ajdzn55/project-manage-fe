@@ -1,9 +1,8 @@
 import { ProjectMemberRoleEnum, ProjectStatusEnum } from './enums';
+import { User } from '@/features/user/types/user.type';
 
-export interface ProjectMember {
-  id: string;
-  userId: string;
-  name: string;
+export interface ProjectMember extends Pick<User, 'name' | 'email'> {
+  userId: User['id'];
   role: ProjectMemberRoleEnum;
 }
 
