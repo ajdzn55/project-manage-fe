@@ -2,6 +2,7 @@ import { SelectInputOption } from '@/components/SelectInput';
 import {
   ProjectMemberRoleEnum,
   ProjectStatusEnum,
+  TaskStatusEnum,
 } from '@/features/project/types/enums';
 
 export const projectMenuItems = [
@@ -25,3 +26,9 @@ export const roleLabels: Record<ProjectMemberRoleEnum, string> = {
   [ProjectMemberRoleEnum.Owner]: '소유자',
   [ProjectMemberRoleEnum.Member]: '멤버',
 };
+
+export const taskStatusOptions: SelectInputOption[] = [
+  { label: '대기', value: TaskStatusEnum.Todo },
+  { label: '진행 중', value: TaskStatusEnum.InProgress },
+  { label: '완료', value: TaskStatusEnum.Done },
+] as const;

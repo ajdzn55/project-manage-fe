@@ -1,7 +1,11 @@
 import { mockProjectDetail } from '@/features/project/mocks/projectDetail.mock';
 import RecentProjectTaskList from '@/features/project/components/projects/RecentProjectTaskList';
 
-const ProjectOverviewTab = () => {
+interface Props {
+  isOwner: boolean;
+}
+
+const ProjectOverviewTab = ({ isOwner }: Props) => {
   const { TaskSummary } = mockProjectDetail;
 
   return (
@@ -30,7 +34,7 @@ const ProjectOverviewTab = () => {
         </div>
       </section>
 
-      <RecentProjectTaskList />
+      <RecentProjectTaskList isOwner={isOwner} />
     </div>
   );
 };

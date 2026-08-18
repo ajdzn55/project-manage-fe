@@ -2,7 +2,11 @@ import StatusBadge from '@/features/project/components/StatusBadge';
 import { mockProjectTasks } from '@/features/project/mocks/projectDetail.mock';
 import MoreMenuButton from '@/components/MoreMenuButton';
 
-const RecentProjectTaskList = () => {
+interface Props {
+  isOwner: boolean;
+}
+
+const RecentProjectTaskList = ({ isOwner }: Props) => {
   const recentTasks = mockProjectTasks.slice(0, 3);
 
   return (
@@ -18,7 +22,7 @@ const RecentProjectTaskList = () => {
           >
             <div className="flex min-w-0 items-center gap-3">
               <span className="text-red-500">□</span>
-              <span className="truncate text-sm font-medium">{task.title}</span>
+              <span className="truncate text-sm font-medium">{task.name}</span>
             </div>
             <span className="hidden text-sm text-slate-600 md:block">
               {task.assigneeName ?? '미지정'}
@@ -29,7 +33,7 @@ const RecentProjectTaskList = () => {
             <time className="hidden text-sm text-slate-500 md:block">
               {task.dueDate ?? '미정'}
             </time>
-            <MoreMenuButton />
+            {isOwner && <MoreMenuButton />}
           </div>
         ))}
       </div>

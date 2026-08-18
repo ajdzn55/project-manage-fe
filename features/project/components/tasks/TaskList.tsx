@@ -1,24 +1,32 @@
 'use client';
 
 import SearchInput from '@/components/SearchInput';
-import { useForm } from 'react-hook-form';
-import { Project } from '@/features/project/types/project.type';
-import { TaskStatusEnum } from '@/features/project/types/enums';
+import { useForm, useWatch } from 'react-hook-form';
+import { taskStatusOptions } from '@/features/project/constants/project.const';
+import SelectInput from '@/components/SelectInput';
+import { useMemo } from 'react';
+import { mockProjectTasks } from '@/features/project/mocks/projectDetail.mock';
+import { ProjectTask } from '@/features/project/types/projectDetail.type';
+import Table from '@/components/Table';
+import { projectTaskColumns } from '@/features/project/constants/project.columns';
 
-const taskStatusOptions = [
-  { label: '전체', value: '' },
-  { label: '대기', value: TaskStatusEnum.Todo },
-  { label: '진행 중', value: TaskStatusEnum.InProgress },
-  { label: '완료', value: TaskStatusEnum.Done },
-];
+const statusOptions = [{ label: '전체', value: '' }, ...taskStatusOptions];
 
 const TaskList = () => {
-  const { register, handleSubmit } = useForm<Project>();
+  const { register, handleSubmit, control } = useForm<ProjectTask>();
+  const wStatus = useWatch({ control, name: 'status' });
 
   // TODO: api 연결 필요
-  const onSubmit = (data: Project) => {
+  const onSubmit = (data: ProjectTask) => {
     console.log(data);
   };
+
+  const filteredTasks = useMemo(() => {
+    // 상태로 필터링
+    return wStatus
+      ? mockProjectTasks.filter((v) => v.status === wStatus)
+      : mockProjectTasks;
+  }, [wStatus]);
 
   return (
     <div className="p-5 md:p-7">
@@ -31,23 +39,22 @@ const TaskList = () => {
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="mt-6 flex items-center"
+        className="mt-6 flex items-center gap-3"
       >
         <div className="w-full max-w-96 min-w-0">
           <SearchInput register={register('name')} placeholder="작업 검색..." />
         </div>
+        <div className="w-full max-w-44 shrink-0">
+          <SelectInput options={statusOptions} register={register('status')} />
+        </div>
       </form>
 
-      <div className="mt-5 flex gap-6 overflow-x-auto border-b border-slate-200">
-        {taskStatusOptions.map((tab, index) => (
-          <button
-            key={tab.label}
-            type="button"
-            className={`shrink-0 border-b-2 px-1 pb-3 text-sm font-semibold ${index === 0 ? 'border-blue-600 text-blue-600' : 'border-transparent text-slate-500 hover:text-slate-900'}`}
-          >
-            {tab.label}
-          </button>
-        ))}
+      <div className="mt-5 flex gap-6 overflow-x-auto">
+        <Table
+          columns={projectTaskColumns(false)}
+          data={filteredTasks}
+          tableBorder
+        />
       </div>
     </div>
   );

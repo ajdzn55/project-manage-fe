@@ -30,7 +30,7 @@ export const mockProjectTasks: ProjectTask[] = [
   {
     id: '019ff4ea-1a5e-72fc-a3eb-c5bdf3f790e4',
     projectId: mockProjectDetail.id,
-    title: '메인 페이지 디자인',
+    name: '메인 페이지 디자인',
     description: null,
     status: TaskStatusEnum.InProgress,
     priority: TaskPriorityEnum.High,
@@ -44,7 +44,7 @@ export const mockProjectTasks: ProjectTask[] = [
   {
     id: '019ff4ea-1a5e-72fc-a3eb-cb524304890a',
     projectId: mockProjectDetail.id,
-    title: 'API 연동 개발',
+    name: 'API 연동 개발',
     description: null,
     status: TaskStatusEnum.InProgress,
     priority: TaskPriorityEnum.Medium,
@@ -58,7 +58,7 @@ export const mockProjectTasks: ProjectTask[] = [
   {
     id: '019ff4ea-1a5e-72fc-a3eb-cfa32cf93a8a',
     projectId: mockProjectDetail.id,
-    title: '테스트 및 QA',
+    name: '테스트 및 QA',
     description: null,
     status: TaskStatusEnum.Todo,
     priority: TaskPriorityEnum.Medium,

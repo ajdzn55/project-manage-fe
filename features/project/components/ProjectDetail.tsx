@@ -7,26 +7,31 @@ import { mockProjects } from '../mocks/project.mock';
 import ProjectTasksTab from '@/features/project/components/projects/ProjectTasksTab';
 import ProjectOverviewTab from '@/features/project/components/projects/ProjectOverviewTab';
 import ProjectMembersTab from '@/features/project/components/projects/ProjectMembersTab';
-import ProjectSettingsTab from '@/features/project/components/projects/ProjectSettingsTab';
 import Tab from '@/components/Tab';
 import { useState } from 'react';
 import Link from 'next/link';
-
-const tabs = [
-  { label: '개요', item: <ProjectOverviewTab /> },
-  { label: '작업', item: <ProjectTasksTab /> },
-  { label: '멤버', item: <ProjectMembersTab /> },
-  { label: '설정', item: <ProjectSettingsTab /> },
-];
+import MoreMenuButton from '@/components/MoreMenuButton';
+import { useAuth } from '@/features/auth/hooks/useAuth';
+import { ProjectMemberRoleEnum } from '@/features/project/types/enums';
 
 interface Props {
   projectId: string;
 }
 
 const ProjectDetail = ({ projectId }: Props) => {
-  const [selectedTab, setSelectedTab] = useState(tabs[0].label);
+  const [selectedTab, setSelectedTab] = useState('개요');
+  const { user } = useAuth();
   const project =
     mockProjects.find((item) => item.id === projectId) ?? mockProjectDetail;
+  const isOwner = project.Members.some(
+    (member) =>
+      member.userId === user?.id && member.role === ProjectMemberRoleEnum.Owner,
+  );
+  const tabs = [
+    { label: '개요', item: <ProjectOverviewTab isOwner={isOwner} /> },
+    { label: '작업', item: <ProjectTasksTab isOwner={isOwner} /> },
+    { label: '멤버', item: <ProjectMembersTab isOwner={isOwner} /> },
+  ];
 
   return (
     <>
@@ -44,7 +49,7 @@ const ProjectDetail = ({ projectId }: Props) => {
           </span>
         </div>
 
-        <div className="mt-5 flex items-start">
+        <div className="mt-5 flex items-start justify-between gap-4">
           <div className="flex min-w-0 items-start gap-4">
             <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-violet-100 font-bold text-violet-600">
               {project.name.slice(0, 1)}
@@ -67,6 +72,7 @@ const ProjectDetail = ({ projectId }: Props) => {
               </div>
             </div>
           </div>
+          {isOwner && <MoreMenuButton />}
         </div>
       </header>
 

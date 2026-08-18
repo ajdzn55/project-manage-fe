@@ -13,6 +13,7 @@ import CreateProjectModal from '@/features/project/components/projects/CreatePro
 import { projectStatusOptions } from '@/features/project/constants/project.const';
 
 const tabs = ['전체', '내 프로젝트'];
+const statusOptions = [{ label: '전체', value: '' }, ...projectStatusOptions];
 
 const ProjectList = () => {
   const { register, control } = useForm<Project>();
@@ -23,11 +24,6 @@ const ProjectList = () => {
 
   const [selectedTab, setSelectedTab] = useState<string>('전체');
   const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
-
-  const statusOptions = [
-    { label: '전체 상태', value: '' },
-    ...projectStatusOptions,
-  ];
 
   const filteredProjects = useMemo(() => {
     // 상태로 필터링
