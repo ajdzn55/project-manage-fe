@@ -1,70 +1,224 @@
+'use client';
+
+import SkeletonRow from '@/components/SkeletonRow';
+import {
+  columnResizingFeature,
+  columnSizingFeature,
+  columnVisibilityFeature,
+  createColumnHelper,
+  createSortedRowModel,
+  metaHelper,
+  rowSortingFeature,
+  sortFn_text,
+  tableFeatures,
+  useTable,
+  type ColumnDef,
+} from '@tanstack/react-table';
 import type { ReactNode } from 'react';
 
-export interface TableColumn<T> {
-  header: ReactNode;
-  key: string;
-  className?: string;
-  render?: (row: T, rowIndex: number) => ReactNode;
+export interface TableColumnMeta {
+  sticky?: boolean;
+  align?: 'left' | 'center' | 'right';
+  color?: string;
+  rowSpan?: number;
+  wrap?: boolean;
 }
+
+export const projectTableFeatures = tableFeatures({
+  columnMeta: metaHelper<TableColumnMeta>(),
+  columnVisibilityFeature,
+  columnSizingFeature,
+  columnResizingFeature,
+  rowSortingFeature,
+  sortedRowModel: createSortedRowModel(),
+  sortFns: { text: sortFn_text },
+});
+
+export type TableColumn<T extends object> = ColumnDef<
+  typeof projectTableFeatures,
+  T,
+  any
+>;
+
+export const createTableColumnHelper = <T extends object>() =>
+  createColumnHelper<typeof projectTableFeatures, T>();
 
 interface Props<T extends object> {
   columns: TableColumn<T>[];
   data: T[];
-  getRowKey?: (row: T, rowIndex: number) => string;
+  rowKey?: keyof T;
   showFooter?: boolean;
   footer?: ReactNode;
+  tableBorder?: boolean;
+  isLoading?: boolean;
+  skeletonRowCount?: number;
 }
+
+const alignClasses: Record<NonNullable<TableColumnMeta['align']>, string> = {
+  left: 'text-left',
+  center: 'text-center',
+  right: 'text-right',
+};
 
 export default function Table<T extends object>({
   columns,
   data,
-  getRowKey,
-  showFooter = true,
+  rowKey,
+  showFooter = false,
   footer,
+  tableBorder = false,
+  isLoading = false,
+  skeletonRowCount = 3,
 }: Props<T>) {
+  const table = useTable({
+    features: projectTableFeatures,
+    columns,
+    data,
+    columnResizeMode: 'onChange',
+    enableColumnResizing: true,
+    getRowId: (row) => String(row[rowKey ?? ('id' as keyof T)]),
+  });
+  const totalSize = table.getTotalSize();
+  const getWidth = (size: number) =>
+    totalSize > 0 ? `${(size / totalSize) * 100}%` : undefined;
+  const getStickyLeft = (columnId: string) => {
+    let size = 0;
+
+    for (const column of table.getVisibleLeafColumns()) {
+      if (column.id === columnId) break;
+      if (column.columnDef.meta?.sticky) size += column.getSize();
+    }
+
+    return getWidth(size);
+  };
+
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full min-w-[640px] table-fixed text-left text-sm text-slate-500">
+    <div
+      className={`overflow-x-auto ${
+        tableBorder ? 'rounded-xl border border-slate-200' : ''
+      }`}
+    >
+      <table className="w-full table-fixed text-left text-sm text-slate-500">
         <thead className="bg-slate-50 text-xs font-semibold text-slate-500">
-          <tr className="border-b border-slate-200">
-            {columns.map((column) => (
-              <th
-                key={column.key}
-                scope="col"
-                className={`px-5 py-3 ${column.className ?? ''}`}
-              >
-                {column.header}
-              </th>
-            ))}
-          </tr>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id} className="border-b border-slate-200">
+              {headerGroup.headers.map((header) => {
+                const meta = header.column.columnDef.meta;
+                const isSticky = meta?.sticky ?? false;
+                const canSort = header.column.getCanSort();
+                const sorting = header.column.getIsSorted();
+
+                return (
+                  <th
+                    key={header.id}
+                    scope="col"
+                    colSpan={header.colSpan}
+                    rowSpan={meta?.rowSpan}
+                    className={`relative border-r border-slate-200 px-5 py-3 last:border-r-0 ${
+                      alignClasses[meta?.align ?? 'left']
+                    } ${isSticky ? 'sticky z-20 bg-slate-50' : ''}`}
+                    style={{
+                      width: getWidth(header.getSize()),
+                      ...(isSticky && {
+                        left: getStickyLeft(header.column.id),
+                      }),
+                      ...(meta?.color && { backgroundColor: meta.color }),
+                    }}
+                  >
+                    {header.isPlaceholder ? null : canSort ? (
+                      <button
+                        type="button"
+                        onClick={header.column.getToggleSortingHandler()}
+                        className="inline-flex items-center gap-1 hover:text-slate-900"
+                      >
+                        <table.FlexRender header={header} />
+                        <span aria-hidden="true">
+                          {sorting === 'asc'
+                            ? '↑'
+                            : sorting === 'desc'
+                              ? '↓'
+                              : ''}
+                        </span>
+                      </button>
+                    ) : (
+                      <table.FlexRender header={header} />
+                    )}
+
+                    {header.column.getCanResize() && (
+                      <div
+                        role="separator"
+                        aria-orientation="vertical"
+                        onMouseDown={header.getResizeHandler()}
+                        onTouchStart={header.getResizeHandler()}
+                        onDoubleClick={() => header.column.resetSize()}
+                        className="group/resizer absolute top-0 -right-1 z-10 h-full w-2 cursor-col-resize touch-none select-none"
+                      >
+                        <span
+                          className={`absolute top-0 left-1/2 h-full w-px -translate-x-1/2 transition-colors ${
+                            header.column.getIsResizing()
+                              ? 'bg-blue-500'
+                              : 'bg-slate-200 group-hover/resizer:bg-blue-400'
+                          }`}
+                        />
+                      </div>
+                    )}
+                  </th>
+                );
+              })}
+            </tr>
+          ))}
         </thead>
 
         <tbody className="divide-y divide-slate-100">
-          {data.map((row, rowIndex) => (
-            <tr
-              key={getRowKey?.(row, rowIndex) ?? rowIndex}
-              className="transition-colors hover:bg-slate-50/80"
-            >
-              {columns.map((column) => (
-                <td
-                  key={column.key}
-                  className={`px-5 py-4 ${column.className ?? ''}`}
-                >
-                  {column.render
-                    ? column.render(row, rowIndex)
-                    : ((row as Record<string, unknown>)[
-                        column.key
-                      ] as ReactNode)}
-                </td>
-              ))}
-            </tr>
-          ))}
+          {isLoading ? (
+            <SkeletonRow table={table} rowCount={skeletonRowCount} />
+          ) : (
+            table.getRowModel().rows.map((row) => (
+              <tr
+                key={row.id}
+                className="group transition-colors hover:bg-slate-50/80"
+              >
+                {row.getVisibleCells().map((cell) => {
+                  const meta = cell.column.columnDef.meta;
+                  const isSticky = meta?.sticky ?? false;
+
+                  return (
+                    <td
+                      key={cell.id}
+                      className={`border-r border-slate-200 px-5 py-4 last:border-r-0 ${
+                        alignClasses[meta?.align ?? 'left']
+                      } ${isSticky ? 'sticky z-10 bg-white group-hover:bg-slate-50' : ''}`}
+                      style={{
+                        width: getWidth(cell.column.getSize()),
+                        ...(isSticky && {
+                          left: getStickyLeft(cell.column.id),
+                        }),
+                      }}
+                    >
+                      <div
+                        className={
+                          meta?.wrap
+                            ? 'break-words whitespace-normal'
+                            : 'truncate'
+                        }
+                      >
+                        <table.FlexRender cell={cell} />
+                      </div>
+                    </td>
+                  );
+                })}
+              </tr>
+            ))
+          )}
         </tbody>
 
-        {showFooter && (
+        {showFooter && !isLoading && (
           <tfoot className="border-t border-slate-200 bg-slate-50 text-sm text-slate-500">
             <tr>
-              <td className="px-5 py-3" colSpan={columns.length}>
+              <td
+                className="px-5 py-3"
+                colSpan={table.getVisibleLeafColumns().length}
+              >
                 {footer ?? `전체: ${data.length} 건`}
               </td>
             </tr>
