@@ -22,15 +22,15 @@ const RecentProjectTaskList = ({ isOwner }: Props) => {
           >
             <div className="flex min-w-0 items-center gap-3">
               <span className="text-red-500">□</span>
-              <span className="truncate text-sm font-medium">{task.name}</span>
+              <span className="truncate font-medium">{task.name}</span>
             </div>
-            <span className="hidden text-sm text-slate-600 md:block">
+            <span className="hidden text-slate-600 md:block">
               {task.assigneeName ?? '미지정'}
             </span>
             <div className="hidden md:block">
               <StatusBadge status={task.status} />
             </div>
-            <time className="hidden text-sm text-slate-500 md:block">
+            <time className="hidden text-slate-500 md:block">
               {task.dueDate ?? '미정'}
             </time>
             {isOwner && <MoreMenuButton />}

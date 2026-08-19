@@ -19,7 +19,7 @@ const Tab = ({ TabItems, selected, setSelected }: Props) => {
             key={v.label}
             type="button"
             onClick={() => setSelected(v.label)}
-            className={`shrink-0 border-b-2 px-1 pb-3 text-sm font-semibold ${selected === v.label ? 'border-blue-600 text-blue-600' : 'border-transparent text-slate-500 hover:text-slate-900'}`}
+            className={`shrink-0 border-b-2 px-1 pb-3 font-semibold ${selected === v.label ? 'border-blue-600 text-blue-600' : 'border-transparent text-slate-500 hover:text-slate-900'}`}
           >
             {v.label}
           </button>

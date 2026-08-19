@@ -8,9 +8,7 @@ const SignUpForm = () => {
     <AuthLayout>
       <header className="mb-7 flex flex-col items-center text-center">
         <h1 className="text-xl font-bold text-slate-900">회원가입</h1>
-        <p className="mt-2 text-sm text-slate-500">
-          계정을 생성하여 시작하세요.
-        </p>
+        <p className="mt-2 text-slate-500">계정을 생성하여 시작하세요.</p>
       </header>
 
       <form className="space-y-5">
@@ -41,7 +39,7 @@ const SignUpForm = () => {
       <div className="mt-6 text-center">
         <Link
           href="/login"
-          className="text-sm font-semibold text-blue-600 transition hover:text-blue-700 hover:underline"
+          className="font-semibold text-blue-600 transition hover:text-blue-700 hover:underline"
         >
           로그인
         </Link>

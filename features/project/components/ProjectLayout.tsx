@@ -16,7 +16,7 @@ const ProjectLayout = ({ children }: Props) => {
             href="/project"
             className="flex items-center gap-3 border-b border-slate-100 px-5 py-6"
           >
-            <span className="flex size-8 items-center justify-center rounded-lg bg-blue-600 text-sm font-bold text-white">
+            <span className="flex size-8 items-center justify-center rounded-lg bg-blue-600 font-bold text-white">
               A
             </span>
             <span className="font-bold text-slate-900">ProjectHub</span>

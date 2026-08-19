@@ -32,7 +32,7 @@ const Button = ({
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.97 }}
       transition={{ duration: 0.12 }}
-      className={`flex items-center justify-center rounded-lg text-sm font-semibold text-white ${backgroundColor}`}
+      className={`flex items-center justify-center rounded-lg font-semibold text-white ${backgroundColor}`}
       onClick={onClick}
     >
       {text}

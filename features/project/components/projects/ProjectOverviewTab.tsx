@@ -18,7 +18,7 @@ const ProjectOverviewTab = ({ isOwner }: Props) => {
               {TaskSummary.progressRate}%
             </div>
           </div>
-          <dl className="w-full max-w-xs space-y-2 text-sm">
+          <dl className="w-full max-w-xs space-y-2">
             {[
               ['전체 작업', TaskSummary.totalCount],
               ['완료', TaskSummary.doneCount],

@@ -37,7 +37,7 @@ const TextInput = ({
           {...register}
           id={label ?? ''}
           type={inputType}
-          className={`h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-900 transition outline-none placeholder:text-slate-400 focus:border-blue-500 focus:ring-3 focus:ring-blue-100 ${
+          className={`h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-slate-900 transition outline-none placeholder:text-slate-400 focus:border-blue-500 focus:ring-3 focus:ring-blue-100 ${
             isPassword ? 'pr-11' : ''
           }`}
           {...inputProps}

@@ -98,8 +98,8 @@ export default function Table<T extends object>({
         tableBorder ? 'rounded-xl border border-slate-200' : ''
       }`}
     >
-      <table className="w-full table-fixed text-left text-sm text-slate-500">
-        <thead className="bg-slate-50 text-xs font-semibold text-slate-500">
+      <table className="w-full table-fixed text-left text-slate-500">
+        <thead className="bg-slate-50 font-semibold text-slate-500">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id} className="border-b border-slate-200">
               {headerGroup.headers.map((header) => {
@@ -213,7 +213,7 @@ export default function Table<T extends object>({
         </tbody>
 
         {showFooter && !isLoading && (
-          <tfoot className="border-t border-slate-200 bg-slate-50 text-sm text-slate-500">
+          <tfoot className="border-t border-slate-200 bg-slate-50 text-slate-500">
             <tr>
               <td
                 className="px-5 py-3"

@@ -6,7 +6,7 @@ import TextInput from '@/components/TextInput';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { User } from '../../user/types/user.type';
+import type { User } from '@/features/user/types/user.type';
 import { mockUsers } from '../mocks/user.mock';
 import { myAlert } from '@/utils/alert';
 import { useAuth } from '@/features/auth/hooks/useAuth';
@@ -49,7 +49,7 @@ const LoginForm = () => {
           {/* 로고 */}
         </div>
         <h1 className="text-xl font-bold text-slate-900">ProjectHub</h1>
-        <p className="mt-2 text-sm text-slate-500">
+        <p className="mt-2 text-slate-500">
           프로젝트 협업을 더 효율적으로 관리하세요.
         </p>
       </header>
@@ -76,7 +76,7 @@ const LoginForm = () => {
       <div className="mt-6 text-center">
         <Link
           href="/sign-up"
-          className="text-sm font-semibold text-blue-600 transition hover:text-blue-700 hover:underline"
+          className="font-semibold text-blue-600 transition hover:text-blue-700 hover:underline"
         >
           회원가입
         </Link>

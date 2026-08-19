@@ -33,7 +33,7 @@ const SearchInput = ({
           {...register}
           id={label || undefined}
           type="search"
-          className="h-11 w-full rounded-lg border border-slate-200 bg-white pr-3 pl-9 text-sm text-slate-700 transition outline-none placeholder:text-slate-400 hover:border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+          className="h-11 w-full rounded-lg border border-slate-200 bg-white pr-3 pl-9 text-slate-700 transition outline-none placeholder:text-slate-400 hover:border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
           {...inputProps}
         />
       </div>

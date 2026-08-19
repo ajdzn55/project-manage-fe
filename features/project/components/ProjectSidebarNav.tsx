@@ -50,7 +50,7 @@ const ProjectSidebarNav = ({ onNavigate }: Props) => {
             key={item.href}
             href={item.href}
             onClick={onNavigate}
-            className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition ${isActive(item.href) ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
+            className={`flex items-center gap-3 rounded-lg px-3 py-2.5 font-medium transition ${isActive(item.href) ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
           >
             <span className="w-5 text-center">{item.icon}</span>
             {item.label}
@@ -58,7 +58,7 @@ const ProjectSidebarNav = ({ onNavigate }: Props) => {
         ))}
       </nav>
 
-      <nav className="space-y-1 border-t border-slate-100 px-3 py-5 text-sm font-medium">
+      <nav className="space-y-1 border-t border-slate-100 px-3 py-5 font-medium">
         {projectAccountMenuItems.map((item) => (
           <Link
             key={item.href}

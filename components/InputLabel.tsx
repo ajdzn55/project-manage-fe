@@ -10,7 +10,7 @@ const InputLabel = ({ label, labelWidth = '0px' }: Props) => {
     <label
       htmlFor={label}
       style={{ width: labelWidth }}
-      className="flex items-center text-sm font-semibold text-slate-700"
+      className="flex items-center font-semibold text-slate-700"
     >
       {label}
     </label>

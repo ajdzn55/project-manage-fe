@@ -1,12 +1,12 @@
 'use client';
 
-import Button from '../../../../components/Button';
+import Button from '@/components/Button';
 import ProjectCard from './ProjectCard';
 import { mockProjects } from '../../mocks/project.mock';
-import SelectInput from '../../../../components/SelectInput';
+import SelectInput from '@/components/SelectInput';
 import { Project } from '../../types/project.type';
 import { useForm, useWatch } from 'react-hook-form';
-import SearchInput from '../../../../components/SearchInput';
+import SearchInput from '@/components/SearchInput';
 import { useMemo, useState } from 'react';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import CreateProjectModal from '@/features/project/components/projects/CreateProjectModal';
@@ -57,7 +57,7 @@ const ProjectList = () => {
       <div className="p-5 md:p-7">
         <header>
           <h1 className="text-2xl font-bold text-slate-900">프로젝트</h1>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-slate-500">
             참여 중인 프로젝트를 관리하세요.
           </p>
         </header>
@@ -101,7 +101,7 @@ const ProjectList = () => {
               key={tab}
               type="button"
               onClick={() => setSelectedTab(tab)}
-              className={`shrink-0 border-b-2 px-1 pb-3 text-sm font-semibold ${selectedTab === tab ? 'border-blue-600 text-blue-600' : 'border-transparent text-slate-500 hover:text-slate-900'}`}
+              className={`shrink-0 border-b-2 px-1 pb-3 font-semibold ${selectedTab === tab ? 'border-blue-600 text-blue-600' : 'border-transparent text-slate-500 hover:text-slate-900'}`}
             >
               {tab}
             </button>
