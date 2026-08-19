@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import ReactQueryProvider from '../lib/ReactQueryProvider';
+import ReactQueryProvider from '@/lib/ReactQueryProvider';
 import AuthProvider from '@/features/auth/contexts/AuthContext';
 
 export const metadata: Metadata = {
