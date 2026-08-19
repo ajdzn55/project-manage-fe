@@ -32,9 +32,7 @@ const TaskList = () => {
     <div className="p-5 md:p-7">
       <header>
         <h1 className="text-2xl font-bold text-slate-900">내 작업</h1>
-        <p className="mt-1 text-sm text-slate-500">
-          내 작업 현황을 확인하세요.
-        </p>
+        <p className="mt-1 text-slate-500">내 작업 현황을 확인하세요.</p>
       </header>
 
       <form
