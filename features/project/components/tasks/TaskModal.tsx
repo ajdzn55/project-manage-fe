@@ -8,6 +8,8 @@ import DateInput from '@/components/DateInput';
 import type { ProjectTask } from '@/features/project/types/projectDetail.type';
 import ModalWrapper from '@/components/ModalWrapper';
 import InputLabel from '@/components/InputLabel';
+import { mockUsers } from '@/features/auth/mocks/user.mock';
+import { useEffect } from 'react';
 
 const TASK_COLOR_PALETTE = [
   '#FFD2D5',
@@ -18,12 +20,14 @@ const TASK_COLOR_PALETTE = [
   '#fff',
 ] as const;
 
-interface CreateTaskModalProps {
+interface TaskModalProps {
   onClose: () => void;
+  data?: ProjectTask;
 }
 
-const CreateTaskModal = ({ onClose }: CreateTaskModalProps) => {
-  const { register, handleSubmit, setValue, control } = useForm<ProjectTask>();
+const TaskModal = ({ onClose, data }: TaskModalProps) => {
+  const { register, handleSubmit, setValue, control, reset } =
+    useForm<ProjectTask>();
 
   const wBackgroundColor = useWatch({
     control,
@@ -31,18 +35,28 @@ const CreateTaskModal = ({ onClose }: CreateTaskModalProps) => {
   });
 
   const statusOptions = [{ label: '', value: '' }, ...taskStatusOptions];
+  const assigneeOptions = [
+    { label: '', value: '' },
+    ...mockUsers.map((v) => ({ label: v.name, value: v.id })),
+  ];
 
   // TODO: api 연결 필요
   const onSubmit = (data: ProjectTask) => {
     console.log(data);
   };
 
+  useEffect(() => {
+    reset(data);
+  }, [reset, data]);
+
   return (
     <ModalWrapper
-      title="새 작업"
+      title={data ? '작업 수정' : '새 작업'}
       onClose={onClose}
       onSubmit={handleSubmit(onSubmit)}
+      submitButtonText={data ? '저장' : '생성'}
     >
+      <input type="hidden" {...register('id')} />
       <TextInput label="작업명" labelWidth="80px" register={register('name')} />
       <TextInput
         label="설명"
@@ -59,6 +73,12 @@ const CreateTaskModal = ({ onClose }: CreateTaskModalProps) => {
         label="마감일"
         labelWidth="80px"
         register={register('dueDate')}
+      />
+      <SelectInput
+        label="담당자"
+        labelWidth="80px"
+        register={register('assigneeId')}
+        options={assigneeOptions}
       />
 
       <div className="flex min-h-11 items-center gap-[3px]">
@@ -93,4 +113,4 @@ const CreateTaskModal = ({ onClose }: CreateTaskModalProps) => {
   );
 };
 
-export default CreateTaskModal;
+export default TaskModal;

@@ -100,22 +100,39 @@ const taskColumns = taskColumnHelper.columns([
   }),
 ]);
 
-const taskActionsColumn = taskColumnHelper.display({
-  id: 'actions',
-  header: '관리',
-  size: 120,
-  minSize: 120,
-  maxSize: 120,
-  enableSorting: false,
-  enableResizing: false,
-  meta: { align: 'center' },
-  cell: () => <MoreMenuButton />,
-});
+const taskActionsColumn = (
+  onModify?: (rowId: string) => void,
+  onDelete?: (rowId: string) => void,
+) =>
+  taskColumnHelper.display({
+    id: 'actions',
+    header: '관리',
+    size: 120,
+    minSize: 120,
+    maxSize: 120,
+    enableSorting: false,
+    enableResizing: false,
+    meta: { align: 'center' },
+    cell: (info) => (
+      <MoreMenuButton
+        onModify={() => {
+          if (onModify) onModify(info.row.original.id);
+        }}
+        onDelete={() => {
+          if (onDelete) onDelete(info.row.original.id);
+        }}
+      />
+    ),
+  });
 
 export const projectTaskColumns = (
   showActions: boolean,
+  onModify?: (rowId: string) => void,
+  onDelete?: (rowId: string) => void,
 ): TableColumn<ProjectTask>[] =>
-  showActions ? [...taskColumns, taskActionsColumn] : taskColumns;
+  showActions && onModify && onDelete
+    ? [...taskColumns, taskActionsColumn(onModify, onDelete)]
+    : taskColumns;
 
 const userColumnHelper = createTableColumnHelper<User>();
 

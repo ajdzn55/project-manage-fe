@@ -3,23 +3,45 @@ import { mockProjectTasks } from '@/features/project/mocks/projectDetail.mock';
 import Table from '@/components/Table';
 import { projectTaskColumns } from '@/features/project/constants/project.columns';
 import { useState } from 'react';
-import CreateTaskModal from '@/features/project/components/tasks/CreateTaskModal';
+import TaskModal from '../tasks/TaskModal';
+import { myAlert } from '@/utils/alert';
 
 interface Props {
   isOwner: boolean;
 }
 
 const ProjectTasksTab = ({ isOwner }: Props) => {
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [rowId, setRowId] = useState<string | null>(null);
+  const targetTask = mockProjectTasks.find((v) => v.id === rowId);
 
-  const onNewTaskClick = () => {
-    setIsCreateModalOpen(true);
+  const onCreateTaskClick = () => {
+    setRowId(null);
+    setIsModalOpen(true);
+  };
+
+  const handleModifyTask = (taskId: string) => {
+    setRowId(taskId);
+    setIsModalOpen(true);
+  };
+
+  const handleDeleteTask = async (taskId: string) => {
+    const alertRes = await myAlert({
+      type: 'warning',
+      content: '작업을 삭제하시겠습니까?',
+      confirmButtonText: '예',
+      cancelButtonText: '아니오',
+    });
+
+    if (alertRes.isConfirmed) {
+      // TODO: api 연결 필요
+    }
   };
 
   return (
     <>
-      {isCreateModalOpen && (
-        <CreateTaskModal onClose={() => setIsCreateModalOpen(false)} />
+      {isModalOpen && (
+        <TaskModal onClose={() => setIsModalOpen(false)} data={targetTask} />
       )}
 
       <div className="space-y-5 p-7">
@@ -36,14 +58,18 @@ const ProjectTasksTab = ({ isOwner }: Props) => {
                 text="+ 새 작업"
                 width="100%"
                 height="40px"
-                onClick={onNewTaskClick}
+                onClick={onCreateTaskClick}
               />
             </div>
           </div>
 
           <div className="m-3">
             <Table
-              columns={projectTaskColumns(isOwner)}
+              columns={projectTaskColumns(
+                isOwner,
+                handleModifyTask,
+                handleDeleteTask,
+              )}
               data={mockProjectTasks}
               tableBorder
             />
