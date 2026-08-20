@@ -12,7 +12,6 @@ export const projectMenuItems = [
 ] as const;
 
 export const projectAccountMenuItems = [
-  { label: '설정', href: '/project/settings', icon: '⚙' },
   { label: '내 정보', href: '/project/profile', icon: '◎' },
 ] as const;
 

@@ -1,11 +1,6 @@
 'use client';
 
-import {
-  createContext,
-  useEffect,
-  useState,
-  type ReactNode,
-} from 'react';
+import { createContext, useEffect, useState, type ReactNode } from 'react';
 import type { AuthUser, User } from '@/features/user/types/user.type';
 import { AUTH_STORAGE_KEY } from '@/features/auth/constants/auth';
 
@@ -13,6 +8,7 @@ interface AuthContextValue {
   user: AuthUser | null;
   isInitialized: boolean;
   login: (user: User) => void;
+  updateUser: (user: Pick<AuthUser, 'name' | 'email'>) => void;
   logout: () => void;
 }
 
@@ -62,8 +58,25 @@ const AuthProvider = ({ children }: Props) => {
     setUser(null);
   };
 
+  const updateUser = (updatedUser: Pick<AuthUser, 'name' | 'email'>) => {
+    setUser((previousUser) => {
+      if (!previousUser) return previousUser;
+
+      const nextUser = {
+        ...previousUser,
+        ...updatedUser,
+        updatedAt: new Date().toISOString(),
+      };
+
+      localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(nextUser));
+      return nextUser;
+    });
+  };
+
   return (
-    <AuthContext.Provider value={{ user, isInitialized, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, isInitialized, login, updateUser, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );
