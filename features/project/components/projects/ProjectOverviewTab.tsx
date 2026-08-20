@@ -9,7 +9,7 @@ const ProjectOverviewTab = ({ isOwner }: Props) => {
   const { TaskSummary } = mockProjectDetail;
 
   return (
-    <div className="space-y-5 p-5 md:p-7">
+    <div className="space-y-5 p-7">
       <section className="rounded-xl border border-slate-200 p-5">
         <h2 className="font-bold text-slate-900">진행률</h2>
         <div className="mt-5 flex items-center gap-7">

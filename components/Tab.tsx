@@ -13,7 +13,7 @@ const Tab = ({ TabItems, selected, setSelected }: Props) => {
 
   return (
     <>
-      <div className="mt-6 flex gap-7 overflow-x-auto border-b border-slate-200 px-5 md:px-7">
+      <div className="mt-6 flex gap-7 overflow-x-auto border-b border-slate-200 px-7">
         {TabItems.map((v) => (
           <button
             key={v.label}

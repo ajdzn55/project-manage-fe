@@ -22,7 +22,7 @@ const ProjectTasksTab = ({ isOwner }: Props) => {
         <CreateTaskModal onClose={() => setIsCreateModalOpen(false)} />
       )}
 
-      <div className="space-y-5 p-5 md:p-7">
+      <div className="space-y-5 p-7">
         <section className="overflow-hidden rounded-xl border border-slate-200">
           <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
             <div>

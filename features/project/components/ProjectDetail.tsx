@@ -35,7 +35,7 @@ const ProjectDetail = ({ projectId }: Props) => {
 
   return (
     <>
-      <header className="px-5 pt-5 md:px-7 md:pt-7">
+      <header className="px-7 pt-7">
         <div className="flex min-w-0 items-center gap-2 text-slate-400">
           <Link
             href="/project"

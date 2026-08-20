@@ -10,10 +10,10 @@ import { myAlert } from '@/utils/alert';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 
 interface Props {
-  onNavigate?: () => void;
+  isCollapsed: boolean;
 }
 
-const ProjectSidebarNav = ({ onNavigate }: Props) => {
+const ProjectSidebarNav = ({ isCollapsed }: Props) => {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -37,7 +37,6 @@ const ProjectSidebarNav = ({ onNavigate }: Props) => {
 
     if (alertRes.isConfirmed) {
       logout();
-      onNavigate?.();
       router.replace('/login');
     }
   };
@@ -49,11 +48,22 @@ const ProjectSidebarNav = ({ onNavigate }: Props) => {
           <Link
             key={item.href}
             href={item.href}
-            onClick={onNavigate}
-            className={`flex items-center gap-3 rounded-lg px-3 py-2.5 font-medium transition ${isActive(item.href) ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
+            title={isCollapsed ? item.label : undefined}
+            aria-label={isCollapsed ? item.label : undefined}
+            className={`flex items-center rounded-lg py-2.5 font-medium transition ${
+              isCollapsed ? 'justify-center px-0' : 'gap-3 px-3'
+            } ${isActive(item.href) ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
           >
-            <span className="w-5 text-center">{item.icon}</span>
-            {item.label}
+            <span className="w-5 shrink-0 text-center">{item.icon}</span>
+            <span
+              className={`overflow-hidden whitespace-nowrap transition-[max-width,opacity] duration-200 ${
+                isCollapsed
+                  ? 'max-w-0 opacity-0'
+                  : 'max-w-40 opacity-100 delay-100'
+              }`}
+            >
+              {item.label}
+            </span>
           </Link>
         ))}
       </nav>
@@ -63,21 +73,44 @@ const ProjectSidebarNav = ({ onNavigate }: Props) => {
           <Link
             key={item.href}
             href={item.href}
-            onClick={onNavigate}
-            className={`flex items-center gap-3 rounded-lg px-3 py-2.5 transition ${isActive(item.href) ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
+            title={isCollapsed ? item.label : undefined}
+            aria-label={isCollapsed ? item.label : undefined}
+            className={`flex items-center rounded-lg py-2.5 transition ${
+              isCollapsed ? 'justify-center px-0' : 'gap-3 px-3'
+            } ${isActive(item.href) ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
           >
-            <span className="w-5 text-center">{item.icon}</span>
-            {item.label}
+            <span className="w-5 shrink-0 text-center">{item.icon}</span>
+            <span
+              className={`overflow-hidden whitespace-nowrap transition-[max-width,opacity] duration-200 ${
+                isCollapsed
+                  ? 'max-w-0 opacity-0'
+                  : 'max-w-40 opacity-100 delay-100'
+              }`}
+            >
+              {item.label}
+            </span>
           </Link>
         ))}
 
         <button
           type="button"
           onClick={handleLogout}
-          className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-slate-600 transition hover:bg-slate-50 hover:text-slate-900"
+          title={isCollapsed ? '로그아웃' : undefined}
+          aria-label={isCollapsed ? '로그아웃' : undefined}
+          className={`flex w-full items-center rounded-lg py-2.5 text-slate-600 transition hover:bg-slate-50 hover:text-slate-900 ${
+            isCollapsed ? 'justify-center px-0' : 'gap-3 px-3'
+          }`}
         >
-          <span className="w-5 text-center">🚪</span>
-          로그아웃
+          <span className="w-5 shrink-0 text-center">🚪</span>
+          <span
+            className={`overflow-hidden whitespace-nowrap transition-[max-width,opacity] duration-200 ${
+              isCollapsed
+                ? 'max-w-0 opacity-0'
+                : 'max-w-40 opacity-100 delay-100'
+            }`}
+          >
+            로그아웃
+          </span>
         </button>
       </nav>
     </>

@@ -18,21 +18,19 @@ const RecentProjectTaskList = ({ isOwner }: Props) => {
         {recentTasks.map((task) => (
           <div
             key={task.id}
-            className="grid grid-cols-[1fr_auto] items-center gap-4 px-5 py-4 md:grid-cols-[2fr_1fr_1fr_1fr_auto]"
+            className="grid grid-cols-[2fr_1fr_1fr_1fr_auto] items-center gap-4 px-5 py-4"
           >
             <div className="flex min-w-0 items-center gap-3">
               <span className="text-red-500">□</span>
               <span className="truncate font-medium">{task.name}</span>
             </div>
-            <span className="hidden text-slate-600 md:block">
+            <span className="text-slate-600">
               {task.assigneeName ?? '미지정'}
             </span>
-            <div className="hidden md:block">
+            <div>
               <StatusBadge status={task.status} />
             </div>
-            <time className="hidden text-slate-500 md:block">
-              {task.dueDate ?? '미정'}
-            </time>
+            <time className="text-slate-500">{task.dueDate ?? '미정'}</time>
             {isOwner && <MoreMenuButton />}
           </div>
         ))}

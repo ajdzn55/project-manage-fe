@@ -54,7 +54,7 @@ const ProjectList = () => {
         <CreateProjectModal onClose={() => setIsCreateModalOpen(false)} />
       )}
 
-      <div className="p-5 md:p-7">
+      <div className="p-7">
         <header>
           <h1 className="text-2xl font-bold text-slate-900">프로젝트</h1>
           <p className="mt-1 text-slate-500">
@@ -108,7 +108,7 @@ const ProjectList = () => {
           ))}
         </div>
 
-        <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-5 grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-4">
           {filteredProjects.map((project) => (
             <ProjectCard key={project.id} project={project} />
           ))}

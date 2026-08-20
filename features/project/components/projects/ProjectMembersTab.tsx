@@ -41,7 +41,7 @@ const ProjectMembersTab = ({ isOwner }: Props) => {
         />
       )}
 
-      <div className="p-5 md:p-7">
+      <div className="p-7">
         <section className="overflow-hidden rounded-xl border border-slate-200 bg-white">
           <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
             <div>
