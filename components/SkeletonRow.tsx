@@ -14,7 +14,7 @@ const SkeletonRow = <T extends object>({ table, rowCount = 3 }: Props<T>) => {
       {table.getVisibleLeafColumns().map((column) => (
         <td
           key={column.id}
-          className="border-r border-slate-200 px-5 py-4 last:border-r-0"
+          className="border-line border-r px-5 py-4 last:border-r-0"
           style={{
             width:
               totalSize > 0

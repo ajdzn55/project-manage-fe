@@ -37,7 +37,7 @@ const TextInput = ({
           {...register}
           id={label ?? ''}
           type={inputType}
-          className={`h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-slate-900 transition outline-none placeholder:text-slate-400 focus:border-blue-500 focus:ring-3 focus:ring-blue-100 ${
+          className={`border-line text-heading h-11 w-full rounded-lg border bg-white px-3 transition outline-none placeholder:text-slate-400 focus:border-blue-500 focus:ring-3 focus:ring-blue-100 ${
             isPassword ? 'pr-11' : ''
           }`}
           {...inputProps}
@@ -47,7 +47,7 @@ const TextInput = ({
           <button
             type="button"
             onClick={() => setShowPassword((previous) => !previous)}
-            className="absolute inset-y-0 right-0 flex w-11 items-center justify-center p-2 text-slate-400 hover:text-slate-600"
+            className="hover:text-body absolute inset-y-0 right-0 flex w-11 items-center justify-center p-2 text-slate-400"
           >
             {showPassword ? (
               <svg

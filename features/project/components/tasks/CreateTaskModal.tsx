@@ -78,7 +78,7 @@ const CreateTaskModal = ({ onClose }: CreateTaskModalProps) => {
               key={color}
               type="button"
               aria-label={`${color} 색상 선택`}
-              className={`size-7 rounded-md border border-slate-200 transition ${
+              className={`border-line size-7 rounded-md border transition ${
                 wBackgroundColor === color
                   ? 'ring-2 ring-blue-500 ring-offset-2'
                   : 'hover:scale-110'

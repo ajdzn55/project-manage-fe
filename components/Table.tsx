@@ -95,13 +95,13 @@ export default function Table<T extends object>({
   return (
     <div
       className={`overflow-x-auto ${
-        tableBorder ? 'rounded-xl border border-slate-200' : ''
+        tableBorder ? 'border-line rounded-xl border' : ''
       }`}
     >
-      <table className="w-full table-fixed text-left text-slate-500">
-        <thead className="bg-slate-50 font-semibold text-slate-500">
+      <table className="text-muted w-full table-fixed text-left">
+        <thead className="bg-surface text-muted font-semibold">
           {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id} className="border-b border-slate-200">
+            <tr key={headerGroup.id} className="border-line border-b">
               {headerGroup.headers.map((header) => {
                 const meta = header.column.columnDef.meta;
                 const isSticky = meta?.sticky ?? false;
@@ -114,9 +114,9 @@ export default function Table<T extends object>({
                     scope="col"
                     colSpan={header.colSpan}
                     rowSpan={meta?.rowSpan}
-                    className={`relative border-r border-slate-200 px-5 py-3 last:border-r-0 ${
+                    className={`border-line relative border-r px-5 py-3 last:border-r-0 ${
                       alignClasses[meta?.align ?? 'left']
-                    } ${isSticky ? 'sticky z-20 bg-slate-50' : ''}`}
+                    } ${isSticky ? 'bg-surface sticky z-20' : ''}`}
                     style={{
                       width: getWidth(header.getSize()),
                       ...(isSticky && {
@@ -129,7 +129,7 @@ export default function Table<T extends object>({
                       <button
                         type="button"
                         onClick={header.column.getToggleSortingHandler()}
-                        className="inline-flex items-center gap-1 hover:text-slate-900"
+                        className="hover:text-heading inline-flex items-center gap-1"
                       >
                         <table.FlexRender header={header} />
                         <span aria-hidden="true">
@@ -176,7 +176,7 @@ export default function Table<T extends object>({
             table.getRowModel().rows.map((row) => (
               <tr
                 key={row.id}
-                className="group transition-colors hover:bg-slate-50/80"
+                className="hover:bg-surface group transition-colors"
               >
                 {row.getVisibleCells().map((cell) => {
                   const meta = cell.column.columnDef.meta;
@@ -185,9 +185,9 @@ export default function Table<T extends object>({
                   return (
                     <td
                       key={cell.id}
-                      className={`border-r border-slate-200 px-5 py-4 last:border-r-0 ${
+                      className={`border-line border-r px-5 py-4 last:border-r-0 ${
                         alignClasses[meta?.align ?? 'left']
-                      } ${isSticky ? 'sticky z-10 bg-white group-hover:bg-slate-50' : ''}`}
+                      } ${isSticky ? 'group-hover:bg-surface sticky z-10 bg-white' : ''}`}
                       style={{
                         width: getWidth(cell.column.getSize()),
                         ...(isSticky && {
@@ -213,7 +213,7 @@ export default function Table<T extends object>({
         </tbody>
 
         {showFooter && !isLoading && (
-          <tfoot className="border-t border-slate-200 bg-slate-50 text-slate-500">
+          <tfoot className="border-line bg-surface text-muted border-t">
             <tr>
               <td
                 className="px-5 py-3"

@@ -31,8 +31,8 @@ const TaskList = () => {
   return (
     <div className="p-7">
       <header>
-        <h1 className="text-2xl font-bold text-slate-900">내 작업</h1>
-        <p className="mt-1 text-slate-500">내 작업 현황을 확인하세요.</p>
+        <h1 className="text-heading text-2xl font-bold">내 작업</h1>
+        <p className="text-muted mt-1">내 작업 현황을 확인하세요.</p>
       </header>
 
       <form

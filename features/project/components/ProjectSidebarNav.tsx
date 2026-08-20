@@ -52,7 +52,7 @@ const ProjectSidebarNav = ({ isCollapsed }: Props) => {
             aria-label={isCollapsed ? item.label : undefined}
             className={`flex items-center rounded-lg py-2.5 font-medium transition ${
               isCollapsed ? 'justify-center px-0' : 'gap-3 px-3'
-            } ${isActive(item.href) ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
+            } ${isActive(item.href) ? 'text-primary bg-blue-50' : 'text-body hover:bg-surface hover:text-heading'}`}
           >
             <span className="w-5 shrink-0 text-center">{item.icon}</span>
             <span
@@ -77,7 +77,7 @@ const ProjectSidebarNav = ({ isCollapsed }: Props) => {
             aria-label={isCollapsed ? item.label : undefined}
             className={`flex items-center rounded-lg py-2.5 transition ${
               isCollapsed ? 'justify-center px-0' : 'gap-3 px-3'
-            } ${isActive(item.href) ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
+            } ${isActive(item.href) ? 'text-primary bg-blue-50' : 'text-body hover:bg-surface hover:text-heading'}`}
           >
             <span className="w-5 shrink-0 text-center">{item.icon}</span>
             <span
@@ -97,7 +97,7 @@ const ProjectSidebarNav = ({ isCollapsed }: Props) => {
           onClick={handleLogout}
           title={isCollapsed ? '로그아웃' : undefined}
           aria-label={isCollapsed ? '로그아웃' : undefined}
-          className={`flex w-full items-center rounded-lg py-2.5 text-slate-600 transition hover:bg-slate-50 hover:text-slate-900 ${
+          className={`text-body hover:bg-surface hover:text-heading flex w-full items-center rounded-lg py-2.5 transition ${
             isCollapsed ? 'justify-center px-0' : 'gap-3 px-3'
           }`}
         >

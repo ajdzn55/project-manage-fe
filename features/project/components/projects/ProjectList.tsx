@@ -56,10 +56,8 @@ const ProjectList = () => {
 
       <div className="p-7">
         <header>
-          <h1 className="text-2xl font-bold text-slate-900">프로젝트</h1>
-          <p className="mt-1 text-slate-500">
-            참여 중인 프로젝트를 관리하세요.
-          </p>
+          <h1 className="text-heading text-2xl font-bold">프로젝트</h1>
+          <p className="text-muted mt-1">참여 중인 프로젝트를 관리하세요.</p>
         </header>
 
         <form
@@ -95,13 +93,13 @@ const ProjectList = () => {
           </div>
         </form>
 
-        <div className="mt-5 flex gap-6 overflow-x-auto border-b border-slate-200">
+        <div className="border-line mt-5 flex gap-6 overflow-x-auto border-b">
           {tabs.map((tab) => (
             <button
               key={tab}
               type="button"
               onClick={() => setSelectedTab(tab)}
-              className={`shrink-0 border-b-2 px-1 pb-3 font-semibold ${selectedTab === tab ? 'border-blue-600 text-blue-600' : 'border-transparent text-slate-500 hover:text-slate-900'}`}
+              className={`shrink-0 border-b-2 px-1 pb-3 font-semibold ${selectedTab === tab ? 'border-primary text-primary' : 'text-muted hover:text-heading border-transparent'}`}
             >
               {tab}
             </button>

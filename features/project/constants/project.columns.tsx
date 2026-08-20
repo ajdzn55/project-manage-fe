@@ -9,7 +9,7 @@ import type { User } from '@/features/user/types/user.type';
 
 const avatarStyles = [
   'bg-amber-100 text-amber-700',
-  'bg-blue-100 text-blue-700',
+  'bg-primary-soft text-blue-700',
   'bg-emerald-100 text-emerald-700',
 ] as const;
 
@@ -25,7 +25,7 @@ const memberColumns = memberColumnHelper.columns([
         >
           {info.getValue().slice(0, 1)}
         </span>
-        <span className="truncate font-medium text-slate-900">
+        <span className="text-heading truncate font-medium">
           {info.getValue()}
         </span>
       </div>
@@ -76,8 +76,8 @@ const taskColumns = taskColumnHelper.columns([
     size: 300,
     cell: (info) => (
       <div className="flex min-w-0 items-center gap-3">
-        <span className="text-red-500">□</span>
-        <span className="truncate font-medium text-slate-900">
+        <span className="text-danger">□</span>
+        <span className="text-heading truncate font-medium">
           {info.getValue()}
         </span>
       </div>

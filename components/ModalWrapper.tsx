@@ -54,7 +54,7 @@ const ModalWrapper = ({
         className="fixed top-1/2 left-1/2 z-[60] w-[calc(100%-2rem)] max-w-[360px] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-5 shadow-2xl"
       >
         <div className="flex items-center justify-between gap-4">
-          <h2 id={titleId} className="text-lg font-bold text-slate-900">
+          <h2 id={titleId} className="text-heading text-lg font-bold">
             {title}
           </h2>
           <button

@@ -39,14 +39,12 @@ const ProjectDetail = ({ projectId }: Props) => {
         <div className="flex min-w-0 items-center gap-2 text-slate-400">
           <Link
             href="/project"
-            className="shrink-0 transition-colors hover:text-blue-600"
+            className="hover:text-primary shrink-0 transition-colors"
           >
             프로젝트
           </Link>
           <span>/</span>
-          <span className="truncate font-medium text-slate-600">
-            {project.name}
-          </span>
+          <span className="text-body truncate font-medium">{project.name}</span>
         </div>
 
         <div className="mt-5 flex items-start justify-between gap-4">
@@ -55,10 +53,10 @@ const ProjectDetail = ({ projectId }: Props) => {
               {project.name.slice(0, 1)}
             </span>
             <div className="min-w-0">
-              <h1 className="truncate text-2xl font-bold text-slate-900">
+              <h1 className="text-heading truncate text-2xl font-bold">
                 {project.name}
               </h1>
-              <div className="mt-2 flex flex-wrap items-center gap-3 text-xs text-slate-500">
+              <div className="text-muted mt-2 flex flex-wrap items-center gap-3 text-xs">
                 <StatusBadge status={project.status} />
                 <span>
                   {`${project.startDate ?? '미정'} ~ ${project.endDate ?? '미정'}`}

@@ -10,10 +10,10 @@ const ProjectOverviewTab = ({ isOwner }: Props) => {
 
   return (
     <div className="space-y-5 p-7">
-      <section className="rounded-xl border border-slate-200 p-5">
-        <h2 className="font-bold text-slate-900">진행률</h2>
+      <section className="border-line rounded-xl border p-5">
+        <h2 className="text-heading font-bold">진행률</h2>
         <div className="mt-5 flex items-center gap-7">
-          <div className="relative flex size-28 shrink-0 items-center justify-center rounded-full bg-[conic-gradient(#2563eb_65%,#e2e8f0_0)]">
+          <div className="relative flex size-28 shrink-0 items-center justify-center rounded-full bg-[conic-gradient(var(--color-primary)_65%,var(--color-line)_0)]">
             <div className="flex size-22 items-center justify-center rounded-full bg-white text-2xl font-bold">
               {TaskSummary.progressRate}%
             </div>
@@ -26,7 +26,7 @@ const ProjectOverviewTab = ({ isOwner }: Props) => {
               ['대기', TaskSummary.todoCount],
             ].map(([label, value]) => (
               <div key={label} className="flex justify-between gap-4">
-                <dt className="text-slate-500">{label}</dt>
+                <dt className="text-muted">{label}</dt>
                 <dd className="font-semibold">{value}</dd>
               </div>
             ))}

@@ -23,11 +23,11 @@ const ProjectTasksTab = ({ isOwner }: Props) => {
       )}
 
       <div className="space-y-5 p-7">
-        <section className="overflow-hidden rounded-xl border border-slate-200">
-          <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
+        <section className="border-line overflow-hidden rounded-xl border">
+          <div className="border-line flex items-center justify-between border-b px-5 py-4">
             <div>
-              <h2 className="font-bold text-slate-900">전체 작업</h2>
-              <p className="mt-1 text-xs text-slate-500">
+              <h2 className="text-heading font-bold">전체 작업</h2>
+              <p className="text-muted mt-1 text-xs">
                 총 {mockProjectTasks.length}건
               </p>
             </div>

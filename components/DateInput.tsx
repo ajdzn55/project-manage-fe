@@ -29,7 +29,7 @@ const DateInput = ({
           {...register}
           id={label ?? ''}
           type="date"
-          className="h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-slate-900 transition outline-none focus:border-blue-500 focus:ring-3 focus:ring-blue-100"
+          className="border-line text-heading h-11 w-full rounded-lg border bg-white px-3 transition outline-none focus:border-blue-500 focus:ring-3 focus:ring-blue-100"
           onChange={(e) => {
             if (inputProps.onChange) inputProps.onChange(e);
             register?.onChange(e);

@@ -13,13 +13,13 @@ const Tab = ({ TabItems, selected, setSelected }: Props) => {
 
   return (
     <>
-      <div className="mt-6 flex gap-7 overflow-x-auto border-b border-slate-200 px-7">
+      <div className="border-line mt-6 flex gap-7 overflow-x-auto border-b px-7">
         {TabItems.map((v) => (
           <button
             key={v.label}
             type="button"
             onClick={() => setSelected(v.label)}
-            className={`shrink-0 border-b-2 px-1 pb-3 font-semibold ${selected === v.label ? 'border-blue-600 text-blue-600' : 'border-transparent text-slate-500 hover:text-slate-900'}`}
+            className={`shrink-0 border-b-2 px-1 pb-3 font-semibold ${selected === v.label ? 'border-primary text-primary' : 'text-muted hover:text-heading border-transparent'}`}
           >
             {v.label}
           </button>

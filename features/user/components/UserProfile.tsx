@@ -54,19 +54,19 @@ const UserProfile = () => {
 
   return (
     <div className="p-7">
-      <h1 className="text-2xl font-bold text-slate-900">내 정보</h1>
-      <p className="mt-1 text-slate-500">계정 정보를 확인하고 수정하세요.</p>
+      <h1 className="text-heading text-2xl font-bold">내 정보</h1>
+      <p className="text-muted mt-1">계정 정보를 확인하고 수정하세요.</p>
 
       <form onSubmit={handleSubmit(handleSave)} className="mt-8 max-w-100">
-        <div className="flex items-center gap-4 border-b border-slate-200 pb-6">
-          <div className="flex size-14 shrink-0 items-center justify-center rounded-full bg-blue-600 text-xl font-bold text-white">
+        <div className="border-line flex items-center gap-4 border-b pb-6">
+          <div className="bg-primary flex size-14 shrink-0 items-center justify-center rounded-full text-xl font-bold text-white">
             {user.name.trim().charAt(0)}
           </div>
           <div className="min-w-0">
-            <p className="truncate text-lg font-bold text-slate-900">
+            <p className="text-heading truncate text-lg font-bold">
               {user.name}
             </p>
-            <p className="truncate text-slate-500">{user.email}</p>
+            <p className="text-muted truncate">{user.email}</p>
           </div>
         </div>
 
@@ -85,16 +85,16 @@ const UserProfile = () => {
             register={register('email')}
           />
           <div className="flex min-h-11 items-center gap-[3px]">
-            <span className="w-20 shrink-0 font-semibold text-slate-700">
+            <span className="text-body w-20 shrink-0 font-semibold">
               가입일
             </span>
-            <time dateTime={user.createdAt} className="text-slate-600">
+            <time dateTime={user.createdAt} className="text-body">
               {format(new Date(user.createdAt), 'yyyy.MM.dd')}
             </time>
           </div>
         </div>
 
-        <div className="flex justify-end border-t border-slate-200 pt-5">
+        <div className="border-line flex justify-end border-t pt-5">
           <Button text="저장" width="104px" height="40px" type="submit" />
         </div>
       </form>

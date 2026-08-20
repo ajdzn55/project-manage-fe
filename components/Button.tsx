@@ -22,7 +22,7 @@ const Button = ({
 }: Props) => {
   const backgroundColor =
     color === 'default'
-      ? 'bg-blue-600 hover:bg-blue-700 text-white'
+      ? 'bg-primary hover:bg-primary-hover text-white'
       : color === 'white'
         ? 'border border-gray-200 hover:border-gray-300'
         : 'bg-gray-200 hover:bg-gray-300';

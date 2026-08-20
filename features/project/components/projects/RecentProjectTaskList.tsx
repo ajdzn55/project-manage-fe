@@ -10,9 +10,9 @@ const RecentProjectTaskList = ({ isOwner }: Props) => {
   const recentTasks = mockProjectTasks.slice(0, 3);
 
   return (
-    <section className="overflow-hidden rounded-xl border border-slate-200">
-      <div className="flex items-center border-b border-slate-200 px-5 py-4">
-        <h2 className="font-bold text-slate-900">최근 작업</h2>
+    <section className="border-line overflow-hidden rounded-xl border">
+      <div className="border-line flex items-center border-b px-5 py-4">
+        <h2 className="text-heading font-bold">최근 작업</h2>
       </div>
       <div className="divide-y divide-slate-100">
         {recentTasks.map((task) => (
@@ -21,16 +21,14 @@ const RecentProjectTaskList = ({ isOwner }: Props) => {
             className="grid grid-cols-[2fr_1fr_1fr_1fr_auto] items-center gap-4 px-5 py-4"
           >
             <div className="flex min-w-0 items-center gap-3">
-              <span className="text-red-500">□</span>
+              <span className="text-danger">□</span>
               <span className="truncate font-medium">{task.name}</span>
             </div>
-            <span className="text-slate-600">
-              {task.assigneeName ?? '미지정'}
-            </span>
+            <span className="text-body">{task.assigneeName ?? '미지정'}</span>
             <div>
               <StatusBadge status={task.status} />
             </div>
-            <time className="text-slate-500">{task.dueDate ?? '미정'}</time>
+            <time className="text-muted">{task.dueDate ?? '미정'}</time>
             {isOwner && <MoreMenuButton />}
           </div>
         ))}

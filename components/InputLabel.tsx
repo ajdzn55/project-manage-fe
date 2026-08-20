@@ -15,7 +15,7 @@ const InputLabel = ({ label, labelWidth = '0px', tooltip }: Props) => {
     <>
       <div
         style={{ width: labelWidth }}
-        className="flex shrink-0 items-center gap-1.5 font-semibold text-slate-700"
+        className="text-body flex shrink-0 items-center gap-1.5 font-semibold"
       >
         <label htmlFor={label}>{label}</label>
 
@@ -28,7 +28,7 @@ const InputLabel = ({ label, labelWidth = '0px', tooltip }: Props) => {
             className={`flex size-4 items-center justify-center rounded-full text-[10px] font-bold ${
               tooltip.type === 'warning'
                 ? 'bg-amber-100 text-amber-700'
-                : 'bg-slate-100 text-slate-500'
+                : 'text-muted bg-slate-100'
             }`}
           >
             {tooltipIcon}

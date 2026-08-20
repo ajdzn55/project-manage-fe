@@ -6,7 +6,7 @@ interface Props {
 }
 
 const avatarColors = [
-  'bg-blue-600',
+  'bg-primary',
   'bg-indigo-600',
   'bg-violet-600',
   'bg-purple-600',
@@ -48,7 +48,7 @@ const MemberAvatars = ({ members, additionalCount = 0 }: Props) => {
         ))}
       </div>
       {additionalCount > 0 && (
-        <span className="ml-2 text-xs text-slate-500">+{additionalCount}</span>
+        <span className="text-muted ml-2 text-xs">+{additionalCount}</span>
       )}
     </div>
   );

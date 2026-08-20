@@ -45,11 +45,11 @@ const LoginForm = () => {
   return (
     <AuthLayout>
       <header className="mb-7 flex flex-col items-center text-center">
-        <div className="mb-4 flex size-12 items-center justify-center rounded-xl bg-blue-600 shadow-sm">
+        <div className="bg-primary mb-4 flex size-12 items-center justify-center rounded-xl shadow-sm">
           {/* 로고 */}
         </div>
-        <h1 className="text-xl font-bold text-slate-900">ProjectHub</h1>
-        <p className="mt-2 text-slate-500">
+        <h1 className="text-heading text-xl font-bold">ProjectHub</h1>
+        <p className="text-muted mt-2">
           프로젝트 협업을 더 효율적으로 관리하세요.
         </p>
       </header>
@@ -76,7 +76,7 @@ const LoginForm = () => {
       <div className="mt-6 text-center">
         <Link
           href="/sign-up"
-          className="font-semibold text-blue-600 transition hover:text-blue-700 hover:underline"
+          className="text-primary hover:text-primary-hover font-semibold transition hover:underline"
         >
           회원가입
         </Link>

@@ -12,10 +12,10 @@ const ProjectLayout = ({ children }: Props) => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   return (
-    <main className="min-h-dvh min-w-[1024px] overflow-auto bg-slate-50 p-8">
-      <div className="mx-auto flex min-h-[calc(100dvh-64px)] max-w-360 rounded-xl border border-slate-200 bg-white shadow-sm">
+    <main className="bg-surface min-h-dvh min-w-[1024px] overflow-auto p-8">
+      <div className="border-line mx-auto flex min-h-[calc(100dvh-64px)] max-w-360 rounded-xl border bg-white shadow-sm">
         <aside
-          className={`relative flex shrink-0 flex-col border-r border-slate-200 transition-[width] duration-200 ${
+          className={`border-line relative flex shrink-0 flex-col border-r transition-[width] duration-200 ${
             isSidebarCollapsed ? 'w-16' : 'w-56'
           }`}
         >
@@ -27,11 +27,11 @@ const ProjectLayout = ({ children }: Props) => {
               isSidebarCollapsed ? 'justify-center px-0' : 'gap-3 px-5'
             }`}
           >
-            <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-blue-600 font-bold text-white">
+            <span className="bg-primary flex size-8 shrink-0 items-center justify-center rounded-lg font-bold text-white">
               A
             </span>
             <span
-              className={`overflow-hidden font-bold whitespace-nowrap text-slate-900 transition-[max-width,opacity] duration-200 ${
+              className={`text-heading overflow-hidden font-bold whitespace-nowrap transition-[max-width,opacity] duration-200 ${
                 isSidebarCollapsed
                   ? 'max-w-0 opacity-0'
                   : 'max-w-40 opacity-100 delay-100'
@@ -47,7 +47,7 @@ const ProjectLayout = ({ children }: Props) => {
               isSidebarCollapsed ? '사이드바 펼치기' : '사이드바 접기'
             }
             onClick={() => setIsSidebarCollapsed((previous) => !previous)}
-            className="absolute top-[68px] -right-3 z-10 flex size-6 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:bg-slate-50 hover:text-slate-900"
+            className="border-line text-muted hover:bg-surface hover:text-heading absolute top-[68px] -right-3 z-10 flex size-6 items-center justify-center rounded-full border bg-white shadow-sm transition"
           >
             {isSidebarCollapsed ? '›' : '‹'}
           </button>

@@ -42,13 +42,11 @@ const ProjectMembersTab = ({ isOwner }: Props) => {
       )}
 
       <div className="p-7">
-        <section className="overflow-hidden rounded-xl border border-slate-200 bg-white">
-          <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
+        <section className="border-line overflow-hidden rounded-xl border bg-white">
+          <div className="border-line flex items-center justify-between border-b px-5 py-4">
             <div>
-              <h2 className="font-bold text-slate-900">프로젝트 멤버</h2>
-              <p className="mt-1 text-xs text-slate-500">
-                총 {members.length}명
-              </p>
+              <h2 className="text-heading font-bold">프로젝트 멤버</h2>
+              <p className="text-muted mt-1 text-xs">총 {members.length}명</p>
             </div>
             {isOwner && (
               <div className="w-36">
