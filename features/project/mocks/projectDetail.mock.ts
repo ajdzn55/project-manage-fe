@@ -40,6 +40,7 @@ export const mockProjectTasks: ProjectTask[] = [
     createdBy: 'jhcho',
     createdAt: '2026-06-01T09:00:00Z',
     updatedAt: '2026-06-12T09:00:00Z',
+    backgroundColor: '#FFD2D5',
   },
   {
     id: '019ff4ea-1a5e-72fc-a3eb-cb524304890a',
@@ -54,6 +55,7 @@ export const mockProjectTasks: ProjectTask[] = [
     createdBy: 'jhcho',
     createdAt: '2026-06-02T09:00:00Z',
     updatedAt: '2026-06-11T09:00:00Z',
+    backgroundColor: '#D1FCD6',
   },
   {
     id: '019ff4ea-1a5e-72fc-a3eb-cfa32cf93a8a',
@@ -68,5 +70,6 @@ export const mockProjectTasks: ProjectTask[] = [
     createdBy: 'jhcho',
     createdAt: '2026-06-03T09:00:00Z',
     updatedAt: '2026-06-03T09:00:00Z',
+    backgroundColor: '#DED0F5',
   },
 ];

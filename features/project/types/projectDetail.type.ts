@@ -17,6 +17,7 @@ export interface ProjectTask {
   projectId: ProjectDetail['id'];
   name: string;
   description?: string | null;
+  backgroundColor?: string | null;
   status: TaskStatusEnum;
   priority: TaskPriorityEnum;
   assigneeId?: string | null;
