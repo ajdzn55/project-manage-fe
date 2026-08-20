@@ -5,7 +5,7 @@ import type { MouseEventHandler } from 'react';
 
 interface Props {
   text: string;
-  color?: 'default' | 'gray';
+  color?: 'default' | 'gray' | 'white';
   width?: string;
   height?: string;
   type?: 'button' | 'submit' | 'reset';
@@ -22,8 +22,10 @@ const Button = ({
 }: Props) => {
   const backgroundColor =
     color === 'default'
-      ? 'bg-blue-600 hover:bg-blue-700'
-      : 'bg-gray-400 hover:bg-gray-500';
+      ? 'bg-blue-600 hover:bg-blue-700 text-white'
+      : color === 'white'
+        ? 'border border-gray-200 hover:border-gray-300'
+        : 'bg-gray-200 hover:bg-gray-300';
 
   return (
     <motion.button
@@ -32,7 +34,7 @@ const Button = ({
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.97 }}
       transition={{ duration: 0.12 }}
-      className={`flex items-center justify-center rounded-lg font-semibold text-white ${backgroundColor}`}
+      className={`flex cursor-pointer items-center justify-center rounded-lg font-semibold ${backgroundColor}`}
       onClick={onClick}
     >
       {text}
