@@ -8,6 +8,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   labelWidth?: string;
   register?: UseFormRegisterReturn<any>;
+  hasError?: boolean;
 }
 
 const TextInput = ({
@@ -15,12 +16,17 @@ const TextInput = ({
   type = 'text',
   labelWidth = '0px',
   register,
+  hasError = false,
   ...inputProps
 }: Props) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const isPassword = type === 'password';
   const inputType = isPassword && showPassword ? 'text' : type;
+
+  const borderClassName = hasError
+    ? 'border-danger focus:border-danger focus:ring-red-100'
+    : 'border-line focus:border-blue-500 focus:ring-blue-100';
 
   return (
     <div
@@ -35,9 +41,9 @@ const TextInput = ({
       <div className="relative min-w-0 flex-1">
         <input
           {...register}
-          id={label ?? ''}
+          id={label}
           type={inputType}
-          className={`border-line text-heading h-11 w-full rounded-lg border bg-white px-3 transition outline-none placeholder:text-slate-400 focus:border-blue-500 focus:ring-3 focus:ring-blue-100 ${
+          className={`${borderClassName} text-heading h-11 w-full rounded-lg border bg-white px-3 transition outline-none placeholder:text-slate-400 focus:ring-3 ${
             isPassword ? 'pr-11' : ''
           }`}
           {...inputProps}

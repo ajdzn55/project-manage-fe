@@ -9,8 +9,8 @@ import { useForm, useWatch } from 'react-hook-form';
 import SearchInput from '@/components/SearchInput';
 import { useMemo, useState } from 'react';
 import { useAuth } from '@/features/auth/hooks/useAuth';
-import CreateProjectModal from '@/features/project/components/projects/CreateProjectModal';
 import { projectStatusOptions } from '@/features/project/constants/project.const';
+import ProjectModal from '@/features/project/components/projects/ProjectModal';
 
 const tabs = ['전체', '내 프로젝트'];
 const statusOptions = [{ label: '전체', value: '' }, ...projectStatusOptions];
@@ -51,7 +51,7 @@ const ProjectList = () => {
   return (
     <>
       {isCreateModalOpen && (
-        <CreateProjectModal onClose={() => setIsCreateModalOpen(false)} />
+        <ProjectModal onClose={() => setIsCreateModalOpen(false)} />
       )}
 
       <div className="p-7">

@@ -59,7 +59,11 @@ const TaskModal = ({ onClose, data }: TaskModalProps) => {
       submitButtonText={data ? '저장' : '생성'}
     >
       <input type="hidden" {...register('id')} />
-      <TextInput label="작업명" labelWidth="80px" register={register('name')} />
+      <TextInput
+        label="작업명"
+        labelWidth="80px"
+        register={register('name', { required: true })}
+      />
       <TextInput
         label="설명"
         labelWidth="80px"

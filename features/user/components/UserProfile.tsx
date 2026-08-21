@@ -74,15 +74,13 @@ const UserProfile = () => {
           <TextInput
             label="이름"
             labelWidth="80px"
-            required
-            register={register('name')}
+            register={register('name', { required: true })}
           />
           <TextInput
             label="이메일"
             labelWidth="80px"
             type="email"
-            required
-            register={register('email')}
+            register={register('email', { required: true })}
           />
           <div className="flex min-h-11 items-center gap-[3px]">
             <span className="text-body w-20 shrink-0 font-semibold">

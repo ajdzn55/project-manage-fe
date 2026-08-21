@@ -14,7 +14,11 @@ import { useAuth } from '@/features/auth/hooks/useAuth';
 type LoginFormType = Pick<User, 'id' | 'password'>;
 
 const LoginForm = () => {
-  const { register, handleSubmit } = useForm<LoginFormType>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormType>();
   const router = useRouter();
   const { login } = useAuth();
 
@@ -56,19 +60,19 @@ const LoginForm = () => {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         <TextInput
-          register={register('id')}
+          register={register('id', { required: true })}
           label="아이디"
           labelWidth="80px"
           placeholder="아이디를 입력하세요"
-          required
+          hasError={!!errors.id}
         />
         <TextInput
-          register={register('password')}
+          register={register('password', { required: true })}
           label="비밀번호"
           labelWidth="80px"
           type="password"
           placeholder="비밀번호를 입력하세요"
-          required
+          hasError={!!errors.password}
         />
         <Button text="로그인" type="submit" width="100%" height="40px" />
       </form>
