@@ -1,15 +1,37 @@
 'use client';
 
 import Link from 'next/link';
-import { type ReactNode, useState } from 'react';
+import { type ReactNode, useEffect, useState } from 'react';
 import ProjectSidebarNav from './ProjectSidebarNav';
+import { SIDEBAR_COLLAPSED_KEY } from '@/constants/common.const';
 
 interface Props {
   children: ReactNode;
 }
 
 const ProjectLayout = ({ children }: Props) => {
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
+
+  useEffect(() => {
+    const restoreSidebarStatus = window.setTimeout(() => {
+      const storedSidebarStatus = localStorage.getItem(SIDEBAR_COLLAPSED_KEY);
+
+      if (storedSidebarStatus !== null) {
+        setIsSidebarCollapsed(storedSidebarStatus === 'true');
+      }
+    }, 0);
+
+    return () => window.clearTimeout(restoreSidebarStatus);
+  }, []);
+
+  const toggleSidebar = () => {
+    setIsSidebarCollapsed((prev) => {
+      const nextValue = !prev;
+      localStorage.setItem(SIDEBAR_COLLAPSED_KEY, nextValue.toString());
+
+      return nextValue;
+    });
+  };
 
   return (
     <main className="bg-surface min-h-dvh min-w-[1024px] overflow-auto p-8">
@@ -46,7 +68,7 @@ const ProjectLayout = ({ children }: Props) => {
             aria-label={
               isSidebarCollapsed ? '사이드바 펼치기' : '사이드바 접기'
             }
-            onClick={() => setIsSidebarCollapsed((previous) => !previous)}
+            onClick={toggleSidebar}
             className="border-line text-muted hover:bg-surface hover:text-heading absolute top-[68px] -right-3 z-10 flex size-6 items-center justify-center rounded-full border bg-white shadow-sm transition"
           >
             {isSidebarCollapsed ? '›' : '‹'}
