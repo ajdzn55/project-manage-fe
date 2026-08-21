@@ -10,38 +10,44 @@ import { useEffect } from 'react';
 import { Project } from '@/features/project/types/project.type';
 
 interface ProjectModalProps {
+  onSave: (data: Project) => void;
   onClose: () => void;
-  data?: Project;
+  targetProject?: Project;
 }
 
-const ProjectModal = ({ onClose, data }: ProjectModalProps) => {
-  const { register, handleSubmit, reset } = useForm<Project>();
+const ProjectModal = ({
+  onSave,
+  onClose,
+  targetProject,
+}: ProjectModalProps) => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<Project>();
 
   const statusOptions = [{ label: '', value: '' }, ...projectStatusOptions];
 
-  // TODO: api 연결 필요
-  const onSubmit = (data: Project) => {
-    console.log(data);
-  };
-
   useEffect(() => {
-    if (data) {
-      reset(data);
+    if (targetProject) {
+      reset(targetProject);
     }
-  }, [reset, data]);
+  }, [reset, targetProject]);
 
   return (
     <ModalWrapper
-      title={data ? '프로젝트 수정' : '새 프로젝트'}
+      title={targetProject ? '프로젝트 수정' : '새 프로젝트'}
       onClose={onClose}
-      onSubmit={handleSubmit(onSubmit)}
-      submitButtonText={data ? '저장' : '생성'}
+      onSubmit={handleSubmit(onSave)}
+      submitButtonText={targetProject ? '저장' : '생성'}
     >
       <input type="hidden" {...register('id')} />
       <TextInput
         label="프로젝트명"
         labelWidth="80px"
         register={register('name', { required: true })}
+        hasError={!!errors.name}
       />
       <TextInput
         label="설명"

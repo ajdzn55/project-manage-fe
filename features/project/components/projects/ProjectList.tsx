@@ -11,6 +11,7 @@ import { useMemo, useState } from 'react';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { projectStatusOptions } from '@/features/project/constants/project.const';
 import ProjectModal from '@/features/project/components/projects/ProjectModal';
+import { toastAlert } from '@/utils/alert';
 
 const tabs = ['전체', '내 프로젝트'];
 const statusOptions = [{ label: '전체', value: '' }, ...projectStatusOptions];
@@ -44,14 +45,21 @@ const ProjectList = () => {
       : nameFiltered;
   }, [selectedTab, user?.id, wName, wStatus]);
 
-  const onNewProjectClick = () => {
-    setIsCreateModalOpen(true);
+  const handleSaveProject = (data: Project) => {
+    // TODO: api 연결 필요
+    console.log(data);
+
+    setIsCreateModalOpen(false);
+    toastAlert({ type: 'info', content: '프로젝트가 생성되었습니다.' });
   };
 
   return (
     <>
       {isCreateModalOpen && (
-        <ProjectModal onClose={() => setIsCreateModalOpen(false)} />
+        <ProjectModal
+          onSave={handleSaveProject}
+          onClose={() => setIsCreateModalOpen(false)}
+        />
       )}
 
       <div className="p-7">
@@ -86,7 +94,7 @@ const ProjectList = () => {
                   text="+ 새 프로젝트"
                   width="100%"
                   height="40px"
-                  onClick={onNewProjectClick}
+                  onClick={() => setIsCreateModalOpen(true)}
                 />
               )}
             </div>

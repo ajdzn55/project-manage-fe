@@ -12,8 +12,9 @@ import Link from 'next/link';
 import MoreMenuButton from '@/components/MoreMenuButton';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { ProjectMemberRoleEnum } from '@/features/project/types/enums';
-import { myAlert } from '@/utils/alert';
+import { dialogAlert, toastAlert } from '@/utils/alert';
 import ProjectModal from '@/features/project/components/projects/ProjectModal';
+import { Project } from '@/features/project/types/project.type';
 
 interface Props {
   projectId: string;
@@ -40,17 +41,24 @@ const ProjectDetail = ({ projectId }: Props) => {
   };
 
   const handleDeleteProject = async () => {
-    const alertRes = await myAlert({
+    const alertRes = await dialogAlert({
       type: 'warning',
       content:
         '프로젝트를 삭제하시겠습니까?\n프로젝트에 포함된 작업과 멤버 정보도 함께 삭제됩니다.',
-      confirmButtonText: '예',
-      cancelButtonText: '아니오',
+      showCancelButton: true,
     });
 
     if (alertRes.isConfirmed) {
       // TODO: api 연결 필요
     }
+  };
+
+  const handleSaveProject = (data: Project) => {
+    // TODO: api 연결 필요
+    console.log(data);
+
+    setIsModalOpen(false);
+    toastAlert({ type: 'info', content: '프로젝트가 수정되었습니다.' });
   };
 
   if (!targetProject) return null;
@@ -59,8 +67,9 @@ const ProjectDetail = ({ projectId }: Props) => {
     <>
       {isModalOpen && (
         <ProjectModal
+          onSave={handleSaveProject}
           onClose={() => setIsModalOpen(false)}
-          data={targetProject}
+          targetProject={targetProject}
         />
       )}
 

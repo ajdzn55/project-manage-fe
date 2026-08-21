@@ -21,13 +21,20 @@ const TASK_COLOR_PALETTE = [
 ] as const;
 
 interface TaskModalProps {
+  onSave: (data: ProjectTask) => void;
   onClose: () => void;
-  data?: ProjectTask;
+  targetTask?: ProjectTask;
 }
 
-const TaskModal = ({ onClose, data }: TaskModalProps) => {
-  const { register, handleSubmit, setValue, control, reset } =
-    useForm<ProjectTask>();
+const TaskModal = ({ onSave, onClose, targetTask }: TaskModalProps) => {
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm<ProjectTask>();
 
   const wBackgroundColor = useWatch({
     control,
@@ -40,29 +47,25 @@ const TaskModal = ({ onClose, data }: TaskModalProps) => {
     ...mockUsers.map((v) => ({ label: v.name, value: v.id })),
   ];
 
-  // TODO: api 연결 필요
-  const onSubmit = (data: ProjectTask) => {
-    console.log(data);
-  };
-
   useEffect(() => {
-    if (data) {
-      reset(data);
+    if (targetTask) {
+      reset(targetTask);
     }
-  }, [reset, data]);
+  }, [reset, targetTask]);
 
   return (
     <ModalWrapper
-      title={data ? '작업 수정' : '새 작업'}
+      title={targetTask ? '작업 수정' : '새 작업'}
       onClose={onClose}
-      onSubmit={handleSubmit(onSubmit)}
-      submitButtonText={data ? '저장' : '생성'}
+      onSubmit={handleSubmit(onSave)}
+      submitButtonText={targetTask ? '저장' : '생성'}
     >
       <input type="hidden" {...register('id')} />
       <TextInput
         label="작업명"
         labelWidth="80px"
         register={register('name', { required: true })}
+        hasError={!!errors.name}
       />
       <TextInput
         label="설명"

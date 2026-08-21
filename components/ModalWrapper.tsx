@@ -8,7 +8,7 @@ interface Props {
   children: ReactNode;
   onClose: () => void;
   onSubmit?: SubmitEventHandler<HTMLFormElement>;
-  submitButtonText?: string;
+  submitButtonText: string;
 }
 
 const ModalWrapper = ({
@@ -16,7 +16,7 @@ const ModalWrapper = ({
   children,
   onClose,
   onSubmit,
-  submitButtonText = '생성',
+  submitButtonText,
 }: Props) => {
   const titleId = useId();
 

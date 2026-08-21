@@ -4,8 +4,9 @@ import Table from '@/components/Table';
 import { projectTaskColumns } from '@/features/project/constants/project.columns';
 import { useState } from 'react';
 import TaskModal from '../tasks/TaskModal';
-import { myAlert } from '@/utils/alert';
+import { dialogAlert, toastAlert } from '@/utils/alert';
 import EmptyState from '@/features/project/components/EmptyState';
+import type { ProjectTask } from '@/features/project/types/projectDetail.type';
 
 interface Props {
   isOwner?: boolean;
@@ -27,11 +28,10 @@ const ProjectTasksTab = ({ isOwner }: Props) => {
   };
 
   const handleDeleteTask = async (taskId: string) => {
-    const alertRes = await myAlert({
+    const alertRes = await dialogAlert({
       type: 'warning',
       content: '작업을 삭제하시겠습니까?',
-      confirmButtonText: '예',
-      cancelButtonText: '아니오',
+      showCancelButton: true,
     });
 
     if (alertRes.isConfirmed) {
@@ -39,10 +39,24 @@ const ProjectTasksTab = ({ isOwner }: Props) => {
     }
   };
 
+  const handleSaveTask = (data: ProjectTask) => {
+    // TODO: api 연결 필요
+
+    setIsModalOpen(false);
+    toastAlert({
+      type: 'info',
+      content: `작업이 ${data.id ? '수정' : '생성'}되었습니다.`,
+    });
+  };
+
   return (
     <>
       {isModalOpen && (
-        <TaskModal onClose={() => setIsModalOpen(false)} data={targetTask} />
+        <TaskModal
+          onClose={() => setIsModalOpen(false)}
+          targetTask={targetTask}
+          onSave={handleSaveTask}
+        />
       )}
 
       {mockProjectTasks.length === 0 ? (

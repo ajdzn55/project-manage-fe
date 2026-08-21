@@ -7,6 +7,7 @@ import Button from '@/components/Button';
 import TextInput from '@/components/TextInput';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import type { AuthUser } from '@/features/user/types/user.type';
+import { toastAlert } from '@/utils/alert';
 
 type UserProfileFormType = Pick<AuthUser, 'name' | 'email'>;
 
@@ -16,7 +17,7 @@ const UserProfile = () => {
     register,
     handleSubmit,
     reset,
-    formState: { isDirty },
+    formState: { isDirty, errors },
   } = useForm<UserProfileFormType>();
 
   const resetForm = useCallback(() => {
@@ -30,6 +31,8 @@ const UserProfile = () => {
     // 로그인 한 사용자 정보에 동기화
     updateUser(data);
     // TODO: api 연결 필요
+
+    toastAlert({ type: 'info', content: '사용자 정보가 수정되었습니다.' });
   };
 
   useEffect(() => {
@@ -75,12 +78,14 @@ const UserProfile = () => {
             label="이름"
             labelWidth="80px"
             register={register('name', { required: true })}
+            hasError={!!errors.name}
           />
           <TextInput
             label="이메일"
             labelWidth="80px"
             type="email"
             register={register('email', { required: true })}
+            hasError={!!errors.email}
           />
           <div className="flex min-h-11 items-center gap-[3px]">
             <span className="text-body w-20 shrink-0 font-semibold">
