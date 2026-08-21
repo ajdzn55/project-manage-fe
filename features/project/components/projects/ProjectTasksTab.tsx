@@ -5,6 +5,7 @@ import { projectTaskColumns } from '@/features/project/constants/project.columns
 import { useState } from 'react';
 import TaskModal from '../tasks/TaskModal';
 import { myAlert } from '@/utils/alert';
+import EmptyState from '@/features/project/components/EmptyState';
 
 interface Props {
   isOwner?: boolean;
@@ -44,38 +45,47 @@ const ProjectTasksTab = ({ isOwner }: Props) => {
         <TaskModal onClose={() => setIsModalOpen(false)} data={targetTask} />
       )}
 
-      <div className="space-y-5 p-7">
-        <section className="border-line overflow-hidden rounded-xl border">
-          <div className="border-line flex items-center justify-between border-b px-5 py-4">
-            <div>
-              <h2 className="text-heading font-bold">전체 작업</h2>
-              <p className="text-muted mt-1 text-xs">
-                총 {mockProjectTasks.length}건
-              </p>
+      {mockProjectTasks.length === 0 ? (
+        <EmptyState
+          title="표시할 작업이 없습니다."
+          content="새 작업을 추가해 보세요!"
+          actionText="+ 새 작업"
+          onAction={onCreateTaskClick}
+        />
+      ) : (
+        <div className="space-y-5 p-7">
+          <section className="border-line overflow-hidden rounded-xl border">
+            <div className="border-line flex items-center justify-between border-b px-5 py-4">
+              <div>
+                <h2 className="text-heading font-bold">전체 작업</h2>
+                <p className="text-muted mt-1 text-xs">
+                  총 {mockProjectTasks.length}건
+                </p>
+              </div>
+              <div className="w-36">
+                <Button
+                  text="+ 새 작업"
+                  width="100%"
+                  height="40px"
+                  onClick={onCreateTaskClick}
+                />
+              </div>
             </div>
-            <div className="w-36">
-              <Button
-                text="+ 새 작업"
-                width="100%"
-                height="40px"
-                onClick={onCreateTaskClick}
+
+            <div className="m-3">
+              <Table
+                columns={projectTaskColumns(
+                  isOwner,
+                  handleModifyTask,
+                  handleDeleteTask,
+                )}
+                data={mockProjectTasks}
+                tableBorder
               />
             </div>
-          </div>
-
-          <div className="m-3">
-            <Table
-              columns={projectTaskColumns(
-                isOwner,
-                handleModifyTask,
-                handleDeleteTask,
-              )}
-              data={mockProjectTasks}
-              tableBorder
-            />
-          </div>
-        </section>
-      </div>
+          </section>
+        </div>
+      )}
     </>
   );
 };
