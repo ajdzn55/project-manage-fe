@@ -15,8 +15,9 @@ export interface ProjectDetail extends Project {
 export interface ProjectTask {
   id: string;
   projectId: ProjectDetail['id'];
-  title: string;
+  name: string;
   description?: string | null;
+  backgroundColor?: string | null;
   status: TaskStatusEnum;
   priority: TaskPriorityEnum;
   assigneeId?: string | null;

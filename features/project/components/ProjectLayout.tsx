@@ -1,58 +1,84 @@
+'use client';
+
 import Link from 'next/link';
-import type { ReactNode } from 'react';
+import { type ReactNode, useEffect, useState } from 'react';
+import ProjectSidebarNav from './ProjectSidebarNav';
+import { SIDEBAR_COLLAPSED_KEY } from '@/constants/common.const';
 
 interface Props {
   children: ReactNode;
 }
 
-const menuItems = [
-  { label: '프로젝트', href: '/project', icon: '▦' },
-  { label: '내 작업', href: '/tasks', icon: '☑' },
-  { label: '캘린더', href: '/calendar', icon: '□' },
-];
-
 const ProjectLayout = ({ children }: Props) => {
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
+
+  useEffect(() => {
+    const restoreSidebarStatus = window.setTimeout(() => {
+      const storedSidebarStatus = localStorage.getItem(SIDEBAR_COLLAPSED_KEY);
+
+      if (storedSidebarStatus !== null) {
+        setIsSidebarCollapsed(storedSidebarStatus === 'true');
+      }
+    }, 0);
+
+    return () => window.clearTimeout(restoreSidebarStatus);
+  }, []);
+
+  const toggleSidebar = () => {
+    setIsSidebarCollapsed((prev) => {
+      const nextValue = !prev;
+      localStorage.setItem(SIDEBAR_COLLAPSED_KEY, nextValue.toString());
+
+      return nextValue;
+    });
+  };
+
   return (
-    <main className="min-h-screen bg-slate-50 p-4 md:p-8">
-      <div className="mx-auto flex min-h-[calc(100vh-64px)] max-w-360 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-        <aside className="hidden w-56 shrink-0 flex-col border-r border-slate-200 md:flex">
+    <main className="bg-surface min-h-dvh min-w-[1024px] overflow-auto p-8">
+      <div className="border-line mx-auto flex min-h-[calc(100dvh-64px)] max-w-360 rounded-xl border bg-white shadow-sm">
+        <aside
+          className={`border-line relative flex shrink-0 flex-col border-r transition-[width] duration-200 ${
+            isSidebarCollapsed ? 'w-16' : 'w-56'
+          }`}
+        >
           <Link
-            href="/"
-            className="flex items-center gap-3 border-b border-slate-100 px-5 py-6"
+            href="/project"
+            title={isSidebarCollapsed ? 'ProjectHub' : undefined}
+            aria-label={isSidebarCollapsed ? 'ProjectHub' : undefined}
+            className={`flex items-center border-b border-slate-100 py-6 ${
+              isSidebarCollapsed ? 'justify-center px-0' : 'gap-3 px-5'
+            }`}
           >
-            <span className="flex size-8 items-center justify-center rounded-lg bg-blue-600 text-sm font-bold text-white">
+            <span className="bg-primary flex size-8 shrink-0 items-center justify-center rounded-lg font-bold text-white">
               A
             </span>
-            <span className="font-bold text-slate-900">ProjectHub</span>
+            <span
+              className={`text-heading overflow-hidden font-bold whitespace-nowrap transition-[max-width,opacity] duration-200 ${
+                isSidebarCollapsed
+                  ? 'max-w-0 opacity-0'
+                  : 'max-w-40 opacity-100 delay-100'
+              }`}
+            >
+              ProjectHub
+            </span>
           </Link>
-          <nav className="flex-1 space-y-1 px-3 py-5">
-            {menuItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition ${item.href === '/project' ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
-              >
-                <span className="w-5 text-center">{item.icon}</span>
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-          <div className="space-y-1 border-t border-slate-100 px-3 py-5 text-sm font-medium text-slate-600">
-            <Link
-              href="/settings"
-              className="block rounded-lg px-3 py-2.5 hover:bg-slate-50"
-            >
-              ⚙　설정
-            </Link>
-            <Link
-              href="/profile"
-              className="block rounded-lg px-3 py-2.5 hover:bg-slate-50"
-            >
-              ◎　내 프로필
-            </Link>
-          </div>
+
+          <button
+            type="button"
+            aria-label={
+              isSidebarCollapsed ? '사이드바 펼치기' : '사이드바 접기'
+            }
+            onClick={toggleSidebar}
+            className="border-line text-muted hover:bg-surface hover:text-heading absolute top-[68px] -right-3 z-10 flex size-6 items-center justify-center rounded-full border bg-white shadow-sm transition"
+          >
+            {isSidebarCollapsed ? '›' : '‹'}
+          </button>
+
+          <ProjectSidebarNav isCollapsed={isSidebarCollapsed} />
         </aside>
-        <section className="min-w-0 flex-1">{children}</section>
+        <section className="min-w-0 flex-1 overflow-hidden rounded-r-xl">
+          {children}
+        </section>
       </div>
     </main>
   );

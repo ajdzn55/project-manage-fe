@@ -1,8 +1,10 @@
 export interface User {
   id: string;
   password: string;
-  email: string;
   name: string;
+  email: string;
   createdAt: string;
   updatedAt: string;
 }
+
+export type AuthUser = Omit<User, 'password'>;
