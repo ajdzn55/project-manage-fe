@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import type { User } from '@/features/user/types/user.type';
 import { mockUsers } from '../mocks/user.mock';
-import { myAlert } from '@/utils/alert';
+import { dialogAlert } from '@/utils/alert';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 
 type LoginFormType = Pick<User, 'id' | 'password'>;
@@ -23,11 +23,10 @@ const LoginForm = () => {
   const { login } = useAuth();
 
   const invalidAlert = async () => {
-    await myAlert({
+    await dialogAlert({
       type: 'error',
       content: '아이디 또는 비밀번호가 일치하지 않습니다.',
       width: '380px',
-      confirmButtonText: '확인',
     });
   };
 

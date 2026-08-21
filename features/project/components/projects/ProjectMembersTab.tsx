@@ -5,7 +5,7 @@ import { projectMemberColumns } from '@/features/project/constants/project.colum
 import AddProjectMemberModal from '@/features/project/components/projects/AddProjectMemberModal';
 import { useState } from 'react';
 import { mockUsers } from '@/features/auth/mocks/user.mock';
-import { myAlert } from '@/utils/alert';
+import { dialogAlert } from '@/utils/alert';
 import EmptyState from '@/features/project/components/EmptyState';
 
 interface Props {
@@ -20,10 +20,9 @@ const ProjectMembersTab = ({ isOwner }: Props) => {
 
   const onAddProjectMemberClick = async () => {
     if (availableUsers.length === 0) {
-      await myAlert({
+      await dialogAlert({
         type: 'info',
         content: '모든 사용자가 이미 프로젝트에 참여하고 있습니다.',
-        confirmButtonText: '확인',
         width: '280px',
       });
 

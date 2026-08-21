@@ -6,7 +6,7 @@ import {
   projectAccountMenuItems,
   projectMenuItems,
 } from '../constants/project.const';
-import { myAlert } from '@/utils/alert';
+import { dialogAlert } from '@/utils/alert';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 
 interface Props {
@@ -28,11 +28,10 @@ const ProjectSidebarNav = ({ isCollapsed }: Props) => {
   const { logout } = useAuth();
 
   const handleLogout = async () => {
-    const alertRes = await myAlert({
+    const alertRes = await dialogAlert({
       type: 'question',
       content: '로그아웃 하시겠습니까?',
-      confirmButtonText: '예',
-      cancelButtonText: '아니오',
+      showCancelButton: true,
     });
 
     if (alertRes.isConfirmed) {
