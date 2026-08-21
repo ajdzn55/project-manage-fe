@@ -65,7 +65,7 @@ const memberActionsColumn = memberColumnHelper.display({
 });
 
 export const projectMemberColumns = (
-  showActions: boolean,
+  showActions?: boolean,
 ): TableColumn<ProjectMember>[] =>
   showActions ? [...memberColumns, memberActionsColumn] : memberColumns;
 
@@ -126,7 +126,7 @@ const taskActionsColumn = (
   });
 
 export const projectTaskColumns = (
-  showActions: boolean,
+  showActions?: boolean,
   onModify?: (rowId: string) => void,
   onDelete?: (rowId: string) => void,
 ): TableColumn<ProjectTask>[] =>

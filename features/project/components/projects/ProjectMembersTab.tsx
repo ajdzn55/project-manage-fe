@@ -8,7 +8,7 @@ import { mockUsers } from '@/features/auth/mocks/user.mock';
 import { myAlert } from '@/utils/alert';
 
 interface Props {
-  isOwner: boolean;
+  isOwner?: boolean;
 }
 
 const ProjectMembersTab = ({ isOwner }: Props) => {

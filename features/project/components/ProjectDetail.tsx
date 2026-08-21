@@ -2,7 +2,6 @@
 
 import MemberAvatars from './MemberAvatars';
 import StatusBadge from './StatusBadge';
-import { mockProjectDetail } from '../mocks/projectDetail.mock';
 import { mockProjects } from '../mocks/project.mock';
 import ProjectTasksTab from '@/features/project/components/projects/ProjectTasksTab';
 import ProjectOverviewTab from '@/features/project/components/projects/ProjectOverviewTab';
@@ -13,17 +12,20 @@ import Link from 'next/link';
 import MoreMenuButton from '@/components/MoreMenuButton';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { ProjectMemberRoleEnum } from '@/features/project/types/enums';
+import { myAlert } from '@/utils/alert';
+import ProjectModal from '@/features/project/components/projects/ProjectModal';
 
 interface Props {
   projectId: string;
 }
 
 const ProjectDetail = ({ projectId }: Props) => {
-  const [selectedTab, setSelectedTab] = useState('개요');
   const { user } = useAuth();
-  const project =
-    mockProjects.find((item) => item.id === projectId) ?? mockProjectDetail;
-  const isOwner = project.Members.some(
+  const [selectedTab, setSelectedTab] = useState('개요');
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const targetProject = mockProjects.find((v) => v.id === projectId);
+  const isOwner = targetProject?.Members.some(
     (member) =>
       member.userId === user?.id && member.role === ProjectMemberRoleEnum.Owner,
   );
@@ -33,8 +35,35 @@ const ProjectDetail = ({ projectId }: Props) => {
     { label: '멤버', item: <ProjectMembersTab isOwner={isOwner} /> },
   ];
 
+  const handleModifyProject = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleDeleteProject = async () => {
+    const alertRes = await myAlert({
+      type: 'warning',
+      content:
+        '프로젝트를 삭제하시겠습니까?\n프로젝트에 포함된 작업과 멤버 정보도 함께 삭제됩니다.',
+      confirmButtonText: '예',
+      cancelButtonText: '아니오',
+    });
+
+    if (alertRes.isConfirmed) {
+      // TODO: api 연결 필요
+    }
+  };
+
+  if (!targetProject) return null;
+
   return (
     <>
+      {isModalOpen && (
+        <ProjectModal
+          onClose={() => setIsModalOpen(false)}
+          data={targetProject}
+        />
+      )}
+
       <header className="px-7 pt-7">
         <div className="flex min-w-0 items-center gap-2 text-slate-400">
           <Link
@@ -44,25 +73,27 @@ const ProjectDetail = ({ projectId }: Props) => {
             프로젝트
           </Link>
           <span>/</span>
-          <span className="text-body truncate font-medium">{project.name}</span>
+          <span className="text-body truncate font-medium">
+            {targetProject.name}
+          </span>
         </div>
 
         <div className="mt-5 flex items-start justify-between gap-4">
           <div className="flex min-w-0 items-start gap-4">
             <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-violet-100 font-bold text-violet-600">
-              {project.name.slice(0, 1)}
+              {targetProject.name.slice(0, 1)}
             </span>
             <div className="min-w-0">
               <h1 className="text-heading truncate text-2xl font-bold">
-                {project.name}
+                {targetProject.name}
               </h1>
               <div className="text-muted mt-2 flex flex-wrap items-center gap-3 text-xs">
-                <StatusBadge status={project.status} />
+                <StatusBadge status={targetProject.status} />
                 <span>
-                  {`${project.startDate ?? '미정'} ~ ${project.endDate ?? '미정'}`}
+                  {`${targetProject.startDate ?? '미정'} ~ ${targetProject.endDate ?? '미정'}`}
                 </span>
                 <MemberAvatars
-                  members={project.Members.map((member) => ({
+                  members={targetProject.Members.map((member) => ({
                     id: member.userId,
                     name: member.name,
                   }))}
@@ -70,7 +101,12 @@ const ProjectDetail = ({ projectId }: Props) => {
               </div>
             </div>
           </div>
-          {isOwner && <MoreMenuButton />}
+          {isOwner && (
+            <MoreMenuButton
+              onModify={handleModifyProject}
+              onDelete={handleDeleteProject}
+            />
+          )}
         </div>
       </header>
 

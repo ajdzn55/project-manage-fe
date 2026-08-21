@@ -7,7 +7,7 @@ import TaskModal from '../tasks/TaskModal';
 import { myAlert } from '@/utils/alert';
 
 interface Props {
-  isOwner: boolean;
+  isOwner?: boolean;
 }
 
 const ProjectTasksTab = ({ isOwner }: Props) => {

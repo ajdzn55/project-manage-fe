@@ -2,7 +2,7 @@ import { mockProjectDetail } from '@/features/project/mocks/projectDetail.mock';
 import RecentProjectTaskList from '@/features/project/components/projects/RecentProjectTaskList';
 
 interface Props {
-  isOwner: boolean;
+  isOwner?: boolean;
 }
 
 const ProjectOverviewTab = ({ isOwner }: Props) => {

@@ -46,7 +46,9 @@ const TaskModal = ({ onClose, data }: TaskModalProps) => {
   };
 
   useEffect(() => {
-    reset(data);
+    if (data) {
+      reset(data);
+    }
   }, [reset, data]);
 
   return (

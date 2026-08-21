@@ -83,12 +83,12 @@ const MoreMenuButton = ({ disabled = false, onModify, onDelete }: Props) => {
               top: buttonRect.bottom + 4,
               left: buttonRect.right - 80,
             }}
-            className="fixed z-30 w-20 cursor-pointer rounded-md border border-slate-400 bg-white shadow-lg"
+            className="border-line fixed z-30 w-20 cursor-pointer rounded-md border bg-white shadow-lg"
           >
             <li>
               <button
                 type="button"
-                className="hover:bg-surface rounded-t-md p-2"
+                className="hover:bg-surface w-full rounded-t-md p-2"
                 onClick={onModifyClick}
               >
                 수정
@@ -97,7 +97,7 @@ const MoreMenuButton = ({ disabled = false, onModify, onDelete }: Props) => {
             <li>
               <button
                 type="button"
-                className="text-danger hover:bg-surface rounded-b-md p-2"
+                className="text-danger hover:bg-surface w-full rounded-b-md p-2"
                 onClick={onDeleteClick}
               >
                 삭제

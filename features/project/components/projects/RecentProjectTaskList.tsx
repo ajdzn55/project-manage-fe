@@ -3,7 +3,7 @@ import { mockProjectTasks } from '@/features/project/mocks/projectDetail.mock';
 import MoreMenuButton from '@/components/MoreMenuButton';
 
 interface Props {
-  isOwner: boolean;
+  isOwner?: boolean;
 }
 
 const RecentProjectTaskList = ({ isOwner }: Props) => {
