@@ -41,7 +41,7 @@ const ProjectModal = ({ onClose, data }: ProjectModalProps) => {
       <TextInput
         label="프로젝트명"
         labelWidth="80px"
-        register={register('name')}
+        register={register('name', { required: true })}
       />
       <TextInput
         label="설명"
