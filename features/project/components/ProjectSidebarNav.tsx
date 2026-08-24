@@ -3,11 +3,13 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
-  projectAccountMenuItems,
+  logoutMenu,
+  projectAccountMenu,
   projectMenuItems,
 } from '../constants/project.const';
 import { dialogAlert } from '@/utils/alert';
 import { useAuth } from '@/features/auth/hooks/useAuth';
+import { useState } from 'react';
 
 interface Props {
   isCollapsed: boolean;
@@ -27,7 +29,10 @@ const ProjectSidebarNav = ({ isCollapsed }: Props) => {
 
   const { logout } = useAuth();
 
+  const [isLogoutActive, setIsLogoutActive] = useState<boolean>(false);
+
   const handleLogout = async () => {
+    setIsLogoutActive(true);
     const alertRes = await dialogAlert({
       type: 'question',
       content: '로그아웃 하시겠습니까?',
@@ -38,6 +43,7 @@ const ProjectSidebarNav = ({ isCollapsed }: Props) => {
       logout();
       router.replace('/login');
     }
+    setIsLogoutActive(false);
   };
 
   return (
@@ -51,9 +57,9 @@ const ProjectSidebarNav = ({ isCollapsed }: Props) => {
             aria-label={isCollapsed ? item.label : undefined}
             className={`flex items-center rounded-lg py-2.5 font-medium transition ${
               isCollapsed ? 'justify-center px-0' : 'gap-3 px-3'
-            } ${isActive(item.href) ? 'text-primary bg-blue-50' : 'text-body hover:bg-surface hover:text-heading'}`}
+            } ${isActive(item.href) ? 'bg-blue-50' : 'hover:bg-surface'}`}
           >
-            <span className="w-5 shrink-0 text-center">{item.icon}</span>
+            {isActive(item.href) ? item.activeIcon : item.defaultIcon}
             <span
               className={`overflow-hidden whitespace-nowrap transition-[max-width,opacity] duration-200 ${
                 isCollapsed
@@ -68,28 +74,28 @@ const ProjectSidebarNav = ({ isCollapsed }: Props) => {
       </nav>
 
       <nav className="space-y-1 border-t border-slate-100 px-3 py-5 font-medium">
-        {projectAccountMenuItems.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            title={isCollapsed ? item.label : undefined}
-            aria-label={isCollapsed ? item.label : undefined}
-            className={`flex items-center rounded-lg py-2.5 transition ${
-              isCollapsed ? 'justify-center px-0' : 'gap-3 px-3'
-            } ${isActive(item.href) ? 'text-primary bg-blue-50' : 'text-body hover:bg-surface hover:text-heading'}`}
+        <Link
+          key={projectAccountMenu.href}
+          href={projectAccountMenu.href}
+          title={isCollapsed ? projectAccountMenu.label : undefined}
+          aria-label={isCollapsed ? projectAccountMenu.label : undefined}
+          className={`flex items-center rounded-lg py-2.5 transition ${
+            isCollapsed ? 'justify-center px-0' : 'gap-3 px-3'
+          } ${isActive(projectAccountMenu.href) ? 'bg-blue-50' : 'hover:bg-surface'}`}
+        >
+          {isActive(projectAccountMenu.href)
+            ? projectAccountMenu.activeIcon
+            : projectAccountMenu.defaultIcon}
+          <span
+            className={`overflow-hidden whitespace-nowrap transition-[max-width,opacity] duration-200 ${
+              isCollapsed
+                ? 'max-w-0 opacity-0'
+                : 'max-w-40 opacity-100 delay-100'
+            }`}
           >
-            <span className="w-5 shrink-0 text-center">{item.icon}</span>
-            <span
-              className={`overflow-hidden whitespace-nowrap transition-[max-width,opacity] duration-200 ${
-                isCollapsed
-                  ? 'max-w-0 opacity-0'
-                  : 'max-w-40 opacity-100 delay-100'
-              }`}
-            >
-              {item.label}
-            </span>
-          </Link>
-        ))}
+            {projectAccountMenu.label}
+          </span>
+        </Link>
 
         <button
           type="button"
@@ -100,7 +106,8 @@ const ProjectSidebarNav = ({ isCollapsed }: Props) => {
             isCollapsed ? 'justify-center px-0' : 'gap-3 px-3'
           }`}
         >
-          <span className="w-5 shrink-0 text-center">🚪</span>
+          {isLogoutActive ? logoutMenu.activeIcon : logoutMenu.defaultIcon}
+
           <span
             className={`overflow-hidden whitespace-nowrap transition-[max-width,opacity] duration-200 ${
               isCollapsed
