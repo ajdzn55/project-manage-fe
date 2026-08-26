@@ -8,8 +8,8 @@ import DateInput from '@/components/DateInput';
 import type { ProjectTask } from '@/features/project/types/projectDetail.type';
 import ModalWrapper from '@/components/ModalWrapper';
 import InputLabel from '@/components/InputLabel';
-import { mockUsers } from '@/features/auth/mocks/user.mock';
 import { useEffect } from 'react';
+import { useUserListQuery } from '@/features/project/hooks/useUser';
 
 const TASK_COLOR_PALETTE = [
   '#FFD2D5',
@@ -41,10 +41,12 @@ const TaskModal = ({ onSave, onClose, targetTask }: TaskModalProps) => {
     name: 'backgroundColor',
   });
 
+  const { data: users } = useUserListQuery();
+
   const statusOptions = [{ label: '', value: '' }, ...taskStatusOptions];
   const assigneeOptions = [
     { label: '', value: '' },
-    ...mockUsers.map((v) => ({ label: v.name, value: v.id })),
+    ...(users ?? []).map((v) => ({ label: v.name, value: v.id })),
   ];
 
   useEffect(() => {
