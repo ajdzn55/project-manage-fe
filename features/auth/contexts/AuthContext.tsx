@@ -1,15 +1,15 @@
 'use client';
 
-import { createContext, useEffect, useState, type ReactNode } from 'react';
-import type { AuthUser, User } from '@/features/user/types/user.type';
+import { createContext, type ReactNode, useEffect, useState } from 'react';
 import { AUTH_STORAGE_KEY } from '@/features/auth/constants/auth';
 import { SIDEBAR_COLLAPSED_KEY } from '@/constants/common.const';
+import type { User } from '@/features/user/types/user.type';
 
 interface AuthContextValue {
-  user: AuthUser | null;
+  user: User | null;
   isInitialized: boolean;
   login: (user: User) => void;
-  updateUser: (user: Pick<AuthUser, 'name' | 'email'>) => void;
+  updateUser: (user: Pick<User, 'name' | 'email'>) => void;
   logout: () => void;
 }
 
@@ -20,7 +20,7 @@ interface Props {
 }
 
 const AuthProvider = ({ children }: Props) => {
-  const [user, setUser] = useState<AuthUser | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [isInitialized, setIsInitialized] = useState<boolean>(false);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const AuthProvider = ({ children }: Props) => {
 
       if (storedUser) {
         try {
-          setUser(JSON.parse(storedUser) as AuthUser);
+          setUser(JSON.parse(storedUser) as User);
         } catch {
           localStorage.removeItem(AUTH_STORAGE_KEY);
         }
@@ -43,7 +43,7 @@ const AuthProvider = ({ children }: Props) => {
 
   const login = (loginUser: User) => {
     const { id, name, email, createdAt, updatedAt } = loginUser;
-    const authUser: AuthUser = { id, name, email, createdAt, updatedAt };
+    const authUser: User = { id, name, email, createdAt, updatedAt };
 
     localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(authUser));
     setUser(authUser);
@@ -57,7 +57,7 @@ const AuthProvider = ({ children }: Props) => {
     localStorage.removeItem(SIDEBAR_COLLAPSED_KEY);
   };
 
-  const updateUser = (updatedUser: Pick<AuthUser, 'name' | 'email'>) => {
+  const updateUser = (updatedUser: Pick<User, 'name' | 'email'>) => {
     setUser((previousUser) => {
       if (!previousUser) return previousUser;
 
