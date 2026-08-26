@@ -2,8 +2,14 @@ import Link from 'next/link';
 import AuthLayout from '@/features/auth/components/AuthLayout';
 import TextInput from '@/components/TextInput';
 import Button from '@/components/Button';
+import { CreateUser } from '@/features/user/types/user.type';
+import { useForm } from 'react-hook-form';
 
 const SignUpForm = () => {
+  const { handleSubmit } = useForm<CreateUser>();
+
+  const onSubmit = (data: CreateUser) => {};
+
   return (
     <AuthLayout>
       <header className="mb-7 flex flex-col items-center text-center">
@@ -11,7 +17,7 @@ const SignUpForm = () => {
         <p className="text-muted mt-2">계정을 생성하여 시작하세요.</p>
       </header>
 
-      <form className="space-y-5">
+      <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
         <TextInput
           label="아이디"
           labelWidth="80px"

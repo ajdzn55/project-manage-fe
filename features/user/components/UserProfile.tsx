@@ -6,10 +6,10 @@ import { useForm } from 'react-hook-form';
 import Button from '@/components/Button';
 import TextInput from '@/components/TextInput';
 import { useAuth } from '@/features/auth/hooks/useAuth';
-import type { AuthUser } from '@/features/user/types/user.type';
 import { toastAlert } from '@/utils/alert';
+import type { User } from '@/features/user/types/user.type';
 
-type UserProfileFormType = Pick<AuthUser, 'name' | 'email'>;
+type UserProfileFormType = Pick<User, 'name' | 'email'>;
 
 const UserProfile = () => {
   const { user, updateUser } = useAuth();
