@@ -10,6 +10,7 @@ interface Props {
   height?: string;
   type?: 'button' | 'submit' | 'reset';
   onClick?: MouseEventHandler<HTMLButtonElement>;
+  disabled?: boolean;
 }
 
 const Button = ({
@@ -19,6 +20,7 @@ const Button = ({
   height,
   type = 'button',
   onClick,
+  disabled,
 }: Props) => {
   const backgroundColor =
     color === 'default'
@@ -31,11 +33,14 @@ const Button = ({
     <motion.button
       type={type}
       style={{ width: width ?? 'auto', height: height ?? 'auto' }}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.97 }}
+      whileHover={disabled ? undefined : { scale: 1.02 }}
+      whileTap={disabled ? undefined : { scale: 0.97 }}
       transition={{ duration: 0.12 }}
-      className={`flex cursor-pointer items-center justify-center rounded-lg font-semibold ${backgroundColor}`}
+      className={`flex items-center justify-center rounded-lg font-semibold ${backgroundColor} ${
+        disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
+      }`}
       onClick={onClick}
+      disabled={disabled}
     >
       {text}
     </motion.button>
