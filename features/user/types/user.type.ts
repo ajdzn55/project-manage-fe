@@ -9,3 +9,5 @@ export interface User {
 export interface CreateUser extends Omit<User, 'createdAt' | 'updatedAt'> {
   password: string;
 }
+
+export type UpdateUser = Partial<Pick<User, 'name' | 'email'>>;

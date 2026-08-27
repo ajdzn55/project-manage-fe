@@ -10,15 +10,15 @@ interface Props {
 
 const AuthGuard = ({ children }: Props) => {
   const router = useRouter();
-  const { user, isInitialized } = useAuth();
+  const { loginUser, isInitialized } = useAuth();
 
   useEffect(() => {
-    if (isInitialized && !user) {
+    if (isInitialized && !loginUser) {
       router.replace('/login');
     }
-  }, [isInitialized, router, user]);
+  }, [isInitialized, router, loginUser]);
 
-  if (!isInitialized || !user) {
+  if (!isInitialized || !loginUser) {
     return null;
   }
 

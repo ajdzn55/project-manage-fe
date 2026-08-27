@@ -21,14 +21,15 @@ interface Props {
 }
 
 const ProjectDetail = ({ projectId }: Props) => {
-  const { user } = useAuth();
+  const { loginUser } = useAuth();
   const [selectedTab, setSelectedTab] = useState('개요');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const targetProject = mockProjects.find((v) => v.id === projectId);
   const isOwner = targetProject?.Members.some(
     (member) =>
-      member.userId === user?.id && member.role === ProjectMemberRoleEnum.Owner,
+      member.userId === loginUser?.id &&
+      member.role === ProjectMemberRoleEnum.Owner,
   );
   const tabs = [
     { label: '개요', item: <ProjectOverviewTab isOwner={isOwner} /> },
@@ -101,12 +102,7 @@ const ProjectDetail = ({ projectId }: Props) => {
                 <span>
                   {`${targetProject.startDate ?? '미정'} ~ ${targetProject.endDate ?? '미정'}`}
                 </span>
-                <MemberAvatars
-                  members={targetProject.Members.map((member) => ({
-                    id: member.userId,
-                    name: member.name,
-                  }))}
-                />
+                <MemberAvatars members={targetProject.Members} />
               </div>
             </div>
           </div>

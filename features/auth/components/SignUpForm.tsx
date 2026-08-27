@@ -1,14 +1,34 @@
+'use client';
+
 import Link from 'next/link';
 import AuthLayout from '@/features/auth/components/AuthLayout';
 import TextInput from '@/components/TextInput';
 import Button from '@/components/Button';
 import { CreateUser } from '@/features/user/types/user.type';
 import { useForm } from 'react-hook-form';
+import {
+  usePostUserMutation,
+  useUserListQuery,
+} from '@/features/user/hooks/useUser';
+import { dialogAlert } from '@/utils/alert';
 
 const SignUpForm = () => {
   const { handleSubmit } = useForm<CreateUser>();
 
-  const onSubmit = (data: CreateUser) => {};
+  const { data: users } = useUserListQuery();
+  const { mutate: postMutate } = usePostUserMutation();
+
+  const onSubmit = async (data: CreateUser) => {
+    // 중복 아이디 검사
+    const isDuplicate = users?.some((v) => v.id === data.id);
+
+    if (isDuplicate) {
+      await dialogAlert({ type: 'error', content: '중복된 ID 입니다.' });
+      return;
+    }
+
+    postMutate({ data });
+  };
 
   return (
     <AuthLayout>

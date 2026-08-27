@@ -1,7 +1,7 @@
-import { User } from '@/features/user/types/user.type';
+import type { ProjectMember } from '@/features/project/types/project.type';
 
 interface Props {
-  members: Pick<User, 'id' | 'name'>[];
+  members: Pick<ProjectMember, 'userId' | 'name'>[];
   additionalCount?: number;
 }
 
@@ -39,9 +39,9 @@ const MemberAvatars = ({ members, additionalCount = 0 }: Props) => {
       <div className="flex -space-x-2">
         {members.map((member) => (
           <span
-            key={member.id}
+            key={member.userId}
             title={member.name}
-            className={`flex size-8 items-center justify-center rounded-full border-2 border-white text-[10px] font-semibold text-white ${getAvatarColor(member.id)}`}
+            className={`flex size-8 items-center justify-center rounded-full border-2 border-white text-[10px] font-semibold text-white ${getAvatarColor(member.userId)}`}
           >
             {member.name}
           </span>

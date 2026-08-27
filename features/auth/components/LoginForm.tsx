@@ -6,12 +6,14 @@ import TextInput from '@/components/TextInput';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import type { User } from '@/features/user/types/user.type';
 import { mockUsers } from '../mocks/user.mock';
 import { dialogAlert } from '@/utils/alert';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 
-type LoginFormType = Pick<User, 'id' | 'password'>;
+type LoginFormType = {
+  id: string;
+  password: string;
+};
 
 const LoginForm = () => {
   const {
