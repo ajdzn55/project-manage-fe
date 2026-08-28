@@ -6,33 +6,29 @@ import { useForm } from 'react-hook-form';
 import Button from '@/components/Button';
 import TextInput from '@/components/TextInput';
 import { useAuth } from '@/features/auth/hooks/useAuth';
-import { toastAlert } from '@/utils/alert';
-import type { User } from '@/features/user/types/user.type';
-
-type UserProfileFormType = Pick<User, 'name' | 'email'>;
+import type { UpdateUser } from '@/features/user/types/user.type';
+import { usePatchUserMutation } from '@/features/user/hooks/useUser';
 
 const UserProfile = () => {
-  const { user, updateUser } = useAuth();
+  const { loginUser } = useAuth();
   const {
     register,
     handleSubmit,
     reset,
     formState: { isDirty, errors },
-  } = useForm<UserProfileFormType>();
+  } = useForm<UpdateUser>();
 
   const resetForm = useCallback(() => {
     reset({
-      name: user?.name ?? '',
-      email: user?.email ?? '',
+      name: loginUser?.name ?? '',
+      email: loginUser?.email ?? '',
     });
-  }, [reset, user]);
+  }, [reset, loginUser]);
 
-  const handleSave = (data: UserProfileFormType) => {
-    // 로그인 한 사용자 정보에 동기화
-    updateUser(data);
-    // TODO: api 연결 필요
+  const { mutate: patchMutate, isPending } = usePatchUserMutation();
 
-    toastAlert({ type: 'info', content: '사용자 정보가 수정되었습니다.' });
+  const handleSave = (data: UpdateUser) => {
+    patchMutate({ data });
   };
 
   useEffect(() => {
@@ -53,7 +49,7 @@ const UserProfile = () => {
     };
   }, [isDirty]);
 
-  if (!user) return null;
+  if (!loginUser) return null;
 
   return (
     <div className="p-7">
@@ -63,13 +59,13 @@ const UserProfile = () => {
       <form onSubmit={handleSubmit(handleSave)} className="mt-8 max-w-100">
         <div className="border-line flex items-center gap-4 border-b pb-6">
           <div className="bg-primary flex size-14 shrink-0 items-center justify-center rounded-full text-xl font-bold text-white">
-            {user.name.trim().charAt(0)}
+            {loginUser.name.trim().charAt(0)}
           </div>
           <div className="min-w-0">
             <p className="text-heading truncate text-lg font-bold">
-              {user.name}
+              {loginUser.name}
             </p>
-            <p className="text-muted truncate">{user.email}</p>
+            <p className="text-muted truncate">{loginUser.email}</p>
           </div>
         </div>
 
@@ -91,14 +87,20 @@ const UserProfile = () => {
             <span className="text-body w-20 shrink-0 font-semibold">
               가입일
             </span>
-            <time dateTime={user.createdAt} className="text-body">
-              {format(new Date(user.createdAt), 'yyyy.MM.dd')}
+            <time dateTime={loginUser.createdAt} className="text-body">
+              {format(new Date(loginUser.createdAt), 'yyyy.MM.dd')}
             </time>
           </div>
         </div>
 
         <div className="border-line flex justify-end border-t pt-5">
-          <Button text="저장" width="104px" height="40px" type="submit" />
+          <Button
+            text="저장"
+            width="104px"
+            height="40px"
+            type="submit"
+            disabled={isPending}
+          />
         </div>
       </form>
     </div>

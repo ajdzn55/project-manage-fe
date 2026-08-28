@@ -3,14 +3,14 @@
 import { createContext, type ReactNode, useEffect, useState } from 'react';
 import { AUTH_STORAGE_KEY } from '@/features/auth/constants/auth';
 import { SIDEBAR_COLLAPSED_KEY } from '@/constants/common.const';
-import type { User } from '@/features/user/types/user.type';
+import type { UpdateUser, User } from '@/features/user/types/user.type';
 
 interface AuthContextValue {
-  user: User | null;
-  isInitialized: boolean;
-  login: (user: User) => void;
-  updateUser: (user: Pick<User, 'name' | 'email'>) => void;
-  logout: () => void;
+  loginUser: User | null; // 현재 로그인 사용자
+  isInitialized: boolean; // 로컬 스토리지에서 사용자 정보가 복원됐는지 여부
+  login: (user: User) => void; // 사용자 정보를 로컬 스토리지에 저장하고 로그인 상태로 바꾸는 함수
+  updateUserInfo: (user: UpdateUser) => void; // 저장된 사용자 정보를 변경하는 함수
+  logout: () => void; // 로컬 스토리지에 저장된 사용자 정보를 지우는 함수
 }
 
 export const AuthContext = createContext<AuthContextValue | null>(null);
@@ -57,7 +57,7 @@ const AuthProvider = ({ children }: Props) => {
     localStorage.removeItem(SIDEBAR_COLLAPSED_KEY);
   };
 
-  const updateUser = (updatedUser: Pick<User, 'name' | 'email'>) => {
+  const updateUser = (updatedUser: UpdateUser) => {
     setUser((previousUser) => {
       if (!previousUser) return previousUser;
 
@@ -74,7 +74,13 @@ const AuthProvider = ({ children }: Props) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, isInitialized, login, updateUser, logout }}
+      value={{
+        loginUser: user,
+        isInitialized,
+        login,
+        updateUserInfo: updateUser,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>

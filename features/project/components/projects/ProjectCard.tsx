@@ -24,12 +24,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
         {project.startDate ?? '미정'} - {project.endDate ?? '미정'}
       </p>
       <div className="mt-5">
-        <MemberAvatars
-          members={project.Members.map((member) => ({
-            id: member.userId,
-            name: member.name,
-          }))}
-        />
+        <MemberAvatars members={project.Members} />
       </div>
     </Link>
   );

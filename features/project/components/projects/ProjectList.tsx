@@ -21,7 +21,7 @@ const ProjectList = () => {
   const wName = useWatch({ control, name: 'name' });
   const wStatus = useWatch({ control, name: 'status' });
 
-  const { user } = useAuth();
+  const { loginUser } = useAuth();
 
   const [selectedTab, setSelectedTab] = useState<string>('전체');
   const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
@@ -40,10 +40,10 @@ const ProjectList = () => {
     // 탭으로 필터링
     return selectedTab !== '전체'
       ? nameFiltered.filter((v) => {
-          return v.Members.some((member) => member.userId === user?.id);
+          return v.Members.some((member) => member.userId === loginUser?.id);
         })
       : nameFiltered;
-  }, [selectedTab, user?.id, wName, wStatus]);
+  }, [selectedTab, loginUser?.id, wName, wStatus]);
 
   const handleSaveProject = (data: Project) => {
     // TODO: api 연결 필요

@@ -9,7 +9,7 @@ import type { ProjectTask } from '@/features/project/types/projectDetail.type';
 import ModalWrapper from '@/components/ModalWrapper';
 import InputLabel from '@/components/InputLabel';
 import { useEffect } from 'react';
-import { useUserListQuery } from '@/features/project/hooks/useUser';
+import { useUserListQuery } from '@/features/user/hooks/useUser';
 
 const TASK_COLOR_PALETTE = [
   '#FFD2D5',

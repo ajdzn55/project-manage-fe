@@ -1,6 +1,4 @@
-import type { User } from '@/features/user/types/user.type';
-
-export const mockUsers: User[] = [
+export const mockUsers = [
   {
     // id: '019ff4db-5c4d-75ff-a673-1643892203e2',
     id: 'jhcho',
