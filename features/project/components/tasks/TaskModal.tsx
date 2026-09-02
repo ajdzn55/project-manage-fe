@@ -17,7 +17,7 @@ const TASK_COLOR_PALETTE = [
   '#D1FCD6',
   '#BDF4F9',
   '#DED0F5',
-  '#fff',
+  '#FFFFFF',
 ] as const;
 
 interface TaskModalProps {
