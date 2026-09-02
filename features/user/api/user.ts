@@ -48,3 +48,23 @@ export const updateUser = async (id: string, data: UpdateUser) => {
     throw error;
   }
 };
+
+// 사용자 삭제(미사용)
+export const deleteUser = async (id: string) => {
+  try {
+    const response = await axiosInstance.delete<void>(`/user/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// 사용자 삭제 취소
+export const restoreUser = async (id: string) => {
+  try {
+    const response = await axiosInstance.patch<void>(`/user/${id}/restore`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
