@@ -4,6 +4,7 @@ import type {
   ProjectTask,
   UpdateProjectTask,
 } from '@/features/project/types/task.type';
+import { omitInvalidValues } from '@/utils/common';
 
 // 프로젝트 작업 생성
 export const createTask = async (data: CreateProjectTask) => {
@@ -32,7 +33,8 @@ export const getTaskList = async (projectId: string) => {
 // 프로젝트 작업 정보 수정
 export const updateTask = async (data: UpdateProjectTask) => {
   try {
-    const response = await axiosInstance.patch<void>('/task', data);
+    const requestBody = omitInvalidValues(data);
+    const response = await axiosInstance.patch<void>('/task', requestBody);
     return response.data;
   } catch (error) {
     console.error(error);

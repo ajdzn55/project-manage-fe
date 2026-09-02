@@ -5,6 +5,7 @@ import type {
   ProjectSimple,
   UpdateProject,
 } from '@/features/project/types/project.type';
+import { omitInvalidValues } from '@/utils/common';
 
 // 프로젝트 생성
 export const createProject = async (data: CreateProject) => {
@@ -42,7 +43,11 @@ export const getProject = async (id: string) => {
 // 프로젝트 정보 수정
 export const updateProject = async (id: string, data: UpdateProject) => {
   try {
-    const response = await axiosInstance.patch<void>(`/project/${id}`, data);
+    const requestBody = omitInvalidValues(data);
+    const response = await axiosInstance.patch<void>(
+      `/project/${id}`,
+      requestBody,
+    );
     return response.data;
   } catch (error) {
     console.error(error);
