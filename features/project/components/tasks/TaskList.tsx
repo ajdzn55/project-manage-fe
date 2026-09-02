@@ -6,9 +6,9 @@ import { taskStatusOptions } from '@/features/project/constants/project.const';
 import SelectInput from '@/components/SelectInput';
 import { useMemo } from 'react';
 import { mockProjectTasks } from '@/features/project/mocks/projectDetail.mock';
-import { ProjectTask } from '@/features/project/types/projectDetail.type';
 import Table from '@/components/Table';
 import { projectTaskColumns } from '@/features/project/constants/project.columns';
+import type { ProjectTask } from '@/features/project/types/task.type';
 
 const statusOptions = [{ label: '전체', value: '' }, ...taskStatusOptions];
 

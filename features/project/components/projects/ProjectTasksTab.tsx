@@ -6,7 +6,7 @@ import { useState } from 'react';
 import TaskModal from '../tasks/TaskModal';
 import { dialogAlert, toastAlert } from '@/utils/alert';
 import EmptyState from '@/features/project/components/EmptyState';
-import type { ProjectTask } from '@/features/project/types/projectDetail.type';
+import type { ProjectTask } from '@/features/project/types/task.type';
 
 interface Props {
   isOwner?: boolean;

@@ -5,11 +5,11 @@ import { useForm, useWatch } from 'react-hook-form';
 import SelectInput from '@/components/SelectInput';
 import { taskStatusOptions } from '@/features/project/constants/project.const';
 import DateInput from '@/components/DateInput';
-import type { ProjectTask } from '@/features/project/types/projectDetail.type';
 import ModalWrapper from '@/components/ModalWrapper';
 import InputLabel from '@/components/InputLabel';
 import { useEffect } from 'react';
 import { useUserListQuery } from '@/features/user/hooks/useUser';
+import type { ProjectTask } from '@/features/project/types/task.type';
 
 const TASK_COLOR_PALETTE = [
   '#FFD2D5',

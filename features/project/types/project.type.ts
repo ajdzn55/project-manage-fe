@@ -12,16 +12,23 @@ export interface Project {
   id: string;
   name: string;
   description?: string | null;
-  status?: ProjectStatusEnum | null;
+  status: ProjectStatusEnum;
   startDate?: string | null;
   endDate?: string | null;
   Members: ProjectMember[];
 }
 
-export type ProjectSimple = Omit<Project, 'description' | 'Members'>;
-
-export interface CreateProject extends Project {
+export interface ProjectSimple extends Omit<
+  Project,
+  'description' | 'Members'
+> {
   createdById: string;
 }
 
-export type UpdateProject = Omit<CreateProject, 'createdById'>;
+export type CreateProject = Omit<Project, 'id' | 'Members'> & {
+  createdById: string;
+};
+
+export type UpdateProject = Omit<CreateProject, 'status' | 'createdById'> & {
+  status?: ProjectStatusEnum;
+};

@@ -2,10 +2,10 @@ import { createTableColumnHelper, type TableColumn } from '@/components/Table';
 import MoreMenuButton from '@/components/MoreMenuButton';
 import StatusBadge from '@/features/project/components/StatusBadge';
 import { roleLabels } from '@/features/project/constants/project.const';
-import type { ProjectTask } from '@/features/project/types/projectDetail.type';
 import { ProjectMemberRoleEnum } from '@/features/project/types/enums';
 import type { ProjectMember } from '@/features/project/types/project.type';
 import type { User } from '@/features/user/types/user.type';
+import type { ProjectTask } from '@/features/project/types/task.type';
 
 const avatarStyles = [
   'bg-amber-100 text-amber-700',
@@ -64,12 +64,16 @@ const memberActionsColumn = memberColumnHelper.display({
   cell: () => <MoreMenuButton />,
 });
 
+interface ProjectTaskColumn extends ProjectTask {
+  assigneeName?: string;
+}
+
 export const projectMemberColumns = (
   showActions?: boolean,
 ): TableColumn<ProjectMember>[] =>
   showActions ? [...memberColumns, memberActionsColumn] : memberColumns;
 
-const taskColumnHelper = createTableColumnHelper<ProjectTask>();
+const taskColumnHelper = createTableColumnHelper<ProjectTaskColumn>();
 const taskColumns = taskColumnHelper.columns([
   taskColumnHelper.accessor('name', {
     header: '작업명',
