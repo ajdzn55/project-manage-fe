@@ -7,7 +7,7 @@ import Button from '@/components/Button';
 import { CreateUser } from '@/features/user/types/user.type';
 import { useForm } from 'react-hook-form';
 import {
-  usePostUserMutation,
+  useCreateUserMutation,
   useUserListQuery,
 } from '@/features/user/hooks/useUser';
 import { dialogAlert } from '@/utils/alert';
@@ -16,7 +16,7 @@ const SignUpForm = () => {
   const { handleSubmit } = useForm<CreateUser>();
 
   const { data: users } = useUserListQuery();
-  const { mutate: postMutate } = usePostUserMutation();
+  const { mutate: postMutate } = useCreateUserMutation();
 
   const onSubmit = async (data: CreateUser) => {
     // 중복 아이디 검사

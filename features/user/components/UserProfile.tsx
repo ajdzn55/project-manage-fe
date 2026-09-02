@@ -7,7 +7,7 @@ import Button from '@/components/Button';
 import TextInput from '@/components/TextInput';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import type { UpdateUser } from '@/features/user/types/user.type';
-import { usePatchUserMutation } from '@/features/user/hooks/useUser';
+import { useUpdateUserMutation } from '@/features/user/hooks/useUser';
 
 const UserProfile = () => {
   const { loginUser } = useAuth();
@@ -25,7 +25,7 @@ const UserProfile = () => {
     });
   }, [reset, loginUser]);
 
-  const { mutate: patchMutate, isPending } = usePatchUserMutation();
+  const { mutate: patchMutate, isPending } = useUpdateUserMutation();
 
   const handleSave = (data: UpdateUser) => {
     patchMutate({ data });

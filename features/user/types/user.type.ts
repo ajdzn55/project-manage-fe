@@ -1,9 +1,7 @@
 export interface User {
   id: string;
   name: string;
-  email: string;
-  createdAt: string;
-  updatedAt: string;
+  email?: string;
 }
 
 export interface CreateUser extends Omit<User, 'createdAt' | 'updatedAt'> {
@@ -11,3 +9,7 @@ export interface CreateUser extends Omit<User, 'createdAt' | 'updatedAt'> {
 }
 
 export type UpdateUser = Partial<Pick<User, 'name' | 'email'>>;
+
+export interface LoginUser extends User {
+  createdAt: string;
+}

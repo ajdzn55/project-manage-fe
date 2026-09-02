@@ -1,0 +1,52 @@
+import axiosInstance from '@/lib/axios';
+import type {
+  CreateProjectTask,
+  ProjectTask,
+  UpdateProjectTask,
+} from '@/features/project/types/task.type';
+
+// 프로젝트 작업 생성
+export const createTask = async (data: CreateProjectTask) => {
+  try {
+    const response = await axiosInstance.post<string>('/task', data);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+// 프로젝트 작업 목록 조회
+export const getTaskList = async (projectId: string) => {
+  try {
+    const response = await axiosInstance.get<ProjectTask[]>(`/task`, {
+      params: { projectId },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+// 프로젝트 작업 정보 수정
+export const updateTask = async (data: UpdateProjectTask) => {
+  try {
+    const response = await axiosInstance.patch<void>('/task', data);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+// 프로젝트 작업 삭제
+export const deleteTask = async (id: string) => {
+  try {
+    const response = await axiosInstance.delete<void>(`/task/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
