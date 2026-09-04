@@ -5,28 +5,33 @@ import { useForm, useWatch } from 'react-hook-form';
 import { taskStatusOptions } from '@/features/project/constants/project.const';
 import SelectInput from '@/components/SelectInput';
 import { useMemo } from 'react';
-import { mockProjectTasks } from '@/features/project/mocks/projectDetail.mock';
 import Table from '@/components/Table';
 import { projectTaskColumns } from '@/features/project/constants/project.columns';
 import type { ProjectTask } from '@/features/project/types/task.type';
+import { useTaskListQuery } from '@/features/project/hooks/useTask';
+import { useAuth } from '@/features/auth/hooks/useAuth';
 
 const statusOptions = [{ label: '전체', value: '' }, ...taskStatusOptions];
 
 const TaskList = () => {
-  const { register, handleSubmit, control } = useForm<ProjectTask>();
+  const { register, control } = useForm<ProjectTask>();
   const wStatus = useWatch({ control, name: 'status' });
+  const wName = useWatch({ control, name: 'name' });
 
-  // TODO: api 연결 필요
-  const onSubmit = (data: ProjectTask) => {
-    console.log(data);
-  };
+  const { loginUser } = useAuth();
+  const { data: tasks } = useTaskListQuery({ isMyTask: loginUser?.id });
 
   const filteredTasks = useMemo(() => {
     // 상태로 필터링
-    return wStatus
-      ? mockProjectTasks.filter((v) => v.status === wStatus)
-      : mockProjectTasks;
-  }, [wStatus]);
+    const statusFiltered = wStatus
+      ? tasks?.filter((v) => v.status === wStatus)
+      : tasks;
+
+    // 이름으로 필터링
+    return wName
+      ? statusFiltered?.filter((v) => v.name.includes(wName))
+      : statusFiltered;
+  }, [tasks, wName, wStatus]);
 
   return (
     <div className="p-7">
@@ -36,7 +41,7 @@ const TaskList = () => {
       </header>
 
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={(e) => e.preventDefault()}
         className="mt-6 flex items-center gap-3"
       >
         <div className="w-full max-w-96 min-w-0">
@@ -50,7 +55,7 @@ const TaskList = () => {
       <div className="mt-5 flex gap-6 overflow-x-auto">
         <Table
           columns={projectTaskColumns(false)}
-          data={filteredTasks}
+          data={filteredTasks ?? []}
           tableBorder
         />
       </div>
