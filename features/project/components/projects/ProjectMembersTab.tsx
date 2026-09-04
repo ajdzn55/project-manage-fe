@@ -1,25 +1,33 @@
 import Table from '@/components/Table';
 import Button from '@/components/Button';
-import { members } from '@/features/project/mocks/project.mock';
 import { projectMemberColumns } from '@/features/project/constants/project.columns';
 import AddProjectMemberModal from '@/features/project/components/projects/AddProjectMemberModal';
-import { useState } from 'react';
-import { mockUsers } from '@/features/auth/mocks/user.mock';
+import { useMemo, useState } from 'react';
 import { dialogAlert } from '@/utils/alert';
 import EmptyState from '@/features/project/components/EmptyState';
+import { useUserListQuery } from '@/features/user/hooks/useUser';
+import type { ProjectMember } from '@/features/project/types/project.type';
 
 interface Props {
   isOwner?: boolean;
+  members?: ProjectMember[];
 }
 
-const ProjectMembersTab = ({ isOwner }: Props) => {
+const ProjectMembersTab = ({ isOwner, members }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const availableUsers = mockUsers.filter(
-    (user) => !members.some((member) => member.userId === user.id),
+
+  const { data: users } = useUserListQuery();
+
+  const availableUsers = useMemo(
+    () =>
+      users?.filter(
+        (user) => !members?.some((member) => member.userId === user.id),
+      ),
+    [members, users],
   );
 
   const onAddProjectMemberClick = async () => {
-    if (availableUsers.length === 0) {
+    if (availableUsers?.length === 0) {
       await dialogAlert({
         type: 'info',
         content: '모든 사용자가 이미 프로젝트에 참여하고 있습니다.',
@@ -36,12 +44,12 @@ const ProjectMembersTab = ({ isOwner }: Props) => {
     <>
       {isModalOpen && (
         <AddProjectMemberModal
-          users={availableUsers}
+          users={availableUsers ?? []}
           onClose={() => setIsModalOpen(false)}
         />
       )}
 
-      {members.length === 0 ? (
+      {members?.length === 0 ? (
         <EmptyState
           title="표시할 멤버가 없습니다."
           content={
@@ -58,7 +66,9 @@ const ProjectMembersTab = ({ isOwner }: Props) => {
             <div className="border-line flex items-center justify-between border-b px-5 py-4">
               <div>
                 <h2 className="text-heading font-bold">프로젝트 멤버</h2>
-                <p className="text-muted mt-1 text-xs">총 {members.length}명</p>
+                <p className="text-muted mt-1 text-xs">
+                  총 {members?.length}명
+                </p>
               </div>
               {isOwner && (
                 <div className="w-36">
@@ -75,7 +85,7 @@ const ProjectMembersTab = ({ isOwner }: Props) => {
             <div className="m-3">
               <Table
                 columns={projectMemberColumns(isOwner)}
-                data={members}
+                data={members ?? []}
                 rowKey="userId"
                 tableBorder
               />

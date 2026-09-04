@@ -2,12 +2,11 @@
 
 import MemberAvatars from './MemberAvatars';
 import StatusBadge from './StatusBadge';
-import { mockProjects } from '../mocks/project.mock';
 import ProjectTasksTab from '@/features/project/components/projects/ProjectTasksTab';
 import ProjectOverviewTab from '@/features/project/components/projects/ProjectOverviewTab';
 import ProjectMembersTab from '@/features/project/components/projects/ProjectMembersTab';
 import Tab from '@/components/Tab';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import MoreMenuButton from '@/components/MoreMenuButton';
 import { useAuth } from '@/features/auth/hooks/useAuth';
@@ -15,6 +14,11 @@ import { ProjectMemberRoleEnum } from '@/features/project/types/enums';
 import { dialogAlert, toastAlert } from '@/utils/alert';
 import ProjectModal from '@/features/project/components/projects/ProjectModal';
 import { Project } from '@/features/project/types/project.type';
+import {
+  useDeleteProjectMutation,
+  useProjectQuery,
+  useUpdateProjectMutation,
+} from '@/features/project/hooks/useProject';
 
 interface Props {
   projectId: string;
@@ -25,17 +29,37 @@ const ProjectDetail = ({ projectId }: Props) => {
   const [selectedTab, setSelectedTab] = useState('개요');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const targetProject = mockProjects.find((v) => v.id === projectId);
+  const { data: targetProject } = useProjectQuery(projectId);
+  const { mutate: updateMutate } = useUpdateProjectMutation();
+  const { mutate: deleteMutate } = useDeleteProjectMutation();
+
   const isOwner = targetProject?.Members.some(
     (member) =>
       member.userId === loginUser?.id &&
       member.role === ProjectMemberRoleEnum.Owner,
   );
-  const tabs = [
-    { label: '개요', item: <ProjectOverviewTab isOwner={isOwner} /> },
-    { label: '작업', item: <ProjectTasksTab isOwner={isOwner} /> },
-    { label: '멤버', item: <ProjectMembersTab isOwner={isOwner} /> },
-  ];
+  const tabs = useMemo(
+    () => [
+      {
+        label: '개요',
+        item: <ProjectOverviewTab projectId={projectId} isOwner={isOwner} />,
+      },
+      {
+        label: '작업',
+        item: <ProjectTasksTab projectId={projectId} isOwner={isOwner} />,
+      },
+      {
+        label: '멤버',
+        item: (
+          <ProjectMembersTab
+            isOwner={isOwner}
+            members={targetProject?.Members}
+          />
+        ),
+      },
+    ],
+    [isOwner, projectId, targetProject?.Members],
+  );
 
   const handleModifyProject = () => {
     setIsModalOpen(true);
@@ -50,13 +74,13 @@ const ProjectDetail = ({ projectId }: Props) => {
     });
 
     if (alertRes.isConfirmed) {
-      // TODO: api 연결 필요
+      deleteMutate(projectId);
     }
   };
 
   const handleSaveProject = (data: Project) => {
-    // TODO: api 연결 필요
-    console.log(data);
+    const { id, ...body } = data;
+    updateMutate({ id, data: body });
 
     setIsModalOpen(false);
     toastAlert({ type: 'info', content: '프로젝트가 수정되었습니다.' });

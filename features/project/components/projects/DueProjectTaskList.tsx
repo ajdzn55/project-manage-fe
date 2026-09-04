@@ -1,13 +1,19 @@
 import StatusBadge from '@/features/project/components/StatusBadge';
-import { mockProjectTasks } from '@/features/project/mocks/projectDetail.mock';
 import MoreMenuButton from '@/components/MoreMenuButton';
+import type { ProjectTask } from '@/features/project/types/task.type';
+import { useUserListQuery } from '@/features/user/hooks/useUser';
 
 interface Props {
+  tasks: ProjectTask[];
   isOwner?: boolean;
 }
 
-const RecentProjectTaskList = ({ isOwner }: Props) => {
-  const recentTasks = mockProjectTasks.slice(0, 3);
+const DueProjectTaskList = ({ tasks, isOwner }: Props) => {
+  const { data: users } = useUserListQuery();
+
+  const getAssigneeName = (userId: string) => {
+    return users?.find((user) => user.id === userId)?.name;
+  };
 
   return (
     <section className="border-line overflow-hidden rounded-xl border">
@@ -15,7 +21,7 @@ const RecentProjectTaskList = ({ isOwner }: Props) => {
         <h2 className="text-heading font-bold">최근 작업</h2>
       </div>
       <div className="divide-y divide-slate-100">
-        {recentTasks.map((task) => (
+        {tasks?.slice(0, 3).map((task) => (
           <div
             key={task.id}
             className="grid grid-cols-[2fr_1fr_1fr_1fr_auto] items-center gap-4 px-5 py-4"
@@ -24,7 +30,9 @@ const RecentProjectTaskList = ({ isOwner }: Props) => {
               <span className="text-danger">□</span>
               <span className="truncate font-medium">{task.name}</span>
             </div>
-            <span className="text-body">{task.assigneeName ?? '미지정'}</span>
+            <span className="text-body">
+              {task?.assigneeId ? getAssigneeName(task?.assigneeId) : '미지정'}
+            </span>
             <div>
               <StatusBadge status={task.status} />
             </div>
@@ -37,4 +45,4 @@ const RecentProjectTaskList = ({ isOwner }: Props) => {
   );
 };
 
-export default RecentProjectTaskList;
+export default DueProjectTaskList;
