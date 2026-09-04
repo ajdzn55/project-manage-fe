@@ -3,7 +3,7 @@
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './ProjectCalendar.css';
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { format } from 'date-fns';
 import Button from '@/components/Button';
 import { Tooltip } from 'react-tooltip';

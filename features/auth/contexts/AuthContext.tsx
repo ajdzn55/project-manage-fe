@@ -3,11 +3,7 @@
 import { createContext, type ReactNode, useEffect, useState } from 'react';
 import { AUTH_STORAGE_KEY } from '@/features/auth/constants/auth';
 import { SIDEBAR_COLLAPSED_KEY } from '@/constants/common.const';
-import type {
-  LoginUser,
-  UpdateUser,
-  User,
-} from '@/features/user/types/user.type';
+import type { LoginUser, UpdateUser } from '@/features/user/types/user.type';
 
 interface AuthContextValue {
   loginUser: LoginUser | null; // 현재 로그인 사용자
