@@ -8,6 +8,7 @@ import {
 import type {
   CreateProjectTask,
   ProjectTask,
+  TaskSearchParams,
   UpdateProjectTask,
 } from '@/features/project/types/task.type';
 import { toastAlert } from '@/utils/alert';
@@ -29,11 +30,11 @@ export const useCreateTaskMutation = () => {
   return { mutate };
 };
 
-export const useTaskListQuery = (projectId: string) => {
+export const useTaskListQuery = (params: TaskSearchParams) => {
   const { data } = useQuery<ProjectTask[]>({
-    queryKey: ['task'],
-    queryFn: () => getTaskList(projectId),
-    enabled: !!projectId,
+    queryKey: ['task', params],
+    queryFn: () => getTaskList(params),
+    enabled: Object.values(params).some(Boolean),
   });
 
   return { data };
@@ -43,7 +44,8 @@ export const useUpdateTaskMutation = () => {
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
-    mutationFn: ({ data }: { data: UpdateProjectTask }) => updateTask(data),
+    mutationFn: ({ id, data }: { id: string; data: UpdateProjectTask }) =>
+      updateTask(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['task'] });
       toastAlert({ type: 'success', content: '작업이 수정되었습니다.' });
@@ -56,11 +58,11 @@ export const useUpdateTaskMutation = () => {
   return { mutate };
 };
 
-export const useDeleteTaskMutation = (id: string) => {
+export const useDeleteTaskMutation = () => {
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
-    mutationFn: () => deleteTask(id),
+    mutationFn: (id: string) => deleteTask(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['task'] });
       toastAlert({ type: 'success', content: '작업이 삭제되었습니다.' });

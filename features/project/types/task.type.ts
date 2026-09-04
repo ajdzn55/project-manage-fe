@@ -26,3 +26,9 @@ export type UpdateProjectTask = Omit<
   status?: TaskStatusEnum;
   priority?: TaskPriorityEnum;
 };
+
+export interface TaskSearchParams {
+  projectId?: string;
+  month?: string;
+  isMyTask?: string;
+}
