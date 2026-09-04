@@ -2,9 +2,8 @@
 
 import Button from '@/components/Button';
 import ProjectCard from './ProjectCard';
-import { mockProjects } from '../../mocks/project.mock';
 import SelectInput from '@/components/SelectInput';
-import { Project } from '../../types/project.type';
+import { type CreateProject, Project } from '../../types/project.type';
 import { useForm, useWatch } from 'react-hook-form';
 import SearchInput from '@/components/SearchInput';
 import { useMemo, useState } from 'react';
@@ -12,6 +11,10 @@ import { useAuth } from '@/features/auth/hooks/useAuth';
 import { projectStatusOptions } from '@/features/project/constants/project.const';
 import ProjectModal from '@/features/project/components/projects/ProjectModal';
 import { toastAlert } from '@/utils/alert';
+import {
+  useCreateProjectMutation,
+  useProjectListQuery,
+} from '@/features/project/hooks/useProject';
 
 const tabs = ['전체', '내 프로젝트'];
 const statusOptions = [{ label: '전체', value: '' }, ...projectStatusOptions];
@@ -26,11 +29,14 @@ const ProjectList = () => {
   const [selectedTab, setSelectedTab] = useState<string>('전체');
   const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
 
+  const { data: projects } = useProjectListQuery();
+  const { mutate: createMutate } = useCreateProjectMutation();
+
   const filteredProjects = useMemo(() => {
     // 상태로 필터링
-    const statusFiltered = wStatus
-      ? mockProjects.filter((v) => v.status === wStatus)
-      : mockProjects;
+    const statusFiltered =
+      (wStatus ? projects?.filter((v) => v.status === wStatus) : projects) ??
+      [];
 
     // 이름으로 필터링
     const nameFiltered = wName
@@ -39,15 +45,17 @@ const ProjectList = () => {
 
     // 탭으로 필터링
     return selectedTab !== '전체'
-      ? nameFiltered.filter((v) => {
-          return v.Members.some((member) => member.userId === loginUser?.id);
-        })
+      ? nameFiltered.filter((v) => v.createdById === loginUser?.id)
       : nameFiltered;
-  }, [selectedTab, loginUser?.id, wName, wStatus]);
+  }, [wStatus, projects, wName, selectedTab, loginUser?.id]);
 
   const handleSaveProject = (data: Project) => {
-    // TODO: api 연결 필요
-    console.log(data);
+    if (!loginUser) return;
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { id, Members, ...res } = data;
+    const requestBody: CreateProject = { ...res, createdById: loginUser.id };
+    createMutate(requestBody);
 
     setIsCreateModalOpen(false);
     toastAlert({ type: 'info', content: '프로젝트가 생성되었습니다.' });
