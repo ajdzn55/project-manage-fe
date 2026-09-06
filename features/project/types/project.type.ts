@@ -15,7 +15,7 @@ export interface Project {
   status: ProjectStatusEnum;
   startDate?: string | null;
   endDate?: string | null;
-  Members: ProjectMember[];
+  Members?: ProjectMember[];
 }
 
 export interface ProjectSimple extends Omit<

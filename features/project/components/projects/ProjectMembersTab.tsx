@@ -49,7 +49,7 @@ const ProjectMembersTab = ({ isOwner, members }: Props) => {
         />
       )}
 
-      {members?.length === 0 ? (
+      {!members?.length ? (
         <EmptyState
           title="표시할 멤버가 없습니다."
           content={

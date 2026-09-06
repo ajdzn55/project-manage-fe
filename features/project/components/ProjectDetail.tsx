@@ -11,7 +11,7 @@ import Link from 'next/link';
 import MoreMenuButton from '@/components/MoreMenuButton';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { ProjectMemberRoleEnum } from '@/features/project/types/enums';
-import { dialogAlert, toastAlert } from '@/utils/alert';
+import { dialogAlert } from '@/utils/alert';
 import ProjectModal from '@/features/project/components/projects/ProjectModal';
 import { Project } from '@/features/project/types/project.type';
 import {
@@ -33,7 +33,7 @@ const ProjectDetail = ({ projectId }: Props) => {
   const { mutate: updateMutate } = useUpdateProjectMutation();
   const { mutate: deleteMutate } = useDeleteProjectMutation();
 
-  const isOwner = targetProject?.Members.some(
+  const isOwner = targetProject?.Members?.some(
     (member) =>
       member.userId === loginUser?.id &&
       member.role === ProjectMemberRoleEnum.Owner,
@@ -83,7 +83,6 @@ const ProjectDetail = ({ projectId }: Props) => {
     updateMutate({ id, data: body });
 
     setIsModalOpen(false);
-    toastAlert({ type: 'info', content: '프로젝트가 수정되었습니다.' });
   };
 
   if (!targetProject) return null;
@@ -126,7 +125,7 @@ const ProjectDetail = ({ projectId }: Props) => {
                 <span>
                   {`${targetProject.startDate ?? '미정'} ~ ${targetProject.endDate ?? '미정'}`}
                 </span>
-                <MemberAvatars members={targetProject.Members} />
+                <MemberAvatars members={targetProject?.Members ?? []} />
               </div>
             </div>
           </div>
