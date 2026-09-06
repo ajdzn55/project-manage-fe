@@ -17,7 +17,7 @@ export const useCreateTaskMutation = () => {
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
-    mutationFn: ({ data }: { data: CreateProjectTask }) => createTask(data),
+    mutationFn: (data: CreateProjectTask) => createTask(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['task'] });
       toastAlert({ type: 'success', content: '작업이 생성되었습니다.' });

@@ -3,14 +3,19 @@ import Table from '@/components/Table';
 import { projectTaskColumns } from '@/features/project/constants/project.columns';
 import { useCallback, useMemo, useState } from 'react';
 import TaskModal from '../tasks/TaskModal';
-import { dialogAlert, toastAlert } from '@/utils/alert';
+import { dialogAlert } from '@/utils/alert';
 import EmptyState from '@/features/project/components/EmptyState';
-import type { ProjectTask } from '@/features/project/types/task.type';
+import type {
+  CreateProjectTask,
+  ProjectTask,
+} from '@/features/project/types/task.type';
 import {
+  useCreateTaskMutation,
   useDeleteTaskMutation,
   useTaskListQuery,
   useUpdateTaskMutation,
 } from '@/features/project/hooks/useTask';
+import { useAuth } from '@/features/auth/hooks/useAuth';
 
 interface Props {
   projectId: string;
@@ -18,10 +23,13 @@ interface Props {
 }
 
 const ProjectTasksTab = ({ projectId, isOwner }: Props) => {
+  const { loginUser } = useAuth();
+
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [rowId, setRowId] = useState<string | null>(null);
 
   const { data: tasks } = useTaskListQuery({ projectId });
+  const { mutate: createMutate } = useCreateTaskMutation();
   const { mutate: updateMutate } = useUpdateTaskMutation();
   const { mutate: deleteMutate } = useDeleteTaskMutation();
 
@@ -54,16 +62,24 @@ const ProjectTasksTab = ({ projectId, isOwner }: Props) => {
 
   const handleSaveTask = useCallback(
     (data: ProjectTask) => {
+      if (!loginUser) return;
+
       const { id, ...body } = data;
-      updateMutate({ id, data: body });
+
+      if (rowId) {
+        updateMutate({ id, data: body });
+      } else {
+        const requestBody: CreateProjectTask = {
+          ...body,
+          projectId,
+          createdById: loginUser.id,
+        };
+        createMutate(requestBody);
+      }
 
       setIsModalOpen(false);
-      toastAlert({
-        type: 'info',
-        content: `작업이 ${data.id ? '수정' : '생성'}되었습니다.`,
-      });
     },
-    [updateMutate],
+    [createMutate, loginUser, projectId, rowId, updateMutate],
   );
 
   const columns = useMemo(

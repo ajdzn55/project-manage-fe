@@ -15,13 +15,13 @@ export interface ProjectTask {
   createdById: string;
 }
 
-export type CreateProjectTask = Omit<ProjectTask, 'id' | 'createdById'> & {
+export type CreateProjectTask = Omit<ProjectTask, 'id'> & {
   projectId: string;
 };
 
 export type UpdateProjectTask = Omit<
   CreateProjectTask,
-  'status' | 'priority' | 'projectId'
+  'status' | 'priority' | 'projectId' | 'createdById'
 > & {
   status?: TaskStatusEnum;
   priority?: TaskPriorityEnum;
