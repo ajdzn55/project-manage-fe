@@ -10,7 +10,6 @@ import { useMemo, useState } from 'react';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { projectStatusOptions } from '@/features/project/constants/project.const';
 import ProjectModal from '@/features/project/components/projects/ProjectModal';
-import { toastAlert } from '@/utils/alert';
 import {
   useCreateProjectMutation,
   useProjectListQuery,
@@ -58,7 +57,6 @@ const ProjectList = () => {
     createMutate(requestBody);
 
     setIsCreateModalOpen(false);
-    toastAlert({ type: 'info', content: '프로젝트가 생성되었습니다.' });
   };
 
   return (
