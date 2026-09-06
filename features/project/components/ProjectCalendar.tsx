@@ -56,7 +56,7 @@ const ProjectCalendar = () => {
     <div className="flex h-full flex-col p-7">
       <div className="shrink-0">
         <h1 className="text-heading text-2xl font-bold">캘린더</h1>
-        <p className="text-muted mt-1">프로젝트 일정을 확인하세요.</p>
+        <p className="text-muted mt-1">작업 일정을 확인하세요.</p>
       </div>
 
       <div className="relative mx-3 mt-6 mb-3 min-h-0 flex-1">
