@@ -18,7 +18,7 @@ export const useCreateProjectMutation = () => {
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
-    mutationFn: ({ data }: { data: CreateProject }) => createProject(data),
+    mutationFn: (data: CreateProject) => createProject(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['project'] });
       toastAlert({ type: 'success', content: '프로젝트가 생성되었습니다.' });
@@ -54,8 +54,8 @@ export const useUpdateProjectMutation = () => {
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
-    mutationFn: ({ data }: { data: UpdateProject }) =>
-      updateProject(data.id, data),
+    mutationFn: ({ id, data }: { id: string; data: UpdateProject }) =>
+      updateProject(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['project'] });
       toastAlert({ type: 'success', content: '프로젝트가 수정되었습니다.' });

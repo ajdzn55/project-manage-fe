@@ -8,15 +8,27 @@ export interface ProjectTask {
   name: string;
   description?: string | null;
   backgroundColor?: string;
-  status?: TaskStatusEnum | null;
-  priority?: TaskPriorityEnum | null;
+  status: TaskStatusEnum;
+  priority: TaskPriorityEnum;
   assigneeId?: string | null;
   dueDate?: string | null;
   createdById: string;
 }
 
-export type CreateProjectTask = Partial<
-  Omit<ProjectTask, 'id' | 'createdById'>
->;
+export type CreateProjectTask = Omit<ProjectTask, 'id'> & {
+  projectId: string;
+};
 
-export type UpdateProjectTask = CreateProjectTask;
+export type UpdateProjectTask = Omit<
+  CreateProjectTask,
+  'status' | 'priority' | 'projectId' | 'createdById'
+> & {
+  status?: TaskStatusEnum;
+  priority?: TaskPriorityEnum;
+};
+
+export interface TaskSearchParams {
+  projectId?: string;
+  month?: string;
+  isMyTask?: string;
+}

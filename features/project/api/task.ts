@@ -2,8 +2,10 @@ import axiosInstance from '@/lib/axios';
 import type {
   CreateProjectTask,
   ProjectTask,
+  TaskSearchParams,
   UpdateProjectTask,
 } from '@/features/project/types/task.type';
+import { omitInvalidValues } from '@/utils/common';
 
 // 프로젝트 작업 생성
 export const createTask = async (data: CreateProjectTask) => {
@@ -17,10 +19,10 @@ export const createTask = async (data: CreateProjectTask) => {
 };
 
 // 프로젝트 작업 목록 조회
-export const getTaskList = async (projectId: string) => {
+export const getTaskList = async (params: TaskSearchParams) => {
   try {
-    const response = await axiosInstance.get<ProjectTask[]>(`/task`, {
-      params: { projectId },
+    const response = await axiosInstance.get<ProjectTask[]>('/task', {
+      params,
     });
     return response.data;
   } catch (error) {
@@ -30,9 +32,10 @@ export const getTaskList = async (projectId: string) => {
 };
 
 // 프로젝트 작업 정보 수정
-export const updateTask = async (data: UpdateProjectTask) => {
+export const updateTask = async (id: string, data: UpdateProjectTask) => {
   try {
-    const response = await axiosInstance.patch<void>('/task', data);
+    const requestBody = omitInvalidValues(data);
+    const response = await axiosInstance.patch<void>(`/task${id}`, requestBody);
     return response.data;
   } catch (error) {
     console.error(error);

@@ -33,7 +33,7 @@ export const useAddProjectMemberMutation = (projectId: string) => {
 
 export const useProjectMemberListQuery = (projectId: string) => {
   const { data } = useQuery<ProjectMember[]>({
-    queryKey: ['projectMember'],
+    queryKey: ['projectMember', projectId],
     queryFn: () => getProjectMemberList(projectId),
     enabled: !!projectId,
   });

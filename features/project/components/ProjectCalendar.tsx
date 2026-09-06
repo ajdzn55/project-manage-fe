@@ -4,11 +4,15 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './ProjectCalendar.css';
 import { useMemo, useState } from 'react';
-import { mockProjectTasks } from '@/features/project/mocks/projectDetail.mock';
 import { format } from 'date-fns';
 import Button from '@/components/Button';
 import { Tooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
+import { useTaskListQuery } from '@/features/project/hooks/useTask';
+import type {
+  ProjectTask,
+  TaskSearchParams,
+} from '@/features/project/types/task.type';
 
 const ProjectCalendar = () => {
   const today = new Date();
@@ -16,25 +20,43 @@ const ProjectCalendar = () => {
   const [targetMonth, setTargetMonth] = useState<string>(
     format(new Date(), 'yyyy-MM'),
   );
+  const [searchParams, setSearchParams] = useState<TaskSearchParams>({
+    projectId: '',
+    month: targetMonth,
+  });
 
-  const filteredTasks = useMemo(
-    () =>
-      mockProjectTasks.filter(
-        (v) => v.dueDate && v.dueDate.startsWith(targetMonth),
-      ),
-    [targetMonth],
-  );
+  const { data: tasks } = useTaskListQuery(searchParams);
 
   const onClickToday = () => {
     setCalendarDate(today);
     setTargetMonth(format(today, 'yyyy-MM'));
   };
 
+  const tasksByDate = useMemo(() => {
+    const map = new Map<string, ProjectTask[]>();
+
+    if (!tasks) return map;
+
+    for (const task of tasks) {
+      if (!task.dueDate) continue;
+
+      const dateTasks = map.get(task.dueDate);
+
+      if (dateTasks) {
+        dateTasks.push(task);
+      } else {
+        map.set(task.dueDate, [task]);
+      }
+    }
+
+    return map;
+  }, [tasks]);
+
   return (
     <div className="flex h-full flex-col p-7">
       <div className="shrink-0">
         <h1 className="text-heading text-2xl font-bold">캘린더</h1>
-        <p className="text-muted mt-1">프로젝트 일정을 확인하세요.</p>
+        <p className="text-muted mt-1">작업 일정을 확인하세요.</p>
       </div>
 
       <div className="relative mx-3 mt-6 mb-3 min-h-0 flex-1">
@@ -61,9 +83,7 @@ const ProjectCalendar = () => {
           tileContent={({ date, view }) => {
             if (view !== 'month') return;
 
-            const res = filteredTasks.filter(
-              (v) => v.dueDate === format(date, 'yyyy-MM-dd'),
-            );
+            const res = tasksByDate.get(format(date, 'yyyy-MM-dd')) ?? [];
 
             return (
               <div className="text-xs leading-tight text-black">
@@ -90,6 +110,7 @@ const ProjectCalendar = () => {
               '0',
             );
             setTargetMonth(`${activeYear}-${activeMonth}`);
+            setSearchParams({ month: targetMonth });
           }}
           value={calendarDate}
           onChange={(value) =>
