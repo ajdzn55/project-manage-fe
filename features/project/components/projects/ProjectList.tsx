@@ -52,7 +52,7 @@ const ProjectList = () => {
     if (!loginUser) return;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { id, Members, ...res } = data;
+    const { id, members, ...res } = data;
     const requestBody: CreateProject = { ...res, createdById: loginUser.id };
     createMutate(requestBody);
 

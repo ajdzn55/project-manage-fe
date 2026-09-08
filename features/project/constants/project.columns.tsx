@@ -52,26 +52,46 @@ const memberColumns = memberColumnHelper.columns([
   }),
 ]);
 
-const memberActionsColumn = memberColumnHelper.display({
-  id: 'actions',
-  header: '관리',
-  size: 100,
-  minSize: 100,
-  maxSize: 100,
-  enableSorting: false,
-  enableResizing: false,
-  meta: { align: 'center' },
-  cell: () => <MoreMenuButton />,
-});
-
 interface ProjectTaskColumn extends ProjectTask {
   assigneeName?: string;
 }
 
 export const projectMemberColumns = (
   showActions?: boolean,
-): TableColumn<ProjectMember>[] =>
-  showActions ? [...memberColumns, memberActionsColumn] : memberColumns;
+  onModify?: (userId: string) => void,
+  onDelete?: (userId: string) => void,
+  singleOwnerId?: string,
+): TableColumn<ProjectMember>[] => {
+  const memberActionsColumn = memberColumnHelper.display({
+    id: 'actions',
+    header: '관리',
+    size: 100,
+    minSize: 100,
+    maxSize: 100,
+    enableSorting: false,
+    enableResizing: false,
+    meta: { align: 'center' },
+    cell: (info) => {
+      const disabled = !!(
+        singleOwnerId && info.row.original.userId === singleOwnerId
+      );
+
+      return (
+        <MoreMenuButton
+          onModify={() => {
+            if (onModify) onModify(info.row.original.userId);
+          }}
+          onDelete={() => {
+            if (onDelete) onDelete(info.row.original.userId);
+          }}
+          disabled={disabled}
+        />
+      );
+    },
+  });
+
+  return showActions ? [...memberColumns, memberActionsColumn] : memberColumns;
+};
 
 const taskColumnHelper = createTableColumnHelper<ProjectTaskColumn>();
 const taskColumns = taskColumnHelper.columns([
@@ -143,15 +163,17 @@ const userColumnHelper = createTableColumnHelper<User>();
 export const ProjectMemberColumns = userColumnHelper.columns([
   userColumnHelper.accessor('id', {
     header: '아이디',
-    size: 250,
+    size: 100,
+    cell: (info) => info.getValue(),
   }),
   userColumnHelper.accessor('name', {
     header: '이름',
-    size: 250,
+    size: 80,
+    cell: (info) => info.getValue(),
   }),
   userColumnHelper.accessor('email', {
     header: '이메일',
-    size: 500,
+    size: 150,
     cell: (info) => <span title={info.getValue()}>{info.getValue()}</span>,
   }),
 ]);

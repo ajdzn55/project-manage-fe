@@ -33,7 +33,7 @@ const ProjectDetail = ({ projectId }: Props) => {
   const { mutate: updateMutate } = useUpdateProjectMutation();
   const { mutate: deleteMutate } = useDeleteProjectMutation();
 
-  const isOwner = targetProject?.Members?.some(
+  const isOwner = targetProject?.members?.some(
     (member) =>
       member.userId === loginUser?.id &&
       member.role === ProjectMemberRoleEnum.Owner,
@@ -52,13 +52,14 @@ const ProjectDetail = ({ projectId }: Props) => {
         label: '멤버',
         item: (
           <ProjectMembersTab
+            projectId={projectId}
             isOwner={isOwner}
-            members={targetProject?.Members}
+            members={targetProject?.members}
           />
         ),
       },
     ],
-    [isOwner, projectId, targetProject?.Members],
+    [isOwner, projectId, targetProject?.members],
   );
 
   const handleModifyProject = () => {
@@ -125,7 +126,7 @@ const ProjectDetail = ({ projectId }: Props) => {
                 <span>
                   {`${targetProject.startDate ?? '미정'} ~ ${targetProject.endDate ?? '미정'}`}
                 </span>
-                <MemberAvatars members={targetProject?.Members ?? []} />
+                <MemberAvatars members={targetProject?.members ?? []} />
               </div>
             </div>
           </div>

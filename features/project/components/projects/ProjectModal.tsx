@@ -40,7 +40,7 @@ const ProjectModal = ({
       title={targetProject ? '프로젝트 수정' : '새 프로젝트'}
       onClose={onClose}
       onSubmit={handleSubmit(onSave)}
-      submitButtonText={targetProject ? '저장' : '생성'}
+      buttonText={targetProject ? '저장' : '생성'}
     >
       <input type="hidden" {...register('id')} />
       <TextInput
