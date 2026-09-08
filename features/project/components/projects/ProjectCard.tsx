@@ -1,7 +1,6 @@
 import Link from 'next/link';
-import MemberAvatars from '../MemberAvatars';
 import StatusBadge from '../StatusBadge';
-import type { Project, ProjectSimple } from '../../types/project.type';
+import type { ProjectSimple } from '../../types/project.type';
 
 const ProjectCard = ({ project }: { project: ProjectSimple }) => {
   return (
@@ -23,9 +22,6 @@ const ProjectCard = ({ project }: { project: ProjectSimple }) => {
       <p className="text-muted mt-4 text-xs">
         {project.startDate ?? '미정'} - {project.endDate ?? '미정'}
       </p>
-      <div className="mt-5">
-        {/*<MemberAvatars members={project.Members} />*/}
-      </div>
     </Link>
   );
 };
