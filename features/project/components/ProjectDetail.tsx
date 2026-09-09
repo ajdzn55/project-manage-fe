@@ -10,10 +10,16 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import MoreMenuButton from '@/components/MoreMenuButton';
 import { useAuth } from '@/features/auth/hooks/useAuth';
-import { ProjectMemberRoleEnum } from '@/features/project/types/enums';
+import {
+  ProjectMemberRoleEnum,
+  ProjectStatusEnum,
+} from '@/features/project/types/enums';
 import { dialogAlert } from '@/utils/alert';
 import ProjectModal from '@/features/project/components/projects/ProjectModal';
-import { Project } from '@/features/project/types/project.type';
+import {
+  Project,
+  type UpdateProject,
+} from '@/features/project/types/project.type';
 import {
   useDeleteProjectMutation,
   useProjectQuery,
@@ -80,8 +86,16 @@ const ProjectDetail = ({ projectId }: Props) => {
   };
 
   const handleSaveProject = (data: Project) => {
-    const { id, ...body } = data;
-    updateMutate({ id, data: body });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { id, members, status, startDate, endDate, ...res } = data;
+    const statusStr = String(status);
+    const requestBody: UpdateProject = {
+      ...res,
+      status: statusStr === '' ? undefined : (statusStr as ProjectStatusEnum),
+      startDate: startDate === '' ? null : startDate,
+      endDate: endDate === '' ? null : endDate,
+    };
+    updateMutate({ id, data: requestBody });
 
     setIsModalOpen(false);
   };
