@@ -36,7 +36,10 @@ export const getTaskList = async (params: TaskSearchParams) => {
 export const updateTask = async (id: string, data: UpdateProjectTask) => {
   try {
     const requestBody = omitInvalidValues(data);
-    const response = await axiosInstance.patch<void>(`/task${id}`, requestBody);
+    const response = await axiosInstance.patch<void>(
+      `/task/${id}`,
+      requestBody,
+    );
     return response.data;
   } catch (error) {
     console.error(error);
