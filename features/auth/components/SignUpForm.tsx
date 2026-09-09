@@ -13,7 +13,7 @@ import {
 import { dialogAlert } from '@/utils/alert';
 
 const SignUpForm = () => {
-  const { handleSubmit } = useForm<CreateUser>();
+  const { handleSubmit, register } = useForm<CreateUser>();
 
   const { data: users } = useUserListQuery();
   const { mutate: postMutate } = useCreateUserMutation();
@@ -39,22 +39,26 @@ const SignUpForm = () => {
 
       <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
         <TextInput
+          register={register('id')}
           label="아이디"
           labelWidth="80px"
           placeholder="아이디를 입력하세요"
         />
         <TextInput
+          register={register('password')}
           label="비밀번호"
           labelWidth="80px"
           type="password"
           placeholder="비밀번호를 입력하세요"
         />
         <TextInput
+          register={register('name')}
           label="이름"
           labelWidth="80px"
           placeholder="이름을 입력하세요"
         />
         <TextInput
+          register={register('email')}
           label="이메일"
           labelWidth="80px"
           placeholder="이메일을 입력하세요"
