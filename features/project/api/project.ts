@@ -10,7 +10,8 @@ import { omitInvalidValues } from '@/utils/common';
 // 프로젝트 생성
 export const createProject = async (data: CreateProject) => {
   try {
-    const response = await axiosInstance.post<string>('/project', data);
+    const requestBody = omitInvalidValues(data);
+    const response = await axiosInstance.post<string>('/project', requestBody);
     return response.data;
   } catch (error) {
     console.error(error);

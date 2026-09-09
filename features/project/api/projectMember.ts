@@ -3,6 +3,7 @@ import type {
   AddProjectMember,
   UpdateProjectMember,
 } from '@/features/project/types/project.type';
+import { omitInvalidValues } from '@/utils/common';
 
 // 프로젝트 멤버 추가
 export const addProjectMember = async (
@@ -10,9 +11,10 @@ export const addProjectMember = async (
   data: AddProjectMember,
 ) => {
   try {
+    const requestBody = omitInvalidValues(data);
     const response = await axiosInstance.post<string>(
       `/project/${projectId}/members`,
-      data,
+      requestBody,
     );
     return response.data;
   } catch (error) {
