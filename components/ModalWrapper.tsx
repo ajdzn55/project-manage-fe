@@ -7,16 +7,20 @@ interface Props {
   title: string;
   children: ReactNode;
   onClose: () => void;
+  onAction?: () => void;
   onSubmit?: SubmitEventHandler<HTMLFormElement>;
-  submitButtonText: string;
+  buttonText: string;
+  maxWidth?: string;
 }
 
 const ModalWrapper = ({
   title,
   children,
   onClose,
+  onAction,
   onSubmit,
-  submitButtonText,
+  buttonText,
+  maxWidth = '360px',
 }: Props) => {
   const titleId = useId();
 
@@ -50,8 +54,12 @@ const ModalWrapper = ({
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        onSubmit={onSubmit}
-        className="fixed top-1/2 left-1/2 z-[60] w-[calc(100%-2rem)] max-w-[360px] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-5 shadow-2xl"
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (onSubmit) onSubmit(e);
+        }}
+        style={{ maxWidth }}
+        className="fixed top-1/2 left-1/2 z-[60] w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-5 shadow-2xl"
       >
         <div className="flex items-center justify-between gap-4">
           <h2 id={titleId} className="text-heading text-lg font-bold">
@@ -71,10 +79,11 @@ const ModalWrapper = ({
 
         <div className="mt-5">
           <Button
-            text={submitButtonText}
+            text={buttonText}
             width="100%"
             height="40px"
-            type="submit"
+            type={onSubmit ? 'submit' : 'button'}
+            onClick={onAction}
           />
         </div>
       </form>

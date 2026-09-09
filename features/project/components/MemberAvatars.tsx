@@ -1,7 +1,7 @@
 import type { ProjectMember } from '@/features/project/types/project.type';
 
 interface Props {
-  members: Pick<ProjectMember, 'userId' | 'name'>[];
+  members: ProjectMember[];
   additionalCount?: number;
 }
 

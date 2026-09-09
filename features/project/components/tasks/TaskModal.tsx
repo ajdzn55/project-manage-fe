@@ -60,7 +60,7 @@ const TaskModal = ({ onSave, onClose, targetTask }: TaskModalProps) => {
       title={targetTask ? '작업 수정' : '새 작업'}
       onClose={onClose}
       onSubmit={handleSubmit(onSave)}
-      submitButtonText={targetTask ? '저장' : '생성'}
+      buttonText={targetTask ? '저장' : '생성'}
     >
       <input type="hidden" {...register('id')} />
       <TextInput

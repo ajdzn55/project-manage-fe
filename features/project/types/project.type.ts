@@ -8,6 +8,8 @@ export interface ProjectMember extends Pick<User, 'name' | 'email'> {
 
 export type AddProjectMember = Pick<ProjectMember, 'userId'>;
 
+export type UpdateProjectMember = Pick<ProjectMember, 'userId' | 'role'>;
+
 export interface Project {
   id: string;
   name: string;
@@ -15,17 +17,17 @@ export interface Project {
   status: ProjectStatusEnum;
   startDate?: string | null;
   endDate?: string | null;
-  Members?: ProjectMember[];
+  members?: ProjectMember[];
 }
 
 export interface ProjectSimple extends Omit<
   Project,
-  'description' | 'Members'
+  'description' | 'members'
 > {
   createdById: string;
 }
 
-export type CreateProject = Omit<Project, 'id' | 'Members'> & {
+export type CreateProject = Omit<Project, 'id' | 'members'> & {
   createdById: string;
 };
 

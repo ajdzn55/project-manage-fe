@@ -1,8 +1,8 @@
+import axiosInstance from '@/lib/axios';
 import type {
   AddProjectMember,
-  ProjectMember,
+  UpdateProjectMember,
 } from '@/features/project/types/project.type';
-import axiosInstance from '@/lib/axios';
 
 // 프로젝트 멤버 추가
 export const addProjectMember = async (
@@ -21,11 +21,15 @@ export const addProjectMember = async (
   }
 };
 
-// 프로젝트 멤버 목록 조회
-export const getProjectMemberList = async (projectId: string) => {
+// 프로젝트 멤버 역할 변경
+export const changeProjectMemberRole = async (
+  projectId: string,
+  data: UpdateProjectMember,
+) => {
   try {
-    const response = await axiosInstance.get<ProjectMember[]>(
+    const response = await axiosInstance.patch<void>(
       `/project/${projectId}/members`,
+      data,
     );
     return response.data;
   } catch (error) {

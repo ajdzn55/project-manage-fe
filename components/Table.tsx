@@ -47,6 +47,8 @@ interface Props<T extends object> {
   columns: TableColumn<T>[];
   data: T[];
   rowKey?: keyof T;
+  onRowClick?: (row: T) => void;
+  selectedRowId?: string;
   showFooter?: boolean;
   footer?: ReactNode;
   tableBorder?: boolean;
@@ -64,6 +66,8 @@ export default function Table<T extends object>({
   columns,
   data,
   rowKey,
+  onRowClick,
+  selectedRowId,
   showFooter = false,
   footer,
   tableBorder = false,
@@ -176,7 +180,26 @@ export default function Table<T extends object>({
             table.getRowModel().rows.map((row) => (
               <tr
                 key={row.id}
-                className="hover:bg-surface group transition-colors"
+                onClick={
+                  onRowClick ? () => onRowClick(row.original) : undefined
+                }
+                tabIndex={onRowClick ? 0 : undefined}
+                onKeyDown={
+                  onRowClick
+                    ? (event) => {
+                        if (event.target !== event.currentTarget) return;
+                        if (event.key === 'Enter' || event.key === ' ') {
+                          event.preventDefault();
+                          onRowClick(row.original);
+                        }
+                      }
+                    : undefined
+                }
+                className={`group transition-colors ${
+                  selectedRowId === row.id
+                    ? 'bg-primary-soft'
+                    : 'hover:bg-surface'
+                } ${onRowClick ? 'cursor-pointer' : ''}`}
               >
                 {row.getVisibleCells().map((cell) => {
                   const meta = cell.column.columnDef.meta;
