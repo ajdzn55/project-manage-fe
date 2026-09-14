@@ -52,6 +52,8 @@ const TaskModal = ({ onSave, onClose, targetTask }: TaskModalProps) => {
   useEffect(() => {
     if (targetTask) {
       reset(targetTask);
+    } else {
+      reset({ backgroundColor: '#FFFFFF' });
     }
   }, [reset, targetTask]);
 

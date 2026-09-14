@@ -7,13 +7,14 @@ import { type CreateProject, Project } from '../../types/project.type';
 import { useForm, useWatch } from 'react-hook-form';
 import SearchInput from '@/components/SearchInput';
 import { useMemo, useState } from 'react';
-import { useAuth } from '@/features/auth/hooks/useAuth';
 import { projectStatusOptions } from '@/features/project/constants/project.const';
 import ProjectModal from '@/features/project/components/projects/ProjectModal';
 import {
   useCreateProjectMutation,
   useProjectListQuery,
 } from '@/features/project/hooks/useProject';
+import type { ProjectStatusEnum } from '@/features/project/types/enums';
+import { useLoginInfoQuery } from '@/features/user/hooks/useUser';
 
 const tabs = ['전체', '내 프로젝트'];
 const statusOptions = [{ label: '전체', value: '' }, ...projectStatusOptions];
@@ -23,7 +24,7 @@ const ProjectList = () => {
   const wName = useWatch({ control, name: 'name' });
   const wStatus = useWatch({ control, name: 'status' });
 
-  const { loginUser } = useAuth();
+  const { data: loginUser } = useLoginInfoQuery();
 
   const [selectedTab, setSelectedTab] = useState<string>('전체');
   const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
@@ -52,8 +53,15 @@ const ProjectList = () => {
     if (!loginUser) return;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { id, members, ...res } = data;
-    const requestBody: CreateProject = { ...res, createdById: loginUser.id };
+    const { id, members, status, startDate, endDate, ...res } = data;
+    const statusStr = String(status);
+    const requestBody: CreateProject = {
+      ...res,
+      createdById: loginUser.id,
+      status: statusStr === '' ? undefined : (statusStr as ProjectStatusEnum),
+      startDate: startDate === '' ? null : startDate,
+      endDate: endDate === '' ? null : endDate,
+    };
     createMutate(requestBody);
 
     setIsCreateModalOpen(false);

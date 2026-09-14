@@ -7,7 +7,7 @@ export interface ProjectTask {
   id: string;
   name: string;
   description?: string | null;
-  backgroundColor?: string;
+  backgroundColor: string;
   status: TaskStatusEnum;
   priority: TaskPriorityEnum;
   assigneeId?: string | null;
@@ -15,17 +15,19 @@ export interface ProjectTask {
   createdById: string;
 }
 
-export type CreateProjectTask = Omit<ProjectTask, 'id'> & {
+export type CreateProjectTask = Omit<
+  ProjectTask,
+  'priority' | 'status' | 'id'
+> & {
   projectId: string;
+  status?: TaskStatusEnum;
+  priority?: TaskPriorityEnum;
 };
 
 export type UpdateProjectTask = Omit<
   CreateProjectTask,
-  'status' | 'priority' | 'projectId' | 'createdById'
-> & {
-  status?: TaskStatusEnum;
-  priority?: TaskPriorityEnum;
-};
+  'projectId' | 'createdById'
+>;
 
 export interface TaskSearchParams {
   projectId?: string;

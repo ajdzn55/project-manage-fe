@@ -1,9 +1,12 @@
 import axiosInstance from '../../../lib/axios';
 import type {
   CreateUser,
+  LoginInfo,
   UpdateUser,
   User,
+  UserLogin,
 } from '@/features/user/types/user.type';
+import type { Token } from '@/features/auth/types/token.type';
 
 // 사용자 생성(회원가입)
 export const createUser = async (data: CreateUser) => {
@@ -66,5 +69,27 @@ export const restoreUser = async (id: string) => {
     return response.data;
   } catch (error) {
     console.error(error);
+  }
+};
+
+// 로그인
+export const login = async (data: UserLogin) => {
+  try {
+    const response = await axiosInstance.post<Token>('/auth/login', data);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+// 로그인 정보 조회
+export const getLoginInfo = async () => {
+  try {
+    const response = await axiosInstance.get<LoginInfo>('/auth/login');
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
 };

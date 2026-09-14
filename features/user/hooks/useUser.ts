@@ -1,18 +1,19 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
   CreateUser,
+  LoginInfo,
   UpdateUser,
   User,
 } from '@/features/user/types/user.type';
 import {
   createUser,
   deleteUser,
+  getLoginInfo,
   getUser,
   getUserList,
   restoreUser,
   updateUser,
 } from '@/features/user/api/user';
-import { useAuth } from '@/features/auth/hooks/useAuth';
 import { toastAlert } from '@/utils/alert';
 
 export const useUserListQuery = () => {
@@ -38,7 +39,7 @@ export const useUpdateUserMutation = () => {
   const queryClient = useQueryClient();
 
   // 로그인 정보
-  const { loginUser, updateUserInfo } = useAuth();
+  const loginUser = queryClient.getQueryData<LoginInfo>(['loginUser']);
 
   const { mutate, isPending } = useMutation({
     mutationFn: ({ data }: { data: UpdateUser }) => {
@@ -49,8 +50,15 @@ export const useUpdateUserMutation = () => {
       return updateUser(loginUser.id, data);
     },
     onSuccess: (_, variables) => {
-      updateUserInfo(variables.data);
-      queryClient.invalidateQueries({ queryKey: ['user'] });
+      // 수정한 내용을 화면에 즉시 반영
+      queryClient.setQueryData<LoginInfo>(['loginUser'], (prev) =>
+        prev ? { ...prev, ...variables.data } : prev,
+      );
+
+      // 서버 최신 정보로 갱신 (재조회 완료 전까지 기존 데이터 띄움)
+      void queryClient.invalidateQueries({ queryKey: ['loginUser'] });
+      void queryClient.invalidateQueries({ queryKey: ['user'] });
+
       toastAlert({ type: 'success', content: '사용자 정보가 수정되었습니다.' });
     },
     onError: (error) => {
@@ -116,4 +124,15 @@ export const useRestoreUserMutation = () => {
   });
 
   return { mutate };
+};
+
+// 로그인 정보 조회
+export const useLoginInfoQuery = (enabled: boolean = true) => {
+  return useQuery<LoginInfo>({
+    queryKey: ['loginUser'],
+    queryFn: getLoginInfo,
+    staleTime: 5 * 60 * 1000,
+    retry: false,
+    enabled,
+  });
 };

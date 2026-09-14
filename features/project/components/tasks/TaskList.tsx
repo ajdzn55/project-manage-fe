@@ -9,9 +9,9 @@ import Table from '@/components/Table';
 import { projectTaskColumns } from '@/features/project/constants/project.columns';
 import type { ProjectTask } from '@/features/project/types/task.type';
 import { useTaskListQuery } from '@/features/project/hooks/useTask';
-import { useAuth } from '@/features/auth/hooks/useAuth';
 import EmptyState from '@/features/project/components/EmptyState';
 import { useRouter } from 'next/navigation';
+import { useLoginInfoQuery } from '@/features/user/hooks/useUser';
 
 const statusOptions = [{ label: '전체', value: '' }, ...taskStatusOptions];
 
@@ -20,7 +20,7 @@ const TaskList = () => {
   const wStatus = useWatch({ control, name: 'status' });
   const wName = useWatch({ control, name: 'name' });
 
-  const { loginUser } = useAuth();
+  const { data: loginUser } = useLoginInfoQuery();
   const { data: tasks } = useTaskListQuery({ isMyTask: loginUser?.id });
 
   const filteredTasks = useMemo(() => {

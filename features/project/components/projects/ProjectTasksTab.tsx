@@ -15,7 +15,8 @@ import {
   useTaskListQuery,
   useUpdateTaskMutation,
 } from '@/features/project/hooks/useTask';
-import { useAuth } from '@/features/auth/hooks/useAuth';
+import { TaskStatusEnum } from '@/features/project/types/enums';
+import { useLoginInfoQuery } from '@/features/user/hooks/useUser';
 
 interface Props {
   projectId: string;
@@ -23,7 +24,7 @@ interface Props {
 }
 
 const ProjectTasksTab = ({ projectId, isOwner }: Props) => {
-  const { loginUser } = useAuth();
+  const { data: loginUser } = useLoginInfoQuery();
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [rowId, setRowId] = useState<string | null>(null);
@@ -64,15 +65,25 @@ const ProjectTasksTab = ({ projectId, isOwner }: Props) => {
     (data: ProjectTask) => {
       if (!loginUser) return;
 
-      const { id, ...body } = data;
+      const { id, status, dueDate, ...body } = data;
+      const statusStr = String(status);
 
       if (rowId) {
-        updateMutate({ id, data: body });
+        updateMutate({
+          id,
+          data: {
+            ...body,
+            status: statusStr === '' ? undefined : (status as TaskStatusEnum),
+            dueDate: dueDate === '' ? null : dueDate,
+          },
+        });
       } else {
         const requestBody: CreateProjectTask = {
           ...body,
           projectId,
           createdById: loginUser.id,
+          status: statusStr === '' ? undefined : (status as TaskStatusEnum),
+          dueDate: dueDate === '' ? null : dueDate,
         };
         createMutate(requestBody);
       }

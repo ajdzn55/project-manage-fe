@@ -27,8 +27,9 @@ export interface ProjectSimple extends Omit<
   createdById: string;
 }
 
-export type CreateProject = Omit<Project, 'id' | 'members'> & {
+export type CreateProject = Omit<Project, 'id' | 'members' | 'status'> & {
   createdById: string;
+  status?: ProjectStatusEnum;
 };
 
 export type UpdateProject = Omit<CreateProject, 'status' | 'createdById'> & {

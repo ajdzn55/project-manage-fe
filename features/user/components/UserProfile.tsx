@@ -5,12 +5,14 @@ import { format } from 'date-fns';
 import { useForm } from 'react-hook-form';
 import Button from '@/components/Button';
 import TextInput from '@/components/TextInput';
-import { useAuth } from '@/features/auth/hooks/useAuth';
 import type { UpdateUser } from '@/features/user/types/user.type';
-import { useUpdateUserMutation } from '@/features/user/hooks/useUser';
+import {
+  useLoginInfoQuery,
+  useUpdateUserMutation,
+} from '@/features/user/hooks/useUser';
 
 const UserProfile = () => {
-  const { loginUser } = useAuth();
+  const { data: loginUser } = useLoginInfoQuery();
   const {
     register,
     handleSubmit,
