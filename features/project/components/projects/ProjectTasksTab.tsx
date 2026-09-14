@@ -15,8 +15,8 @@ import {
   useTaskListQuery,
   useUpdateTaskMutation,
 } from '@/features/project/hooks/useTask';
-import { useAuth } from '@/features/auth/hooks/useAuth';
 import { TaskStatusEnum } from '@/features/project/types/enums';
+import { useLoginInfoQuery } from '@/features/user/hooks/useUser';
 
 interface Props {
   projectId: string;
@@ -24,7 +24,7 @@ interface Props {
 }
 
 const ProjectTasksTab = ({ projectId, isOwner }: Props) => {
-  const { loginUser } = useAuth();
+  const { data: loginUser } = useLoginInfoQuery();
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [rowId, setRowId] = useState<string | null>(null);

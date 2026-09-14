@@ -9,7 +9,6 @@ import Tab from '@/components/Tab';
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import MoreMenuButton from '@/components/MoreMenuButton';
-import { useAuth } from '@/features/auth/hooks/useAuth';
 import {
   ProjectMemberRoleEnum,
   ProjectStatusEnum,
@@ -25,13 +24,15 @@ import {
   useProjectQuery,
   useUpdateProjectMutation,
 } from '@/features/project/hooks/useProject';
+import { useLoginInfoQuery } from '@/features/user/hooks/useUser';
 
 interface Props {
   projectId: string;
 }
 
 const ProjectDetail = ({ projectId }: Props) => {
-  const { loginUser } = useAuth();
+  const { data: loginUser } = useLoginInfoQuery();
+
   const [selectedTab, setSelectedTab] = useState('개요');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 

@@ -7,7 +7,6 @@ import { type CreateProject, Project } from '../../types/project.type';
 import { useForm, useWatch } from 'react-hook-form';
 import SearchInput from '@/components/SearchInput';
 import { useMemo, useState } from 'react';
-import { useAuth } from '@/features/auth/hooks/useAuth';
 import { projectStatusOptions } from '@/features/project/constants/project.const';
 import ProjectModal from '@/features/project/components/projects/ProjectModal';
 import {
@@ -15,6 +14,7 @@ import {
   useProjectListQuery,
 } from '@/features/project/hooks/useProject';
 import type { ProjectStatusEnum } from '@/features/project/types/enums';
+import { useLoginInfoQuery } from '@/features/user/hooks/useUser';
 
 const tabs = ['전체', '내 프로젝트'];
 const statusOptions = [{ label: '전체', value: '' }, ...projectStatusOptions];
@@ -24,7 +24,7 @@ const ProjectList = () => {
   const wName = useWatch({ control, name: 'name' });
   const wStatus = useWatch({ control, name: 'status' });
 
-  const { loginUser } = useAuth();
+  const { data: loginUser } = useLoginInfoQuery();
 
   const [selectedTab, setSelectedTab] = useState<string>('전체');
   const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
