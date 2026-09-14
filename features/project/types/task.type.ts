@@ -17,20 +17,25 @@ export interface ProjectTask {
 
 export type CreateProjectTask = Omit<
   ProjectTask,
-  'priority' | 'status' | 'id'
+  'priority' | 'status' | 'id' | 'createdById'
 > & {
   projectId: string;
   status?: TaskStatusEnum;
   priority?: TaskPriorityEnum;
 };
 
-export type UpdateProjectTask = Omit<
-  CreateProjectTask,
-  'projectId' | 'createdById'
->;
+export type UpdateProjectTask = Partial<Omit<CreateProjectTask, 'projectId'>>;
 
 export interface TaskSearchParams {
   projectId?: string;
   month?: string;
-  isMyTask?: string;
+  isMyTask?: boolean;
+}
+
+export interface TaskSummary {
+  totalCount: number;
+  todoCount: number;
+  inProgressCount: number;
+  doneCount: number;
+  progressRate: number;
 }

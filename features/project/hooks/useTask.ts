@@ -43,19 +43,18 @@ export const useTaskListQuery = (params: TaskSearchParams) => {
 export const useUpdateTaskMutation = () => {
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation({
+  const { mutate, mutateAsync } = useMutation({
     mutationFn: ({ id, data }: { id: string; data: UpdateProjectTask }) =>
       updateTask(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['task'] });
-      toastAlert({ type: 'success', content: '작업이 수정되었습니다.' });
     },
     onError: (error) => {
       console.log(error);
     },
   });
 
-  return { mutate };
+  return { mutate, mutateAsync };
 };
 
 export const useDeleteTaskMutation = () => {
