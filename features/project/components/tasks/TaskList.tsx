@@ -11,7 +11,7 @@ import type { ProjectTask } from '@/features/project/types/task.type';
 import { useTaskListQuery } from '@/features/project/hooks/useTask';
 import EmptyState from '@/features/project/components/EmptyState';
 import { useRouter } from 'next/navigation';
-import { useLoginInfoQuery } from '@/features/user/hooks/useUser';
+import { useUserListQuery } from '@/features/user/hooks/useUser';
 
 const statusOptions = [{ label: '전체', value: '' }, ...taskStatusOptions];
 
@@ -20,8 +20,8 @@ const TaskList = () => {
   const wStatus = useWatch({ control, name: 'status' });
   const wName = useWatch({ control, name: 'name' });
 
-  const { data: loginUser } = useLoginInfoQuery();
-  const { data: tasks } = useTaskListQuery({ isMyTask: loginUser?.id });
+  const { data: users } = useUserListQuery();
+  const { data: tasks } = useTaskListQuery({ isMyTask: true });
 
   const filteredTasks = useMemo(() => {
     // 상태로 필터링
@@ -72,7 +72,7 @@ const TaskList = () => {
 
           <div className="mt-5 flex gap-6 overflow-x-auto">
             <Table
-              columns={projectTaskColumns(false)}
+              columns={projectTaskColumns(users ?? [])}
               data={filteredTasks ?? []}
               tableBorder
             />
