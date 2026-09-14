@@ -3,7 +3,7 @@ import Table from '@/components/Table';
 import { projectTaskColumns } from '@/features/project/constants/project.columns';
 import { useCallback, useMemo, useState } from 'react';
 import TaskModal from '../tasks/TaskModal';
-import { dialogAlert } from '@/utils/alert';
+import { dialogAlert, toastAlert } from '@/utils/alert';
 import EmptyState from '@/features/project/components/EmptyState';
 import type {
   CreateProjectTask,
@@ -16,7 +16,11 @@ import {
   useUpdateTaskMutation,
 } from '@/features/project/hooks/useTask';
 import { TaskStatusEnum } from '@/features/project/types/enums';
-import { useLoginInfoQuery } from '@/features/user/hooks/useUser';
+import {
+  useLoginInfoQuery,
+  useUserListQuery,
+} from '@/features/user/hooks/useUser';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface Props {
   projectId: string;
@@ -25,6 +29,7 @@ interface Props {
 
 const ProjectTasksTab = ({ projectId, isOwner }: Props) => {
   const { data: loginUser } = useLoginInfoQuery();
+  const { data: users } = useUserListQuery();
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [rowId, setRowId] = useState<string | null>(null);
@@ -33,6 +38,8 @@ const ProjectTasksTab = ({ projectId, isOwner }: Props) => {
   const { mutate: createMutate } = useCreateTaskMutation();
   const { mutate: updateMutate } = useUpdateTaskMutation();
   const { mutate: deleteMutate } = useDeleteTaskMutation();
+
+  const queryClient = useQueryClient();
 
   const targetTask = tasks?.find((v) => v.id === rowId);
 
@@ -55,47 +62,72 @@ const ProjectTasksTab = ({ projectId, isOwner }: Props) => {
       });
 
       if (alertRes.isConfirmed) {
-        deleteMutate(taskId);
+        deleteMutate(taskId, {
+          onSuccess: () =>
+            queryClient.invalidateQueries({ queryKey: ['project', projectId] }),
+        });
       }
     },
-    [deleteMutate],
+    [deleteMutate, projectId, queryClient],
   );
 
   const handleSaveTask = useCallback(
     (data: ProjectTask) => {
       if (!loginUser) return;
 
-      const { id, status, dueDate, ...body } = data;
+      const { id, status, dueDate, assigneeId, ...body } = data;
       const statusStr = String(status);
 
       if (rowId) {
-        updateMutate({
-          id,
-          data: {
-            ...body,
-            status: statusStr === '' ? undefined : (status as TaskStatusEnum),
-            dueDate: dueDate === '' ? null : dueDate,
+        updateMutate(
+          {
+            id,
+            data: {
+              ...body,
+              assigneeId: assigneeId === '' ? null : assigneeId,
+              status: statusStr === '' ? undefined : (status as TaskStatusEnum),
+              dueDate: dueDate === '' ? null : dueDate,
+            },
           },
-        });
+          {
+            onSuccess: () => {
+              queryClient.invalidateQueries({
+                queryKey: ['project', projectId],
+              });
+              toastAlert({
+                type: 'success',
+                content: '작업이 수정되었습니다.',
+              });
+            },
+          },
+        );
       } else {
         const requestBody: CreateProjectTask = {
           ...body,
           projectId,
-          createdById: loginUser.id,
           status: statusStr === '' ? undefined : (status as TaskStatusEnum),
           dueDate: dueDate === '' ? null : dueDate,
         };
-        createMutate(requestBody);
+        createMutate(requestBody, {
+          onSuccess: () =>
+            queryClient.invalidateQueries({ queryKey: ['project', projectId] }),
+        });
       }
 
       setIsModalOpen(false);
     },
-    [createMutate, loginUser, projectId, rowId, updateMutate],
+    [createMutate, loginUser, projectId, queryClient, rowId, updateMutate],
   );
 
   const columns = useMemo(
-    () => projectTaskColumns(isOwner, handleModifyTask, handleDeleteTask),
-    [handleDeleteTask, handleModifyTask, isOwner],
+    () =>
+      projectTaskColumns(
+        users ?? [],
+        isOwner,
+        handleModifyTask,
+        handleDeleteTask,
+      ),
+    [handleDeleteTask, handleModifyTask, isOwner, users],
   );
 
   return (
