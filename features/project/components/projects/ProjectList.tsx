@@ -128,7 +128,7 @@ const ProjectList = () => {
           ))}
         </div>
 
-        <div className="mt-5 grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-4">
+        <div className="mt-5 grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-4">
           {filteredProjects.map((project) => (
             <ProjectCard key={project.id} project={project} />
           ))}
