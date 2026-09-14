@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, type ReactNode } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/features/auth/hooks/useAuth';
+import { type ReactNode, useEffect } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { useLoginInfoQuery } from '@/features/user/hooks/useUser';
+import { ClipLoader } from 'react-spinners';
 
 interface Props {
   children: ReactNode;
@@ -10,17 +11,35 @@ interface Props {
 
 const AuthGuard = ({ children }: Props) => {
   const router = useRouter();
-  const { loginUser, isInitialized } = useAuth();
 
+  // 로그인 없이 접근 가능한 페이지 확인
+  const pathname = usePathname();
+  const isPublicPage = ['/login', '/sign-up'].includes(pathname);
+
+  // 로그인이 필요한 페이지에서 사용자 정보 조회
+  const { isPending, error } = useLoginInfoQuery(!isPublicPage);
+
+  // 로그인 없이 접근 시도 시 차단
   useEffect(() => {
-    if (isInitialized && !loginUser) {
+    if (!isPublicPage && error) {
       router.replace('/login');
     }
-  }, [isInitialized, router, loginUser]);
+  }, [error, isPublicPage, router]);
 
-  if (!isInitialized || !loginUser) {
-    return null;
-  }
+  if (isPublicPage) return children;
+
+  if (isPending)
+    return (
+      <ClipLoader
+        color="#fff"
+        loading
+        size={150}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+      />
+    );
+
+  if (error) return null;
 
   return children;
 };

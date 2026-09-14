@@ -8,8 +8,9 @@ import {
   projectMenuItems,
 } from '../constants/project.const';
 import { dialogAlert } from '@/utils/alert';
-import { useAuth } from '@/features/auth/hooks/useAuth';
 import { useState } from 'react';
+import { clearAccessToken } from '@/lib/axios';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface Props {
   isCollapsed: boolean;
@@ -27,9 +28,9 @@ const ProjectSidebarNav = ({ isCollapsed }: Props) => {
     return pathname === href || pathname.startsWith(`${href}/`);
   };
 
-  const { logout } = useAuth();
-
   const [isLogoutActive, setIsLogoutActive] = useState<boolean>(false);
+
+  const queryClient = useQueryClient();
 
   const handleLogout = async () => {
     setIsLogoutActive(true);
@@ -40,7 +41,9 @@ const ProjectSidebarNav = ({ isCollapsed }: Props) => {
     });
 
     if (alertRes.isConfirmed) {
-      logout();
+      // queryClient.removeQueries({ queryKey: ['loginUser'] });
+      clearAccessToken();
+      queryClient.clear();
       router.replace('/login');
     }
     setIsLogoutActive(false);

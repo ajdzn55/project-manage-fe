@@ -6,45 +6,37 @@ import TextInput from '@/components/TextInput';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { mockUsers } from '../mocks/user.mock';
+import { login } from '@/features/user/api/user';
+import type { UserLogin } from '@/features/user/types/user.type';
+import { setAccessToken } from '@/lib/axios';
 import { dialogAlert } from '@/utils/alert';
-import { useAuth } from '@/features/auth/hooks/useAuth';
-
-type LoginFormType = {
-  id: string;
-  password: string;
-};
+import { isAxiosError } from 'axios';
 
 const LoginForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<LoginFormType>();
+    formState: { errors, isSubmitting },
+  } = useForm<UserLogin>();
   const router = useRouter();
-  const { login } = useAuth();
 
-  const invalidAlert = async () => {
-    await dialogAlert({
-      type: 'error',
-      content: '아이디 또는 비밀번호가 일치하지 않습니다.',
-      width: '380px',
-    });
-  };
+  const onSubmit = async (data: UserLogin) => {
+    try {
+      const { accessToken } = await login(data);
+      setAccessToken(accessToken);
+      router.replace('/project');
+    } catch (error) {
+      const isUnauthorized =
+        isAxiosError(error) && error.response?.status === 401;
 
-  const onSubmit = async (data: LoginFormType) => {
-    // 유효성 검사
-    const { id: userId, password } = data;
-    const targetUser = mockUsers.find((v) => v.id === userId);
-    const isMatchPassword = password !== targetUser?.password;
-
-    if (!targetUser || isMatchPassword) {
-      await invalidAlert();
+      await dialogAlert({
+        type: 'error',
+        content: isUnauthorized
+          ? error.response?.data.message
+          : '로그인 요청에 실패했습니다. 잠시 후 다시 시도해주세요.',
+      });
       return;
     }
-
-    login(targetUser);
-    router.replace('/project');
   };
 
   return (
@@ -75,7 +67,13 @@ const LoginForm = () => {
           placeholder="비밀번호를 입력하세요"
           hasError={!!errors.password}
         />
-        <Button text="로그인" type="submit" width="100%" height="40px" />
+        <Button
+          text="로그인"
+          type="submit"
+          width="100%"
+          height="40px"
+          disabled={isSubmitting}
+        />
       </form>
 
       <div className="mt-6 text-center">
