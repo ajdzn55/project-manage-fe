@@ -7,9 +7,10 @@ import { taskStatusOptions } from '@/features/project/constants/project.const';
 import DateInput from '@/components/DateInput';
 import ModalWrapper from '@/components/ModalWrapper';
 import InputLabel from '@/components/InputLabel';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useUserListQuery } from '@/features/user/hooks/useUser';
 import type { ProjectTask } from '@/features/project/types/task.type';
+import { TaskStatusEnum } from '@/features/project/types/enums';
 
 const TASK_COLOR_PALETTE = [
   '#FFD2D5',
@@ -43,7 +44,13 @@ const TaskModal = ({ onSave, onClose, targetTask }: TaskModalProps) => {
 
   const { data: users } = useUserListQuery();
 
-  const statusOptions = [{ label: '', value: '' }, ...taskStatusOptions];
+  const statusOptions = useMemo(() => {
+    if (targetTask) {
+      return taskStatusOptions;
+    }
+    return taskStatusOptions.filter((v) => v.value !== TaskStatusEnum.Done);
+  }, [targetTask]);
+
   const assigneeOptions = [
     { label: '', value: '' },
     ...(users ?? []).map((v) => ({ label: v.name, value: v.id })),
