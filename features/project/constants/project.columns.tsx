@@ -94,35 +94,44 @@ export const projectMemberColumns = (
 };
 
 const taskColumnHelper = createTableColumnHelper<ProjectTaskColumn>();
-const taskColumns = taskColumnHelper.columns([
-  taskColumnHelper.accessor('name', {
-    header: '작업명',
-    size: 300,
-    cell: (info) => (
-      <div className="flex min-w-0 items-center gap-3">
-        <span className="text-danger">□</span>
-        <span className="text-heading truncate font-medium">
-          {info.getValue()}
-        </span>
-      </div>
-    ),
-  }),
-  taskColumnHelper.accessor('assigneeName', {
-    header: '담당자',
-    size: 200,
-    cell: (info) => info.getValue() ?? '미지정',
-  }),
-  taskColumnHelper.accessor('status', {
-    header: '상태',
-    size: 180,
-    cell: (info) => <StatusBadge status={info.getValue()} />,
-  }),
-  taskColumnHelper.accessor('dueDate', {
-    header: '마감일',
-    size: 200,
-    cell: (info) => <time>{info.getValue() ?? '미정'}</time>,
-  }),
-]);
+const taskColumns = (users: User[]) => {
+  return taskColumnHelper.columns([
+    taskColumnHelper.accessor('name', {
+      header: '작업명',
+      size: 300,
+      cell: (info) => (
+        <div className="flex min-w-0 items-center gap-3">
+          <span className="text-danger">□</span>
+          <span className="text-heading truncate font-medium">
+            {info.getValue()}
+          </span>
+        </div>
+      ),
+    }),
+    taskColumnHelper.display({
+      id: 'assigneeName',
+      header: '담당자',
+      size: 200,
+      cell: (info) => {
+        const assigneeId = info.row.original.assigneeId;
+
+        return assigneeId
+          ? users.find((user) => user.id === assigneeId)?.name
+          : '미지정';
+      },
+    }),
+    taskColumnHelper.accessor('status', {
+      header: '상태',
+      size: 180,
+      cell: (info) => <StatusBadge status={info.getValue()} />,
+    }),
+    taskColumnHelper.accessor('dueDate', {
+      header: '마감일',
+      size: 200,
+      cell: (info) => <time>{info.getValue() ?? '미정'}</time>,
+    }),
+  ]);
+};
 
 const taskActionsColumn = (
   onModify?: (rowId: string) => void,
@@ -150,13 +159,14 @@ const taskActionsColumn = (
   });
 
 export const projectTaskColumns = (
+  users: User[],
   showActions?: boolean,
   onModify?: (rowId: string) => void,
   onDelete?: (rowId: string) => void,
 ): TableColumn<ProjectTask>[] =>
   showActions && onModify && onDelete
-    ? [...taskColumns, taskActionsColumn(onModify, onDelete)]
-    : taskColumns;
+    ? [...taskColumns(users), taskActionsColumn(onModify, onDelete)]
+    : taskColumns(users);
 
 const userColumnHelper = createTableColumnHelper<User>();
 

@@ -21,7 +21,6 @@ const ProjectCalendar = () => {
     format(new Date(), 'yyyy-MM'),
   );
   const [searchParams, setSearchParams] = useState<TaskSearchParams>({
-    projectId: '',
     month: targetMonth,
   });
 

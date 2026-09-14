@@ -33,7 +33,7 @@ interface Props {
 const ProjectDetail = ({ projectId }: Props) => {
   const { data: loginUser } = useLoginInfoQuery();
 
-  const [selectedTab, setSelectedTab] = useState('개요');
+  const [selectedTab, setSelectedTab] = useState<string>('개요');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const { data: targetProject } = useProjectQuery(projectId);
@@ -49,7 +49,13 @@ const ProjectDetail = ({ projectId }: Props) => {
     () => [
       {
         label: '개요',
-        item: <ProjectOverviewTab projectId={projectId} isOwner={isOwner} />,
+        item: (
+          <ProjectOverviewTab
+            projectId={projectId}
+            isOwner={isOwner}
+            taskSummary={targetProject?.taskSummary}
+          />
+        ),
       },
       {
         label: '작업',
@@ -66,7 +72,7 @@ const ProjectDetail = ({ projectId }: Props) => {
         ),
       },
     ],
-    [isOwner, projectId, targetProject?.members],
+    [isOwner, projectId, targetProject?.members, targetProject?.taskSummary],
   );
 
   const handleModifyProject = () => {

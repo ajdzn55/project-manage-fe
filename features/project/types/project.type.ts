@@ -1,5 +1,6 @@
 import { ProjectMemberRoleEnum, ProjectStatusEnum } from './enums';
 import { User } from '@/features/user/types/user.type';
+import type { TaskSummary } from '@/features/project/types/task.type';
 
 export interface ProjectMember extends Pick<User, 'name' | 'email'> {
   userId: User['id'];
@@ -18,6 +19,7 @@ export interface Project {
   startDate?: string | null;
   endDate?: string | null;
   members?: ProjectMember[];
+  taskSummary: TaskSummary;
 }
 
 export interface ProjectSimple extends Omit<

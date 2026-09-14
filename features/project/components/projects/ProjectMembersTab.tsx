@@ -12,6 +12,10 @@ import {
   useRemoveProjectMemberMutation,
 } from '@/features/project/hooks/useProjectMember';
 import { ProjectMemberRoleEnum } from '@/features/project/types/enums';
+import {
+  useTaskListQuery,
+  useUpdateTaskMutation,
+} from '@/features/project/hooks/useTask';
 
 interface Props {
   projectId: string;
@@ -24,10 +28,14 @@ const ProjectMembersTab = ({ projectId, isOwner, members }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const { data: users } = useUserListQuery();
+
   const { mutate: removeMutate } = useRemoveProjectMemberMutation(projectId);
   const { mutate: changeMutate } =
     useChangeProjectMemberRoleMutation(projectId);
   const { mutate: addMutate } = useAddProjectMemberMutation(projectId);
+
+  const { data: tasks } = useTaskListQuery({ projectId });
+  const { mutateAsync: updateTaskMutateAsync } = useUpdateTaskMutation();
 
   const availableUsers = useMemo(
     () =>
@@ -86,6 +94,19 @@ const ProjectMembersTab = ({ projectId, isOwner, members }: Props) => {
     [changeMutate, members],
   );
 
+  const emptyTaskAssignee = useCallback(
+    async (userId: string) => {
+      const targetTasks = tasks?.filter((v) => v.assigneeId === userId) ?? [];
+
+      await Promise.all(
+        targetTasks.map((v) =>
+          updateTaskMutateAsync({ id: v.id, data: { assigneeId: null } }),
+        ),
+      );
+    },
+    [tasks, updateTaskMutateAsync],
+  );
+
   const handleDeleteMember = useCallback(
     async (userId: string) => {
       const alertRes = await dialogAlert({
@@ -97,10 +118,11 @@ const ProjectMembersTab = ({ projectId, isOwner, members }: Props) => {
       });
 
       if (alertRes.isConfirmed) {
+        await emptyTaskAssignee(userId);
         removeMutate(userId);
       }
     },
-    [removeMutate],
+    [emptyTaskAssignee, removeMutate],
   );
 
   const handleAddMember = useCallback(

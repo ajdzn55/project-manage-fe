@@ -11,12 +11,15 @@ import {
   useUserListQuery,
 } from '@/features/user/hooks/useUser';
 import { dialogAlert } from '@/utils/alert';
+import { useRouter } from 'next/navigation';
 
 const SignUpForm = () => {
   const { handleSubmit, register } = useForm<CreateUser>();
 
   const { data: users } = useUserListQuery();
   const { mutate: postMutate } = useCreateUserMutation();
+
+  const router = useRouter();
 
   const onSubmit = async (data: CreateUser) => {
     // 중복 아이디 검사
@@ -27,7 +30,7 @@ const SignUpForm = () => {
       return;
     }
 
-    postMutate({ data });
+    postMutate({ data }, { onSuccess: () => router.replace('/login') });
   };
 
   return (

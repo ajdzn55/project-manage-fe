@@ -54,6 +54,11 @@ const ModalWrapper = ({
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+          }
+        }}
         onSubmit={(e) => {
           e.preventDefault();
           if (onSubmit) onSubmit(e);
