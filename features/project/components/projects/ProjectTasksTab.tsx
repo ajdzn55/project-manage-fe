@@ -105,6 +105,7 @@ const ProjectTasksTab = ({ projectId, isOwner }: Props) => {
         const requestBody: CreateProjectTask = {
           ...body,
           projectId,
+          assigneeId: assigneeId === '' ? null : assigneeId,
           status: statusStr === '' ? undefined : (status as TaskStatusEnum),
           dueDate: dueDate === '' ? null : dueDate,
         };
