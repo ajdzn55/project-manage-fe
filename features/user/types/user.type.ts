@@ -15,3 +15,7 @@ export interface LoginInfo extends User {
 }
 
 export type UserLogin = Pick<CreateUser, 'id' | 'password'>;
+
+export interface NoticeCheck {
+  lastCheckedDate?: string;
+}

@@ -2,12 +2,15 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
   CreateUser,
   LoginInfo,
+  NoticeCheck,
   UpdateUser,
   User,
 } from '@/features/user/types/user.type';
 import {
+  checkDueTaskNotice,
   createUser,
   deleteUser,
+  getCheckNotice,
   getLoginInfo,
   getUser,
   getUserList,
@@ -135,4 +138,26 @@ export const useLoginInfoQuery = (enabled: boolean = true) => {
     retry: false,
     enabled,
   });
+};
+
+export const useCheckNoticeQuery = () => {
+  const { data } = useQuery<NoticeCheck>({
+    queryKey: ['check-notice'],
+    queryFn: getCheckNotice,
+  });
+
+  return { data };
+};
+
+export const useCheckDueTaskNoticeMutation = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation({
+    mutationFn: () => checkDueTaskNotice(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['check-notice'] });
+    },
+  });
+
+  return { mutate };
 };

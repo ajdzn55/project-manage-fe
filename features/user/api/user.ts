@@ -2,6 +2,7 @@ import axiosInstance from '../../../lib/axios';
 import type {
   CreateUser,
   LoginInfo,
+  NoticeCheck,
   UpdateUser,
   User,
   UserLogin,
@@ -87,6 +88,28 @@ export const login = async (data: UserLogin) => {
 export const getLoginInfo = async () => {
   try {
     const response = await axiosInstance.get<LoginInfo>('/auth/login');
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+// 마감 임박 작업 알림 마지막 확인일자 조회
+export const getCheckNotice = async () => {
+  try {
+    const response = await axiosInstance.get<NoticeCheck>('/user/check-notice');
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+// 마감 임박 작업 알림 확인
+export const checkDueTaskNotice = async () => {
+  try {
+    const response = await axiosInstance.put<void>('/user/check-notice');
     return response.data;
   } catch (error) {
     console.error(error);
