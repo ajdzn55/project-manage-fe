@@ -32,10 +32,16 @@ export interface TaskSearchParams {
   isMyTask?: boolean;
 }
 
+export interface DailyCompletedCount {
+  date: string;
+  count: number;
+}
+
 export interface TaskSummary {
   totalCount: number;
   todoCount: number;
   inProgressCount: number;
   doneCount: number;
   progressRate: number;
+  dailyCompletedCounts: DailyCompletedCount[];
 }
