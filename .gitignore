@@ -45,3 +45,5 @@ next-env.d.ts
 
 # iml
 *.iml
+*storybook.log
+storybook-static
