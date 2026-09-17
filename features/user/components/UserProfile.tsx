@@ -77,6 +77,7 @@ const UserProfile = () => {
             labelWidth="80px"
             register={register('name', { required: true })}
             hasError={!!errors.name}
+            required
           />
           <TextInput
             label="이메일"
@@ -84,6 +85,7 @@ const UserProfile = () => {
             type="email"
             register={register('email', { required: true })}
             hasError={!!errors.email}
+            required
           />
           <div className="flex min-h-11 items-center gap-[3px]">
             <span className="text-body w-20 shrink-0 font-semibold">

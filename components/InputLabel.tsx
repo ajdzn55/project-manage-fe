@@ -6,9 +6,15 @@ interface Props {
   label?: string;
   labelWidth?: string;
   tooltip?: { id: string; content: string; type: 'warning' | 'info' };
+  required?: boolean;
 }
 
-const InputLabel = ({ label, labelWidth = '0px', tooltip }: Props) => {
+const InputLabel = ({
+  label,
+  labelWidth = '0px',
+  tooltip,
+  required = false,
+}: Props) => {
   const tooltipIcon = tooltip?.type === 'warning' ? '!' : '?';
 
   return (
@@ -18,6 +24,7 @@ const InputLabel = ({ label, labelWidth = '0px', tooltip }: Props) => {
         className="text-body flex shrink-0 items-center gap-1.5 font-semibold"
       >
         <label htmlFor={label}>{label}</label>
+        {required && <span className="text-danger">*</span>}
 
         {tooltip && (
           <span

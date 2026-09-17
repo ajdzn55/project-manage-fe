@@ -77,6 +77,7 @@ const TaskModal = ({ onSave, onClose, targetTask }: TaskModalProps) => {
         labelWidth="80px"
         register={register('name', { required: true })}
         hasError={!!errors.name}
+        required
       />
       <TextInput
         label="설명"

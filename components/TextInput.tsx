@@ -9,6 +9,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   labelWidth?: string;
   register?: UseFormRegisterReturn<any>;
   hasError?: boolean;
+  required?: boolean;
 }
 
 const TextInput = ({
@@ -17,6 +18,7 @@ const TextInput = ({
   labelWidth = '0px',
   register,
   hasError = false,
+  required = false,
   ...inputProps
 }: Props) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -36,7 +38,7 @@ const TextInput = ({
         height: inputProps.height ? inputProps.height : 'auto',
       }}
     >
-      <InputLabel label={label} labelWidth={labelWidth} />
+      <InputLabel label={label} labelWidth={labelWidth} required={required} />
 
       <div className="relative min-w-0 flex-1">
         <input
@@ -46,6 +48,7 @@ const TextInput = ({
           className={`${borderClassName} text-heading h-11 w-full rounded-lg border bg-white px-3 transition outline-none placeholder:text-slate-400 focus:ring-3 ${
             isPassword ? 'pr-11' : ''
           }`}
+          required={required}
           {...inputProps}
         />
 
