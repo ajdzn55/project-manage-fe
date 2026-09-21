@@ -1,17 +1,19 @@
 import type { UseFormRegisterReturn } from 'react-hook-form';
 import type { InputHTMLAttributes } from 'react';
 import { SearchIcon } from '@/components/Icons';
-import InputLabel from '@/components/InputLabel';
+import InputLabel, { type LabelTooltip } from '@/components/InputLabel';
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   labelWidth?: string;
+  labelTooltip?: LabelTooltip;
   register?: UseFormRegisterReturn<any>;
 }
 
 const SearchInput = ({
   label,
   labelWidth = '0px',
+  labelTooltip,
   register,
   ...inputProps
 }: Props) => {
@@ -23,7 +25,11 @@ const SearchInput = ({
         height: inputProps.height ? inputProps.height : 'auto',
       }}
     >
-      <InputLabel label={label} labelWidth={labelWidth} />
+      <InputLabel
+        label={label}
+        labelWidth={labelWidth}
+        tooltip={labelTooltip}
+      />
 
       <div className="relative min-w-0 flex-1">
         <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center">
