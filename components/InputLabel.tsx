@@ -2,10 +2,16 @@ import React from 'react';
 import { Tooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
 
+export interface LabelTooltip {
+  id: string;
+  content: string;
+  type: 'warning' | 'info';
+}
+
 interface Props {
   label?: string;
   labelWidth?: string;
-  tooltip?: { id: string; content: string; type: 'warning' | 'info' };
+  tooltip?: LabelTooltip;
   required?: boolean;
 }
 
@@ -20,7 +26,7 @@ const InputLabel = ({
   return (
     <>
       <div
-        style={{ width: labelWidth }}
+        style={{ minWidth: labelWidth }}
         className="text-body flex shrink-0 items-center gap-1.5 font-semibold"
       >
         <label htmlFor={label}>{label}</label>
