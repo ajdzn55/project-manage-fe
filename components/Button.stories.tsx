@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import Button from './Button';
 
 const meta = {
-  title: 'Components/Button',
+  title: 'components/Button',
   component: Button,
   tags: ['autodocs'],
   argTypes: {
@@ -42,6 +42,8 @@ const meta = {
     color: 'default',
     type: 'button',
     disabled: false,
+    width: '120px',
+    height: '48px',
   },
 } satisfies Meta<typeof Button>;
 

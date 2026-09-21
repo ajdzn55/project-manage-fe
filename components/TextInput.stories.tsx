@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import TextInput from './TextInput';
 
 const meta = {
-  title: 'Components/TextInput',
+  title: 'components/TextInput',
   component: TextInput,
   tags: ['autodocs'],
   argTypes: {
