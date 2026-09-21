@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import TextInput from './TextInput';
+import { inputArgs } from '@/constants/storybook.const';
 
 const meta = {
   title: 'components/TextInput',
@@ -8,7 +9,7 @@ const meta = {
   argTypes: {
     type: {
       control: 'select',
-      options: ['text', 'password', 'email'],
+      options: ['text', 'password', 'email', 'number'],
       description: 'HTML 인풋 타입',
     },
     register: {
@@ -39,8 +40,7 @@ const meta = {
     },
   },
   args: {
-    label: 'InputLabel',
-    labelWidth: '80px',
+    ...inputArgs,
     hasError: false,
   },
 } satisfies Meta<typeof TextInput>;
