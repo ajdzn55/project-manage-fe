@@ -1,16 +1,17 @@
 import type { SelectHTMLAttributes } from 'react';
 import type { UseFormRegisterReturn } from 'react-hook-form';
 import { SelectArrowIcon } from '@/components/Icons';
-import InputLabel from '@/components/InputLabel';
+import InputLabel, { type LabelTooltip } from '@/components/InputLabel';
 
 export interface SelectInputOption {
   label: string;
-  value: string;
+  value: string | number;
 }
 
 interface Props extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
   labelWidth?: string;
+  labelTooltip?: LabelTooltip;
   register?: UseFormRegisterReturn<any>;
   options?: SelectInputOption[];
   width?: string;
@@ -20,6 +21,7 @@ interface Props extends SelectHTMLAttributes<HTMLSelectElement> {
 const SelectInput = ({
   label,
   labelWidth = '0px',
+  labelTooltip,
   register,
   options = [],
   width,
@@ -34,7 +36,11 @@ const SelectInput = ({
         height: height ? height : 'auto',
       }}
     >
-      <InputLabel label={label} labelWidth={labelWidth} />
+      <InputLabel
+        label={label}
+        labelWidth={labelWidth}
+        tooltip={labelTooltip}
+      />
 
       <div className="relative min-w-0 flex-1">
         <select
