@@ -9,7 +9,7 @@ export interface ProjectMember extends Pick<User, 'name' | 'email'> {
 
 export type AddProjectMember = Pick<ProjectMember, 'userId'>;
 
-export type UpdateProjectMember = Pick<ProjectMember, 'userId' | 'role'>;
+export type UpdateProjectMember = Pick<ProjectMember, 'role'>;
 
 export interface Project {
   id: string;

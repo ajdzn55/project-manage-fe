@@ -61,9 +61,9 @@ const ModalWrapper = ({
         }}
         onSubmit={(e) => {
           e.preventDefault();
-          if (onSubmit) onSubmit(e);
+          onSubmit?.(e);
         }}
-        style={{ maxWidth }}
+        style={{ maxWidth, width: '100%' }}
         className="fixed top-1/2 left-1/2 z-[60] w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-5 shadow-2xl"
       >
         <div className="flex items-center justify-between gap-4">

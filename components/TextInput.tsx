@@ -2,21 +2,25 @@
 
 import React, { type InputHTMLAttributes, useState } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
-import InputLabel from '@/components/InputLabel';
+import InputLabel, { type LabelTooltip } from '@/components/InputLabel';
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   labelWidth?: string;
+  labelTooltip?: LabelTooltip;
   register?: UseFormRegisterReturn<any>;
   hasError?: boolean;
+  required?: boolean;
 }
 
 const TextInput = ({
   label,
   type = 'text',
   labelWidth = '0px',
+  labelTooltip,
   register,
   hasError = false,
+  required = false,
   ...inputProps
 }: Props) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -36,7 +40,12 @@ const TextInput = ({
         height: inputProps.height ? inputProps.height : 'auto',
       }}
     >
-      <InputLabel label={label} labelWidth={labelWidth} />
+      <InputLabel
+        label={label}
+        labelWidth={labelWidth}
+        required={required}
+        tooltip={labelTooltip}
+      />
 
       <div className="relative min-w-0 flex-1">
         <input
@@ -46,6 +55,7 @@ const TextInput = ({
           className={`${borderClassName} text-heading h-11 w-full rounded-lg border bg-white px-3 transition outline-none placeholder:text-slate-400 focus:ring-3 ${
             isPassword ? 'pr-11' : ''
           }`}
+          required={required}
           {...inputProps}
         />
 

@@ -1,16 +1,18 @@
-import InputLabel from '@/components/InputLabel';
+import InputLabel, { type LabelTooltip } from '@/components/InputLabel';
 import React, { type InputHTMLAttributes } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   labelWidth?: string;
+  labelTooltip?: LabelTooltip;
   register?: UseFormRegisterReturn<any>;
 }
 
 const DateInput = ({
   label,
   labelWidth = '0px',
+  labelTooltip,
   register,
   ...inputProps
 }: Props) => {
@@ -22,7 +24,11 @@ const DateInput = ({
         height: inputProps.height ? inputProps.height : 'auto',
       }}
     >
-      <InputLabel label={label} labelWidth={labelWidth} />
+      <InputLabel
+        label={label}
+        labelWidth={labelWidth}
+        tooltip={labelTooltip}
+      />
 
       <div className="min-w-0 flex-1">
         <input

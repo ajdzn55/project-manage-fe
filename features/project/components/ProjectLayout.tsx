@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { type ReactNode, useCallback, useEffect, useState } from 'react';
 import ProjectSidebarNav from './ProjectSidebarNav';
 import { SIDEBAR_COLLAPSED_KEY } from '@/constants/common.const';
-import BannerBar from '@/components/BannerBar';
+import BannerBar from '@/features/project/components/BannerBar';
 import {
   useCheckDueTaskNoticeMutation,
   useCheckNoticeQuery,
