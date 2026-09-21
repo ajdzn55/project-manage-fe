@@ -34,8 +34,13 @@ export const useChangeProjectMemberRoleMutation = (projectId: string) => {
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
-    mutationFn: (data: UpdateProjectMember) =>
-      changeProjectMemberRole(projectId, data),
+    mutationFn: ({
+      userId,
+      data,
+    }: {
+      userId: string;
+      data: UpdateProjectMember;
+    }) => changeProjectMemberRole(projectId, userId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['project', projectId] });
       toastAlert({

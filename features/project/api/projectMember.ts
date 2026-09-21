@@ -26,11 +26,12 @@ export const addProjectMember = async (
 // 프로젝트 멤버 역할 변경
 export const changeProjectMemberRole = async (
   projectId: string,
+  userId: string,
   data: UpdateProjectMember,
 ) => {
   try {
     const response = await axiosInstance.patch<void>(
-      `/project/${projectId}/members`,
+      `/project/${projectId}/members/${userId}`,
       data,
     );
     return response.data;

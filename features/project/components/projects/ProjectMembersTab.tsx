@@ -88,7 +88,7 @@ const ProjectMembersTab = ({ projectId, isOwner, members }: Props) => {
       });
 
       if (alertRes.isConfirmed) {
-        changeMutate({ userId, role: changeRole });
+        changeMutate({ userId, data: { role: changeRole } });
       }
     },
     [changeMutate, members],
