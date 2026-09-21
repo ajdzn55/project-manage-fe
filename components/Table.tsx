@@ -54,6 +54,7 @@ interface Props<T extends object> {
   tableBorder?: boolean;
   isLoading?: boolean;
   skeletonRowCount?: number;
+  onDoubleClick?: (e: any) => void;
 }
 
 const alignClasses: Record<NonNullable<TableColumnMeta['align']>, string> = {
@@ -73,6 +74,7 @@ export default function Table<T extends object>({
   tableBorder = false,
   isLoading = false,
   skeletonRowCount = 3,
+  onDoubleClick,
 }: Props<T>) {
   const table = useTable({
     features: projectTableFeatures,
@@ -183,6 +185,11 @@ export default function Table<T extends object>({
                 onClick={
                   onRowClick ? () => onRowClick(row.original) : undefined
                 }
+                onDoubleClick={() => {
+                  if (onDoubleClick) {
+                    onDoubleClick(row.original);
+                  }
+                }}
                 tabIndex={onRowClick ? 0 : undefined}
                 onKeyDown={
                   onRowClick
@@ -199,7 +206,7 @@ export default function Table<T extends object>({
                   selectedRowId === row.id
                     ? 'bg-primary-soft'
                     : 'hover:bg-surface'
-                } ${onRowClick ? 'cursor-pointer' : ''}`}
+                } ${onRowClick || onDoubleClick ? 'cursor-pointer' : ''} `}
               >
                 {row.getVisibleCells().map((cell) => {
                   const meta = cell.column.columnDef.meta;
