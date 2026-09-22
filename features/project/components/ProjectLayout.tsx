@@ -12,6 +12,7 @@ import {
 import { useTaskListQuery } from '@/features/project/hooks/useTask';
 import { TaskStatusEnum } from '@/features/project/types/enums';
 import { addDays, format, startOfDay } from 'date-fns';
+import LogoIcon from '@/components/LogoIcon';
 
 interface Props {
   children: ReactNode;
@@ -97,9 +98,9 @@ const ProjectLayout = ({ children }: Props) => {
                 isSidebarCollapsed ? 'justify-center px-0' : 'gap-3 px-5'
               }`}
             >
-              <span className="bg-primary flex size-8 shrink-0 items-center justify-center rounded-lg font-bold text-white">
-                A
-              </span>
+              <div className="size-10">
+                <LogoIcon />
+              </div>
               <span
                 className={`text-heading overflow-hidden font-bold whitespace-nowrap transition-[max-width,opacity] duration-200 ${
                   isSidebarCollapsed

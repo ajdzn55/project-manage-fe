@@ -11,6 +11,7 @@ import type { UserLogin } from '@/features/user/types/user.type';
 import { setAccessToken } from '@/lib/axios';
 import { dialogAlert } from '@/utils/alert';
 import { isAxiosError } from 'axios';
+import LogoIcon from '@/components/LogoIcon';
 
 const LoginForm = () => {
   const {
@@ -42,8 +43,8 @@ const LoginForm = () => {
   return (
     <AuthLayout>
       <header className="mb-7 flex flex-col items-center text-center">
-        <div className="bg-primary mb-4 flex size-12 items-center justify-center rounded-xl shadow-sm">
-          {/* 로고 */}
+        <div className="mb-5 size-16">
+          <LogoIcon />
         </div>
         <h1 className="text-heading text-xl font-bold">ProjectHub</h1>
         <p className="text-muted mt-2">
