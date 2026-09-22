@@ -1,4 +1,6 @@
 import type { Args, ArgTypes } from '@storybook/nextjs-vite';
+import { createTableColumnHelper } from '@/components/Table';
+import type { User } from '@/features/user/types/user.type';
 
 export const inputArgTypes: ArgTypes = {
   label: {
@@ -28,3 +30,23 @@ export const inputArgs: Args = {
   width: '240px',
   height: '48px',
 };
+
+const columnHelper = createTableColumnHelper<User>();
+
+export const storybookColumns = columnHelper.columns([
+  columnHelper.accessor('id', {
+    header: '아이디',
+    size: 100,
+    cell: (info) => info.getValue(),
+  }),
+  columnHelper.accessor('name', {
+    header: '이름',
+    size: 100,
+    cell: (info) => info.getValue(),
+  }),
+]);
+
+export const storybookData: User[] = [
+  { id: 'test1', name: '테스트1' },
+  { id: 'test2', name: '테스트2' },
+];
