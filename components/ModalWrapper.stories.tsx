@@ -1,28 +1,10 @@
 import { type Meta, StoryObj } from '@storybook/nextjs-vite';
 import ModalWrapper from '@/components/ModalWrapper';
-import Table, { createTableColumnHelper } from '@/components/Table';
-import type { User } from '@/features/user/types/user.type';
+import Table from '@/components/Table';
 import { useState } from 'react';
 import Button from '@/components/Button';
 import { fn } from 'storybook/test';
-
-const columnHelper = createTableColumnHelper<User>();
-const columns = columnHelper.columns([
-  columnHelper.accessor('id', {
-    header: '아이디',
-    size: 100,
-    cell: (info) => info.getValue(),
-  }),
-  columnHelper.accessor('name', {
-    header: '이름',
-    size: 100,
-    cell: (info) => info.getValue(),
-  }),
-]);
-const data: User[] = [
-  { id: 'test1', name: '테스트1' },
-  { id: 'test2', name: '테스트2' },
-];
+import { storybookColumns, storybookData } from '@/constants/storybook.const';
 
 const meta = {
   title: 'components/ModalWrapper',
@@ -71,7 +53,9 @@ const meta = {
   args: {
     title: '모달 제목',
     buttonText: '확인',
-    children: <Table data={data} columns={columns} tableBorder />,
+    children: (
+      <Table data={storybookData} columns={storybookColumns} tableBorder />
+    ),
     onClose: fn(),
   },
 } satisfies Meta<typeof ModalWrapper>;
