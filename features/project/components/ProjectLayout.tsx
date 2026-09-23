@@ -12,7 +12,7 @@ import {
 import { useTaskListQuery } from '@/features/project/hooks/useTask';
 import { TaskStatusEnum } from '@/features/project/types/enums';
 import { addDays, format, startOfDay } from 'date-fns';
-import LogoIcon from '@/components/LogoIcon';
+import LogoIcon from '@/components/icons/LogoIcon';
 
 interface Props {
   children: ReactNode;

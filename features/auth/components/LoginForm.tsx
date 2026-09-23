@@ -11,7 +11,7 @@ import type { UserLogin } from '@/features/user/types/user.type';
 import { setAccessToken } from '@/lib/axios';
 import { dialogAlert } from '@/utils/alert';
 import { isAxiosError } from 'axios';
-import LogoIcon from '@/components/LogoIcon';
+import LogoIcon from '@/components/icons/LogoIcon';
 
 const LoginForm = () => {
   const {
