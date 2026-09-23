@@ -10,7 +10,7 @@ const BannerBar = ({ dueTasks, onClose }: Props) => {
   const bannerText = `마감일이 다가오는 작업이 있습니다. (${dueTasks.length}건: ${taskNames})`;
 
   return (
-    <div className="relative z-50 flex h-10 w-full items-center overflow-hidden border-b border-amber-200/60 bg-amber-50 text-xs font-medium text-amber-800">
+    <div className="fixed inset-x-0 top-0 z-50 flex h-8 w-full items-center overflow-hidden border-b border-amber-200/60 bg-amber-50 text-xs font-medium text-amber-800">
       <style>{`
         @keyframes marquee {
           0% { transform: translateX(0%); }
