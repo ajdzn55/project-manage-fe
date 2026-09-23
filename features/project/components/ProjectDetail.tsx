@@ -45,11 +45,12 @@ const ProjectDetail = ({ projectId }: Props) => {
       member.userId === loginUser?.id &&
       member.role === ProjectMemberRoleEnum.Owner,
   );
+
   const tabs = useMemo(
     () => [
       {
         label: '개요',
-        item: (
+        component: () => (
           <ProjectOverviewTab
             projectId={projectId}
             isOwner={isOwner}
@@ -59,11 +60,13 @@ const ProjectDetail = ({ projectId }: Props) => {
       },
       {
         label: '작업',
-        item: <ProjectTasksTab projectId={projectId} isOwner={isOwner} />,
+        component: () => (
+          <ProjectTasksTab projectId={projectId} isOwner={isOwner} />
+        ),
       },
       {
         label: '멤버',
-        item: (
+        component: () => (
           <ProjectMembersTab
             projectId={projectId}
             isOwner={isOwner}

@@ -6,15 +6,15 @@ import { useArgs } from 'storybook/preview-api';
 const tabItems = [
   {
     label: '첫번째 탭',
-    item: <div className="p-7">첫번째 탭 내용입니다.</div>,
+    component: () => <div className="p-7">첫번째 탭 내용입니다.</div>,
   },
   {
     label: '두번째 탭',
-    item: <div className="p-7">두번째 탭 내용입니다.</div>,
+    component: () => <div className="p-7">두번째 탭 내용입니다.</div>,
   },
   {
     label: '세번째 탭',
-    item: <div className="p-7">세번째 탭 내용입니다.</div>,
+    component: () => <div className="p-7">세번째 탭 내용입니다.</div>,
   },
 ];
 
@@ -27,7 +27,9 @@ const meta = {
       control: false,
       description: '탭 라벨과 탭별 콘텐츠로 구성된 배열',
       table: {
-        type: { summary: '{ label: string; item: ReactNode }[]' },
+        type: {
+          summary: '{ label: string; component: ComponentType }[]',
+        },
       },
     },
     selected: {

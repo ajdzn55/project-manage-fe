@@ -1,15 +1,15 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import type { ComponentType } from 'react';
 
 interface Props {
-  TabItems: { label: string; item: ReactNode }[];
+  TabItems: { label: string; component: ComponentType }[];
   selected: string;
   setSelected: (tabLabel: string) => void;
 }
 
 const Tab = ({ TabItems, selected, setSelected }: Props) => {
-  const currentItem = TabItems.find((v) => v.label === selected)?.item;
+  const TargetComponent = TabItems.find((v) => v.label === selected)?.component;
 
   return (
     <>
@@ -25,8 +25,7 @@ const Tab = ({ TabItems, selected, setSelected }: Props) => {
           </button>
         ))}
       </div>
-
-      {currentItem}
+      {TargetComponent && <TargetComponent />}
     </>
   );
 };
