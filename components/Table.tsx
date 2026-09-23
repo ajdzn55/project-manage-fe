@@ -100,7 +100,7 @@ export default function Table<T extends object>({
 
   return (
     <div
-      className={`overflow-x-auto ${
+      className={`h-full overflow-x-auto overflow-y-auto ${
         tableBorder ? 'border-line rounded-xl border' : ''
       }`}
     >
@@ -120,9 +120,9 @@ export default function Table<T extends object>({
                     scope="col"
                     colSpan={header.colSpan}
                     rowSpan={meta?.rowSpan}
-                    className={`border-line relative border-r px-5 py-3 last:border-r-0 ${
+                    className={`border-line bg-surface sticky top-0 z-20 border-r px-5 py-3 last:border-r-0 ${
                       alignClasses[meta?.align ?? 'left']
-                    } ${isSticky ? 'bg-surface sticky z-20' : ''}`}
+                    } ${isSticky ? 'z-30' : ''}`}
                     style={{
                       width: getWidth(header.getSize()),
                       ...(isSticky && {
