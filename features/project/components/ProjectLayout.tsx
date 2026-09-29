@@ -12,6 +12,7 @@ import {
 import { useTaskListQuery } from '@/features/project/hooks/useTask';
 import { TaskStatusEnum } from '@/features/project/types/enums';
 import { addDays, format, startOfDay } from 'date-fns';
+import LogoIcon from '@/components/icons/LogoIcon';
 
 interface Props {
   children: ReactNode;
@@ -82,8 +83,8 @@ const ProjectLayout = ({ children }: Props) => {
         <BannerBar dueTasks={dueTasks} onClose={onCloseBannerBar} />
       )}
 
-      <main className="bg-surface min-h-dvh min-w-[1024px] overflow-auto p-8">
-        <div className="border-line mx-auto flex min-h-[calc(100dvh-64px)] max-w-360 rounded-xl border bg-white shadow-sm">
+      <main className="bg-surface h-dvh min-w-[1024px] overflow-hidden p-8">
+        <div className="border-line mx-auto flex h-[calc(100dvh-64px)] min-h-0 max-w-360 rounded-xl border bg-white shadow-sm">
           <aside
             className={`border-line relative flex shrink-0 flex-col border-r transition-[width] duration-200 ${
               isSidebarCollapsed ? 'w-16' : 'w-56'
@@ -97,9 +98,9 @@ const ProjectLayout = ({ children }: Props) => {
                 isSidebarCollapsed ? 'justify-center px-0' : 'gap-3 px-5'
               }`}
             >
-              <span className="bg-primary flex size-8 shrink-0 items-center justify-center rounded-lg font-bold text-white">
-                A
-              </span>
+              <div className="size-10">
+                <LogoIcon />
+              </div>
               <span
                 className={`text-heading overflow-hidden font-bold whitespace-nowrap transition-[max-width,opacity] duration-200 ${
                   isSidebarCollapsed

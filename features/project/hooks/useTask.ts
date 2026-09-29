@@ -46,11 +46,36 @@ export const useUpdateTaskMutation = () => {
   const { mutate, mutateAsync } = useMutation({
     mutationFn: ({ id, data }: { id: string; data: UpdateProjectTask }) =>
       updateTask(id, data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['task'] });
+
+    onMutate: async ({ id, data }) => {
+      await queryClient.cancelQueries({
+        queryKey: ['task'],
+      });
+
+      const previousTaskQueries = queryClient.getQueriesData<ProjectTask[]>({
+        queryKey: ['task'],
+      });
+
+      queryClient.setQueriesData<ProjectTask[]>(
+        { queryKey: ['task'] },
+        (tasks) =>
+          tasks?.map((task) => (task.id === id ? { ...task, ...data } : task)),
+      );
+
+      return { previousTaskQueries };
     },
-    onError: (error) => {
+
+    onError: (error, _variables, context) => {
       console.log(error);
+      context?.previousTaskQueries.forEach(([queryKey, tasks]) => {
+        queryClient.setQueryData(queryKey, tasks);
+      });
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['task'],
+      });
     },
   });
 

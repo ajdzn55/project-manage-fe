@@ -1,6 +1,6 @@
 import type { UseFormRegisterReturn } from 'react-hook-form';
 import type { InputHTMLAttributes } from 'react';
-import { SearchIcon } from '@/components/Icons';
+import { SearchIcon } from '@/components/icons/InputIcons';
 import InputLabel, { type LabelTooltip } from '@/components/InputLabel';
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {

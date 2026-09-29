@@ -6,6 +6,7 @@ import { ProjectMemberRoleEnum } from '@/features/project/types/enums';
 import type { ProjectMember } from '@/features/project/types/project.type';
 import type { User } from '@/features/user/types/user.type';
 import type { ProjectTask } from '@/features/project/types/task.type';
+import { TaskPriorityDesc } from '@/features/project/constants/task.const';
 
 const avatarStyles = [
   'bg-amber-100 text-amber-700',
@@ -119,6 +120,11 @@ const taskColumns = (users: User[]) => {
           ? users.find((user) => user.id === assigneeId)?.name
           : '미지정';
       },
+    }),
+    taskColumnHelper.accessor('priority', {
+      header: '우선순위',
+      size: 180,
+      cell: (info) => TaskPriorityDesc[info.getValue()],
     }),
     taskColumnHelper.accessor('status', {
       header: '상태',

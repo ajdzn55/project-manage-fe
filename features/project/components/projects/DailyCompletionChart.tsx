@@ -59,6 +59,7 @@ const DailyCompletionChart = ({ data }: { data: DailyCompletedCount[] }) => {
 
   const chartOptions = {
     responsive: true,
+    maintainAspectRatio: false,
     scales: {
       y: {
         beginAtZero: true, // Y축을 0부터 시작
@@ -70,7 +71,7 @@ const DailyCompletionChart = ({ data }: { data: DailyCompletedCount[] }) => {
   };
 
   return (
-    <div style={{ width: '100%', maxWidth: '800px', margin: '0 auto' }}>
+    <div className="mx-auto h-40 w-full max-w-200">
       <Bar data={chartData} options={chartOptions} />
     </div>
   );

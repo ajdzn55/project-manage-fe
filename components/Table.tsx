@@ -14,7 +14,7 @@ import {
   useTable,
   type ColumnDef,
 } from '@tanstack/react-table';
-import type { ReactNode } from 'react';
+import { useRef, type ReactNode, useEffect, useState } from 'react';
 
 export interface TableColumnMeta {
   sticky?: boolean;
@@ -98,13 +98,37 @@ export default function Table<T extends object>({
     return getWidth(size);
   };
 
+  const tableRows = table.getRowModel().rows;
+  const containerRef = useRef<HTMLDivElement>(null);
+  const tableRef = useRef<HTMLTableElement>(null);
+  const [hasEmptySpace, setHasEmptySpace] = useState<boolean>(false);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    const tableElement = tableRef.current;
+
+    if (!container || !tableElement) return;
+
+    const updateEmptySpace = () => {
+      setHasEmptySpace(tableElement.offsetHeight < container.clientHeight);
+    };
+
+    updateEmptySpace();
+
+    const resizeObserver = new ResizeObserver(updateEmptySpace);
+    resizeObserver.observe(container);
+
+    return () => resizeObserver.disconnect();
+  }, [data, isLoading, showFooter, skeletonRowCount]);
+
   return (
     <div
-      className={`overflow-x-auto ${
+      ref={containerRef}
+      className={`h-full overflow-x-auto overflow-y-auto ${
         tableBorder ? 'border-line rounded-xl border' : ''
       }`}
     >
-      <table className="text-muted w-full table-fixed text-left">
+      <table ref={tableRef} className="text-muted w-full table-fixed text-left">
         <thead className="bg-surface text-muted font-semibold">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id} className="border-line border-b">
@@ -120,9 +144,9 @@ export default function Table<T extends object>({
                     scope="col"
                     colSpan={header.colSpan}
                     rowSpan={meta?.rowSpan}
-                    className={`border-line relative border-r px-5 py-3 last:border-r-0 ${
+                    className={`border-line bg-surface sticky top-0 z-20 border-r px-5 py-3 last:border-r-0 ${
                       alignClasses[meta?.align ?? 'left']
-                    } ${isSticky ? 'bg-surface sticky z-20' : ''}`}
+                    } ${isSticky ? 'z-30' : ''}`}
                     style={{
                       width: getWidth(header.getSize()),
                       ...(isSticky && {
@@ -175,70 +199,76 @@ export default function Table<T extends object>({
           ))}
         </thead>
 
-        <tbody className="divide-y divide-slate-100">
+        <tbody>
           {isLoading ? (
             <SkeletonRow table={table} rowCount={skeletonRowCount} />
           ) : (
-            table.getRowModel().rows.map((row) => (
-              <tr
-                key={row.id}
-                onClick={
-                  onRowClick ? () => onRowClick(row.original) : undefined
-                }
-                onDoubleClick={() => {
-                  if (onDoubleClick) {
-                    onDoubleClick(row.original);
-                  }
-                }}
-                tabIndex={onRowClick ? 0 : undefined}
-                onKeyDown={
-                  onRowClick
-                    ? (event) => {
-                        if (event.target !== event.currentTarget) return;
-                        if (event.key === 'Enter' || event.key === ' ') {
-                          event.preventDefault();
-                          onRowClick(row.original);
-                        }
-                      }
-                    : undefined
-                }
-                className={`group transition-colors ${
-                  selectedRowId === row.id
-                    ? 'bg-primary-soft'
-                    : 'hover:bg-surface'
-                } ${onRowClick || onDoubleClick ? 'cursor-pointer' : ''} `}
-              >
-                {row.getVisibleCells().map((cell) => {
-                  const meta = cell.column.columnDef.meta;
-                  const isSticky = meta?.sticky ?? false;
+            tableRows.map((row, rowIndex) => {
+              const isLastRow = rowIndex === tableRows.length - 1;
+              const showBottomBorder =
+                !isLastRow || (hasEmptySpace && !showFooter);
 
-                  return (
-                    <td
-                      key={cell.id}
-                      className={`border-line border-r px-5 py-4 last:border-r-0 ${
-                        alignClasses[meta?.align ?? 'left']
-                      } ${isSticky ? 'group-hover:bg-surface sticky z-10 bg-white' : ''}`}
-                      style={{
-                        width: getWidth(cell.column.getSize()),
-                        ...(isSticky && {
-                          left: getStickyLeft(cell.column.id),
-                        }),
-                      }}
-                    >
-                      <div
-                        className={
-                          meta?.wrap
-                            ? 'break-words whitespace-normal'
-                            : 'truncate'
+              return (
+                <tr
+                  key={row.id}
+                  onClick={
+                    onRowClick ? () => onRowClick(row.original) : undefined
+                  }
+                  onDoubleClick={() => {
+                    if (onDoubleClick) {
+                      onDoubleClick(row.original);
+                    }
+                  }}
+                  tabIndex={onRowClick ? 0 : undefined}
+                  onKeyDown={
+                    onRowClick
+                      ? (event) => {
+                          if (event.target !== event.currentTarget) return;
+                          if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault();
+                            onRowClick(row.original);
+                          }
                         }
+                      : undefined
+                  }
+                  className={`group border-line transition-colors ${showBottomBorder ? 'border-b' : ''} ${
+                    selectedRowId === row.id
+                      ? 'bg-primary-soft'
+                      : 'hover:bg-surface'
+                  } ${onRowClick || onDoubleClick ? 'cursor-pointer' : ''} `}
+                >
+                  {row.getVisibleCells().map((cell) => {
+                    const meta = cell.column.columnDef.meta;
+                    const isSticky = meta?.sticky ?? false;
+
+                    return (
+                      <td
+                        key={cell.id}
+                        className={`border-line border-r px-5 py-4 last:border-r-0 ${
+                          alignClasses[meta?.align ?? 'left']
+                        } ${isSticky ? 'group-hover:bg-surface sticky z-10 bg-white' : ''}`}
+                        style={{
+                          width: getWidth(cell.column.getSize()),
+                          ...(isSticky && {
+                            left: getStickyLeft(cell.column.id),
+                          }),
+                        }}
                       >
-                        <table.FlexRender cell={cell} />
-                      </div>
-                    </td>
-                  );
-                })}
-              </tr>
-            ))
+                        <div
+                          className={
+                            meta?.wrap
+                              ? 'break-words whitespace-normal'
+                              : 'truncate'
+                          }
+                        >
+                          <table.FlexRender cell={cell} />
+                        </div>
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })
           )}
         </tbody>
 

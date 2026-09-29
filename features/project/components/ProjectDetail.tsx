@@ -45,11 +45,12 @@ const ProjectDetail = ({ projectId }: Props) => {
       member.userId === loginUser?.id &&
       member.role === ProjectMemberRoleEnum.Owner,
   );
+
   const tabs = useMemo(
     () => [
       {
         label: '개요',
-        item: (
+        component: () => (
           <ProjectOverviewTab
             projectId={projectId}
             isOwner={isOwner}
@@ -59,11 +60,13 @@ const ProjectDetail = ({ projectId }: Props) => {
       },
       {
         label: '작업',
-        item: <ProjectTasksTab projectId={projectId} isOwner={isOwner} />,
+        component: () => (
+          <ProjectTasksTab projectId={projectId} isOwner={isOwner} />
+        ),
       },
       {
         label: '멤버',
-        item: (
+        component: () => (
           <ProjectMembersTab
             projectId={projectId}
             isOwner={isOwner}
@@ -110,7 +113,7 @@ const ProjectDetail = ({ projectId }: Props) => {
   if (!targetProject) return null;
 
   return (
-    <>
+    <div className="flex h-full min-h-0 flex-col">
       {isModalOpen && (
         <ProjectModal
           onSave={handleSaveProject}
@@ -119,7 +122,7 @@ const ProjectDetail = ({ projectId }: Props) => {
         />
       )}
 
-      <header className="px-7 pt-7">
+      <header className="shrink-0 px-7 pt-7">
         <div className="flex min-w-0 items-center gap-2 text-slate-400">
           <Link
             href="/project"
@@ -165,7 +168,7 @@ const ProjectDetail = ({ projectId }: Props) => {
         selected={selectedTab}
         setSelected={setSelectedTab}
       />
-    </>
+    </div>
   );
 };
 

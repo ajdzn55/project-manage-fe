@@ -1,6 +1,6 @@
 .react-calendar {
   width: 100%;
-  height: calc(100dvh - 220px);
+  height: 100%;
   display: flex;
   flex-direction: column;
   border: 1px solid var(--color-line);

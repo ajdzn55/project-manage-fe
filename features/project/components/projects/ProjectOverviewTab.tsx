@@ -14,10 +14,10 @@ const ProjectOverviewTab = ({ projectId, isOwner, taskSummary }: Props) => {
   const { data: tasks } = useTaskListQuery({ projectId });
 
   return (
-    <div className="space-y-5 p-7">
+    <div className="h-full min-h-0 space-y-2 overflow-y-auto p-7">
       {taskSummary && tasks && tasks?.length > 0 ? (
         <>
-          <section className="border-line flex gap-5 rounded-xl border p-5">
+          <section className="border-line flex gap-5 rounded-xl border p-4">
             {/* 진행률 */}
             <div className="w-1/2">
               <h2 className="text-heading font-bold">진행률</h2>

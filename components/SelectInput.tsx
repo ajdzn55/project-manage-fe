@@ -1,6 +1,6 @@
 import type { SelectHTMLAttributes } from 'react';
 import type { UseFormRegisterReturn } from 'react-hook-form';
-import { SelectArrowIcon } from '@/components/Icons';
+import { SelectArrowIcon } from '@/components/icons/InputIcons';
 import InputLabel, { type LabelTooltip } from '@/components/InputLabel';
 
 export interface SelectInputOption {

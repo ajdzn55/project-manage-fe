@@ -1,19 +1,19 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import type { ComponentType } from 'react';
 
 interface Props {
-  TabItems: { label: string; item: ReactNode }[];
+  TabItems: { label: string; component: ComponentType }[];
   selected: string;
   setSelected: (tabLabel: string) => void;
 }
 
 const Tab = ({ TabItems, selected, setSelected }: Props) => {
-  const currentItem = TabItems.find((v) => v.label === selected)?.item;
+  const TargetComponent = TabItems.find((v) => v.label === selected)?.component;
 
   return (
-    <>
-      <div className="border-line mt-6 flex gap-7 overflow-x-auto border-b px-7">
+    <div className="flex min-h-0 flex-1 flex-col">
+      <div className="border-line mt-6 flex shrink-0 gap-7 overflow-x-auto border-b px-7">
         {TabItems.map((v) => (
           <button
             key={v.label}
@@ -26,8 +26,10 @@ const Tab = ({ TabItems, selected, setSelected }: Props) => {
         ))}
       </div>
 
-      {currentItem}
-    </>
+      <div className="min-h-0 flex-1">
+        {TargetComponent && <TargetComponent />}
+      </div>
+    </div>
   );
 };
 
