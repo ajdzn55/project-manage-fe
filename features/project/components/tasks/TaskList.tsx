@@ -142,7 +142,7 @@ const TaskList = () => {
           <div className="mt-5 overflow-x-auto">
             {viewType === '목록' ? (
               <div
-                style={{ height: 'calc(100vh - 270px)' }}
+                style={{ height: 'calc(100dvh - 270px)' }}
                 className="flex flex-grow"
               >
                 <Table

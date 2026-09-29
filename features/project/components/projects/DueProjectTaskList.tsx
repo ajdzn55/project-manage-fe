@@ -17,7 +17,7 @@ const DueProjectTaskList = ({ tasks, isOwner }: Props) => {
 
   return (
     <section className="border-line overflow-hidden rounded-xl border">
-      <div className="border-line flex items-center border-b px-5 py-4">
+      <div className="border-line flex items-center border-b px-5 py-3">
         <h2 className="text-heading font-bold">최근 작업</h2>
       </div>
       <div className="divide-y divide-slate-100">

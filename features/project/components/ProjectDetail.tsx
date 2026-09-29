@@ -113,7 +113,7 @@ const ProjectDetail = ({ projectId }: Props) => {
   if (!targetProject) return null;
 
   return (
-    <>
+    <div className="flex h-full min-h-0 flex-col">
       {isModalOpen && (
         <ProjectModal
           onSave={handleSaveProject}
@@ -122,7 +122,7 @@ const ProjectDetail = ({ projectId }: Props) => {
         />
       )}
 
-      <header className="px-7 pt-7">
+      <header className="shrink-0 px-7 pt-7">
         <div className="flex min-w-0 items-center gap-2 text-slate-400">
           <Link
             href="/project"
@@ -168,7 +168,7 @@ const ProjectDetail = ({ projectId }: Props) => {
         selected={selectedTab}
         setSelected={setSelectedTab}
       />
-    </>
+    </div>
   );
 };
 

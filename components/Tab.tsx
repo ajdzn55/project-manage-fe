@@ -12,8 +12,8 @@ const Tab = ({ TabItems, selected, setSelected }: Props) => {
   const TargetComponent = TabItems.find((v) => v.label === selected)?.component;
 
   return (
-    <>
-      <div className="border-line mt-6 flex gap-7 overflow-x-auto border-b px-7">
+    <div className="flex min-h-0 flex-1 flex-col">
+      <div className="border-line mt-6 flex shrink-0 gap-7 overflow-x-auto border-b px-7">
         {TabItems.map((v) => (
           <button
             key={v.label}
@@ -25,8 +25,11 @@ const Tab = ({ TabItems, selected, setSelected }: Props) => {
           </button>
         ))}
       </div>
-      {TargetComponent && <TargetComponent />}
-    </>
+
+      <div className="min-h-0 flex-1">
+        {TargetComponent && <TargetComponent />}
+      </div>
+    </div>
   );
 };
 

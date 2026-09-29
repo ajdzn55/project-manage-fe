@@ -81,7 +81,7 @@ const TaskBoard = ({ status, data }: Props) => {
 
   return (
     <div
-      style={{ height: 'calc(100vh - 270px)' }}
+      style={{ height: 'calc(100dvh - 270px)' }}
       className={`flex flex-col rounded-md border p-3 transition-colors ${
         isDragOver ? 'border-primary bg-primary-soft' : 'border-line bg-surface'
       }`}

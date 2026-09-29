@@ -83,8 +83,8 @@ const ProjectLayout = ({ children }: Props) => {
         <BannerBar dueTasks={dueTasks} onClose={onCloseBannerBar} />
       )}
 
-      <main className="bg-surface min-h-dvh min-w-[1024px] overflow-auto p-8">
-        <div className="border-line mx-auto flex min-h-[calc(100dvh-64px)] max-w-360 rounded-xl border bg-white shadow-sm">
+      <main className="bg-surface h-dvh min-w-[1024px] overflow-hidden p-8">
+        <div className="border-line mx-auto flex h-[calc(100dvh-64px)] min-h-0 max-w-360 rounded-xl border bg-white shadow-sm">
           <aside
             className={`border-line relative flex shrink-0 flex-col border-r transition-[width] duration-200 ${
               isSidebarCollapsed ? 'w-16' : 'w-56'

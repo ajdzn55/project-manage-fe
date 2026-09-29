@@ -142,12 +142,12 @@ const ProjectMembersTab = ({ projectId, isOwner, members }: Props) => {
         />
       )}
 
-      <div className="p-7">
-        <section className="border-line overflow-hidden rounded-xl border bg-white">
-          <div className="border-line flex items-center justify-between border-b px-5 py-4">
-            <div>
+      <div className="h-full min-h-0 p-7">
+        <section className="border-line flex h-full min-h-0 flex-col overflow-hidden rounded-xl border bg-white">
+          <div className="border-line flex shrink-0 items-center justify-between border-b px-5 py-3">
+            <div className="flex items-center gap-3">
               <h2 className="text-heading font-bold">프로젝트 멤버</h2>
-              <p className="text-muted mt-1 text-xs">총 {members?.length}명</p>
+              <p className="text-muted text-xs">총 {members?.length}명</p>
             </div>
             {isOwner && (
               <div className="w-36">
@@ -161,24 +161,26 @@ const ProjectMembersTab = ({ projectId, isOwner, members }: Props) => {
             )}
           </div>
 
-          <div className="m-3">
-            <div className="flex w-full justify-end pb-3">
+          <div className="m-3 flex min-h-0 flex-1 flex-col">
+            <div className="flex w-full shrink-0 justify-end pb-3">
               <p className="text-muted mt-1 text-xs">
                 소유자가 1명일 경우, 해당 소유자의 역할 변경 및 삭제가
                 제한됩니다.
               </p>
             </div>
-            <Table
-              columns={projectMemberColumns(
-                isOwner,
-                handleModifyMember,
-                handleDeleteMember,
-                singleOwnerId,
-              )}
-              data={members ?? []}
-              rowKey="userId"
-              tableBorder
-            />
+            <div className="min-h-0 flex-1">
+              <Table
+                columns={projectMemberColumns(
+                  isOwner,
+                  handleModifyMember,
+                  handleDeleteMember,
+                  singleOwnerId,
+                )}
+                data={members ?? []}
+                rowKey="userId"
+                tableBorder
+              />
+            </div>
           </div>
         </section>
       </div>
