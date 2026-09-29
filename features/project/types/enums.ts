@@ -20,3 +20,8 @@ export enum ProjectMemberRoleEnum {
   Owner = 'OWNER',
   Member = 'MEMBER',
 }
+
+export enum TaskViewTypeEnum {
+  List = 'LIST',
+  Board = 'BOARD',
+}

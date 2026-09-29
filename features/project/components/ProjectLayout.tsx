@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { type ReactNode, useCallback, useEffect, useState } from 'react';
+import { type ReactNode, useCallback, useState } from 'react';
 import ProjectSidebarNav from './ProjectSidebarNav';
 import { SIDEBAR_COLLAPSED_KEY } from '@/constants/common.const';
 import BannerBar from '@/features/project/components/BannerBar';
@@ -13,22 +13,17 @@ import { useTaskListQuery } from '@/features/project/hooks/useTask';
 import { TaskStatusEnum } from '@/features/project/types/enums';
 import { addDays, format, startOfDay } from 'date-fns';
 import LogoIcon from '@/components/icons/LogoIcon';
+import { useStorage } from '@/utils/useStorage';
 
 interface Props {
   children: ReactNode;
 }
 
 const ProjectLayout = ({ children }: Props) => {
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
-
-  const toggleSidebar = () => {
-    setIsSidebarCollapsed((prev) => {
-      const nextValue = !prev;
-      localStorage.setItem(SIDEBAR_COLLAPSED_KEY, nextValue.toString());
-
-      return nextValue;
-    });
-  };
+  const [isSidebarCollapsed, toggleSidebar] = useStorage<boolean>(
+    SIDEBAR_COLLAPSED_KEY,
+    false,
+  );
 
   const { data: myTasks } = useTaskListQuery({ isMyTask: true });
 
@@ -64,18 +59,6 @@ const ProjectLayout = ({ children }: Props) => {
     setIsClickClose(true);
     mutate();
   }, [mutate]);
-
-  useEffect(() => {
-    const restoreSidebarStatus = window.setTimeout(() => {
-      const storedSidebarStatus = localStorage.getItem(SIDEBAR_COLLAPSED_KEY);
-
-      if (storedSidebarStatus !== null) {
-        setIsSidebarCollapsed(storedSidebarStatus === 'true');
-      }
-    }, 0);
-
-    return () => window.clearTimeout(restoreSidebarStatus);
-  }, []);
 
   return (
     <>
@@ -117,7 +100,7 @@ const ProjectLayout = ({ children }: Props) => {
               aria-label={
                 isSidebarCollapsed ? '사이드바 펼치기' : '사이드바 접기'
               }
-              onClick={toggleSidebar}
+              onClick={() => toggleSidebar(!isSidebarCollapsed)}
               className="border-line text-muted hover:bg-surface hover:text-heading absolute top-[68px] -right-3 z-10 flex size-6 items-center justify-center rounded-full border bg-white shadow-sm transition"
             >
               {isSidebarCollapsed ? '›' : '‹'}

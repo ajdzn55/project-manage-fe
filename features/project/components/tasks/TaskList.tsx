@@ -13,8 +13,14 @@ import { useUserListQuery } from '@/features/user/hooks/useUser';
 import SegmentButton from '@/components/SegmentButton';
 import { BoardIcon, ListIcon } from '@/components/icons/SegmentIcons';
 import TaskBoard from '@/features/project/components/tasks/TaskBoard';
-import { TaskStatusEnum } from '@/features/project/types/enums';
+import {
+  TaskStatusEnum,
+  TaskViewTypeEnum,
+} from '@/features/project/types/enums';
 import CheckboxInput from '@/components/CheckboxInput';
+import { TASK_VIEW_TYPE_KEY } from '@/constants/common.const';
+import { useStorage } from '@/utils/useStorage';
+import { TaskViewTypeDesc } from '../../constants/task.const';
 
 const TaskList = () => {
   const { register, control } = useForm<ProjectTask>();
@@ -68,15 +74,21 @@ const TaskList = () => {
 
   const segmentList = [
     {
-      name: '목록',
+      label: TaskViewTypeDesc[TaskViewTypeEnum.List],
+      value: TaskViewTypeEnum.List,
       icon: <ListIcon />,
     },
     {
-      name: '보드',
+      label: TaskViewTypeDesc[TaskViewTypeEnum.Board],
+      value: TaskViewTypeEnum.Board,
       icon: <BoardIcon />,
     },
   ];
-  const [viewType, setViewType] = useState<string>(segmentList[0].name);
+
+  const [viewType, changeViewType] = useStorage<TaskViewTypeEnum>(
+    TASK_VIEW_TYPE_KEY,
+    TaskViewTypeEnum.List,
+  );
 
   return (
     <>
@@ -104,7 +116,7 @@ const TaskList = () => {
               />
             </div>
 
-            {viewType === '목록' && (
+            {viewType === TaskViewTypeEnum.List && (
               <div className="flex w-full max-w-44 shrink-0 justify-between">
                 <CheckboxInput
                   label="대기"
@@ -134,13 +146,13 @@ const TaskList = () => {
               <SegmentButton
                 segmentList={segmentList}
                 selected={viewType}
-                setSelected={setViewType}
+                onChange={changeViewType}
               />
             </div>
           </form>
 
           <div className="mt-5 overflow-x-auto">
-            {viewType === '목록' ? (
+            {viewType === TaskViewTypeEnum.List ? (
               <div
                 style={{ height: 'calc(100dvh - 270px)' }}
                 className="flex flex-grow"

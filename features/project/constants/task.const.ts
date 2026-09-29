@@ -1,6 +1,7 @@
 import {
   TaskPriorityEnum,
   TaskStatusEnum,
+  TaskViewTypeEnum,
 } from '@/features/project/types/enums';
 
 export const TaskPriorityDesc = {
@@ -19,4 +20,9 @@ export const TaskStatusDesc = {
   [TaskStatusEnum.Todo]: '대기',
   [TaskStatusEnum.InProgress]: '진행 중',
   [TaskStatusEnum.Done]: '완료',
+};
+
+export const TaskViewTypeDesc = {
+  [TaskViewTypeEnum.List]: '목록',
+  [TaskViewTypeEnum.Board]: '보드',
 };

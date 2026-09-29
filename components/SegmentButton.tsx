@@ -1,23 +1,33 @@
 import { motion } from 'motion/react';
 import type { ReactNode } from 'react';
 
-interface Props {
-  segmentList: { name: string; icon: ReactNode }[];
-  selected: string;
-  setSelected: (selected: string) => void;
+interface SegmentItem<T extends string> {
+  label: string;
+  value: T;
+  icon: ReactNode;
 }
 
-const SegmentButton = ({ segmentList, selected, setSelected }: Props) => {
+interface Props<T extends string> {
+  segmentList: SegmentItem<T>[];
+  selected: T;
+  onChange: (value: T) => void;
+}
+
+const SegmentButton = <T extends string>({
+  segmentList,
+  selected,
+  onChange,
+}: Props<T>) => {
   return (
     <div className="border-line flex h-[44px] w-full items-center overflow-hidden rounded-md border bg-white font-semibold transition-colors focus-within:border-blue-500 hover:border-slate-300">
       {segmentList.map((segment) => {
-        const isSelected = selected === segment.name;
+        const isSelected = selected === segment.value;
 
         return (
           <button
-            key={segment.name}
+            key={segment.value}
             type="button"
-            onClick={() => setSelected(segment.name)}
+            onClick={() => onChange(segment.value)}
             className={`relative flex h-full flex-1 cursor-pointer items-center justify-center gap-3 transition-colors ${
               isSelected ? 'text-primary' : 'text-muted'
             }`}
@@ -32,7 +42,7 @@ const SegmentButton = ({ segmentList, selected, setSelected }: Props) => {
 
             <span className="relative z-10 flex items-center gap-3">
               {segment.icon}
-              <span>{segment.name}</span>
+              <span>{segment.label}</span>
             </span>
           </button>
         );
