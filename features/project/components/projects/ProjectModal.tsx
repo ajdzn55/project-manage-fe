@@ -6,8 +6,9 @@ import SelectInput from '@/components/SelectInput';
 import { projectStatusOptions } from '@/features/project/constants/project.const';
 import DateInput from '@/components/DateInput';
 import ModalWrapper from '@/components/ModalWrapper';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Project } from '@/features/project/types/project.type';
+import { ProjectStatusEnum } from '@/features/project/types/enums';
 
 interface ProjectModalProps {
   onSave: (data: Project) => void;
@@ -27,7 +28,14 @@ const ProjectModal = ({
     formState: { errors },
   } = useForm<Project>();
 
-  const statusOptions = [{ label: '', value: '' }, ...projectStatusOptions];
+  const statusOptions = useMemo(() => {
+    if (targetProject) {
+      return projectStatusOptions;
+    }
+    return projectStatusOptions.filter(
+      (v) => v.value !== ProjectStatusEnum.Completed,
+    );
+  }, [targetProject]);
 
   useEffect(() => {
     if (targetProject) {
