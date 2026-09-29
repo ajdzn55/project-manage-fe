@@ -108,7 +108,7 @@ const TaskBoard = ({ status, data }: Props) => {
             <div className="flex items-center justify-between">
               <span className="font-semibold">{v.name}</span>
               <div
-                className={`rounded-md px-1.5 text-[12px] font-semibold ${TaskPriorityColor[v.priority]}`}
+                className={`rounded-md px-1.5 text-xs font-semibold ${TaskPriorityColor[v.priority]}`}
               >
                 {TaskPriorityDesc[v.priority]}
               </div>

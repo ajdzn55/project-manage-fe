@@ -13,6 +13,7 @@ import type {
   ProjectTask,
   TaskSearchParams,
 } from '@/features/project/types/task.type';
+import { TaskPriorityEnum } from '@/features/project/types/enums';
 
 const ProjectCalendar = () => {
   const today = new Date();
@@ -92,7 +93,7 @@ const ProjectCalendar = () => {
                     data-tooltip-id="project-calendar-task-tooltip"
                     data-tooltip-content={v.name}
                     style={{ backgroundColor: v.backgroundColor ?? 'white' }}
-                    className="w-full truncate"
+                    className={`w-full truncate ${v.priority === TaskPriorityEnum.High ? 'font-semibold' : ''}`}
                   >
                     · {v.name}
                   </div>

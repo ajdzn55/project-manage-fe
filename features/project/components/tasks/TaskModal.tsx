@@ -2,7 +2,7 @@
 
 import TextInput from '@/components/TextInput';
 import { useForm, useWatch } from 'react-hook-form';
-import SelectInput from '@/components/SelectInput';
+import SelectInput, { type SelectInputOption } from '@/components/SelectInput';
 import { taskStatusOptions } from '@/features/project/constants/project.const';
 import DateInput from '@/components/DateInput';
 import ModalWrapper from '@/components/ModalWrapper';
@@ -11,6 +11,7 @@ import { useEffect, useMemo } from 'react';
 import { useUserListQuery } from '@/features/user/hooks/useUser';
 import type { ProjectTask } from '@/features/project/types/task.type';
 import { TaskStatusEnum } from '@/features/project/types/enums';
+import { TaskPriorityDesc } from '@/features/project/constants/task.const';
 
 const TASK_COLOR_PALETTE = [
   '#FFD2D5',
@@ -56,6 +57,10 @@ const TaskModal = ({ onSave, onClose, targetTask }: TaskModalProps) => {
     ...(users ?? []).map((v) => ({ label: v.name, value: v.id })),
   ];
 
+  const priorityOptions: SelectInputOption[] = Object.entries(
+    TaskPriorityDesc,
+  ).map(([value, label]) => ({ label, value }));
+
   useEffect(() => {
     if (targetTask) {
       reset(targetTask);
@@ -100,6 +105,12 @@ const TaskModal = ({ onSave, onClose, targetTask }: TaskModalProps) => {
         labelWidth="80px"
         register={register('assigneeId')}
         options={assigneeOptions}
+      />
+      <SelectInput
+        label="우선순위"
+        labelWidth="80px"
+        register={register('priority')}
+        options={priorityOptions}
       />
 
       <div className="flex min-h-11 items-center gap-[3px]">
