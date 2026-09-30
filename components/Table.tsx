@@ -2,19 +2,22 @@
 
 import SkeletonRow from '@/components/SkeletonRow';
 import {
+  type ColumnDef,
   columnResizingFeature,
   columnSizingFeature,
   columnVisibilityFeature,
   createColumnHelper,
   createSortedRowModel,
   metaHelper,
+  type OnChangeFn,
+  rowSelectionFeature,
+  type RowSelectionState,
   rowSortingFeature,
   sortFn_text,
   tableFeatures,
   useTable,
-  type ColumnDef,
 } from '@tanstack/react-table';
-import { useRef, type ReactNode, useEffect, useState } from 'react';
+import { type ReactNode, useEffect, useRef, useState } from 'react';
 
 export interface TableColumnMeta {
   sticky?: boolean;
@@ -32,6 +35,7 @@ export const projectTableFeatures = tableFeatures({
   rowSortingFeature,
   sortedRowModel: createSortedRowModel(),
   sortFns: { text: sortFn_text },
+  rowSelectionFeature,
 });
 
 export type TableColumn<T extends object> = ColumnDef<
@@ -55,6 +59,8 @@ interface Props<T extends object> {
   isLoading?: boolean;
   skeletonRowCount?: number;
   onDoubleClick?: (e: any) => void;
+  rowSelection?: RowSelectionState;
+  onRowSelectionChange?: OnChangeFn<RowSelectionState>;
 }
 
 const alignClasses: Record<NonNullable<TableColumnMeta['align']>, string> = {
@@ -75,6 +81,8 @@ export default function Table<T extends object>({
   isLoading = false,
   skeletonRowCount = 3,
   onDoubleClick,
+  rowSelection,
+  onRowSelectionChange,
 }: Props<T>) {
   const table = useTable({
     features: projectTableFeatures,
@@ -83,7 +91,10 @@ export default function Table<T extends object>({
     columnResizeMode: 'onChange',
     enableColumnResizing: true,
     getRowId: (row) => String(row[rowKey ?? ('id' as keyof T)]),
+    state: rowSelection ? { rowSelection } : undefined,
+    onRowSelectionChange,
   });
+
   const totalSize = table.getTotalSize();
   const getWidth = (size: number) =>
     totalSize > 0 ? `${(size / totalSize) * 100}%` : undefined;
