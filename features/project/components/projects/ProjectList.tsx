@@ -67,6 +67,11 @@ const ProjectList = () => {
     setIsCreateModalOpen(false);
   };
 
+  const buttonStyle = (tab: string) =>
+    selectedTab === tab
+      ? 'border-primary text-primary'
+      : 'text-muted hover:text-heading border-transparent';
+
   return (
     <>
       {isCreateModalOpen && (
@@ -121,7 +126,7 @@ const ProjectList = () => {
               key={tab}
               type="button"
               onClick={() => setSelectedTab(tab)}
-              className={`shrink-0 border-b-2 px-1 pb-3 font-semibold ${selectedTab === tab ? 'border-primary text-primary' : 'text-muted hover:text-heading border-transparent'}`}
+              className={`shrink-0 cursor-pointer border-b-2 px-1 pb-3 font-semibold ${buttonStyle(tab)}`}
             >
               {tab}
             </button>

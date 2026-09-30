@@ -101,7 +101,7 @@ const ProjectLayout = ({ children }: Props) => {
                 isSidebarCollapsed ? '사이드바 펼치기' : '사이드바 접기'
               }
               onClick={() => toggleSidebar(!isSidebarCollapsed)}
-              className="border-line text-muted hover:bg-surface hover:text-heading absolute top-[68px] -right-3 z-10 flex size-6 items-center justify-center rounded-full border bg-white shadow-sm transition"
+              className="border-line text-muted hover:bg-surface hover:text-heading absolute top-[68px] -right-3 z-10 flex size-6 cursor-pointer items-center justify-center rounded-full border bg-white shadow-sm transition"
             >
               {isSidebarCollapsed ? '›' : '‹'}
             </button>

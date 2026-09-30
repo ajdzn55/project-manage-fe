@@ -46,7 +46,7 @@ const SelectInput = ({
         <select
           {...register}
           id={label}
-          className="border-line text-body h-11 w-full appearance-none rounded-lg border bg-white px-3 pr-9 transition outline-none hover:border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+          className="border-line text-body h-11 w-full cursor-pointer appearance-none rounded-lg border bg-white px-3 pr-9 transition outline-none hover:border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
           {...inputProps}
         >
           {options.map((v) => (

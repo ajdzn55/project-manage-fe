@@ -105,7 +105,7 @@ const ProjectSidebarNav = ({ isCollapsed }: Props) => {
           onClick={handleLogout}
           title={isCollapsed ? '로그아웃' : undefined}
           aria-label={isCollapsed ? '로그아웃' : undefined}
-          className={`text-body hover:bg-surface hover:text-heading flex w-full items-center rounded-lg py-2.5 transition ${
+          className={`text-body hover:bg-surface hover:text-heading flex w-full cursor-pointer items-center rounded-lg py-2.5 transition ${
             isCollapsed ? 'justify-center px-0' : 'gap-3 px-3'
           }`}
         >
