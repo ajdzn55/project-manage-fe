@@ -26,7 +26,7 @@ const Button = ({
     color === 'default'
       ? 'bg-primary hover:bg-primary-hover text-white'
       : color === 'white'
-        ? 'border border-gray-200 hover:border-gray-300'
+        ? 'border border-gray-200 hover:border-gray-300 bg-white text-muted'
         : 'bg-gray-200 hover:bg-gray-300';
 
   return (
