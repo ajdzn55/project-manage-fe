@@ -123,12 +123,12 @@ const taskColumns = (users: User[]) => {
     }),
     taskColumnHelper.accessor('priority', {
       header: '우선순위',
-      size: 180,
+      size: 150,
       cell: (info) => TaskPriorityDesc[info.getValue()],
     }),
     taskColumnHelper.accessor('status', {
       header: '상태',
-      size: 180,
+      size: 150,
       cell: (info) => <StatusBadge status={info.getValue()} />,
     }),
     taskColumnHelper.accessor('dueDate', {
@@ -146,9 +146,9 @@ const taskActionsColumn = (
   taskColumnHelper.display({
     id: 'actions',
     header: '관리',
-    size: 120,
-    minSize: 120,
-    maxSize: 120,
+    size: 100,
+    minSize: 100,
+    maxSize: 100,
     enableSorting: false,
     enableResizing: false,
     meta: { align: 'center' },
@@ -164,6 +164,30 @@ const taskActionsColumn = (
     ),
   });
 
+const checkboxColumn = taskColumnHelper.display({
+  id: 'select',
+  header: ({ table }) => (
+    <input
+      type="checkbox"
+      checked={table.getIsAllRowsSelected()}
+      onChange={table.getToggleAllRowsSelectedHandler()}
+      onClick={(e) => e.stopPropagation()}
+    />
+  ),
+  cell: ({ row }) => (
+    <input
+      type="checkbox"
+      checked={row.getIsSelected()}
+      onChange={row.getToggleSelectedHandler()}
+      onClick={(e) => e.stopPropagation()}
+    />
+  ),
+  size: 70,
+  enableSorting: false,
+  enableResizing: false,
+  meta: { align: 'center' },
+});
+
 export const projectTaskColumns = (
   users: User[],
   showActions?: boolean,
@@ -171,7 +195,11 @@ export const projectTaskColumns = (
   onDelete?: (rowId: string) => void,
 ): TableColumn<ProjectTask>[] =>
   showActions && onModify && onDelete
-    ? [...taskColumns(users), taskActionsColumn(onModify, onDelete)]
+    ? [
+        checkboxColumn,
+        ...taskColumns(users),
+        taskActionsColumn(onModify, onDelete),
+      ]
     : taskColumns(users);
 
 const userColumnHelper = createTableColumnHelper<User>();

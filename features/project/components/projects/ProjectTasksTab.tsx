@@ -8,6 +8,7 @@ import EmptyState from '@/features/project/components/EmptyState';
 import type {
   CreateProjectTask,
   ProjectTask,
+  UpdateProjectTask,
 } from '@/features/project/types/task.type';
 import {
   useCreateTaskMutation,
@@ -21,6 +22,12 @@ import {
   useUserListQuery,
 } from '@/features/user/hooks/useUser';
 import { useQueryClient } from '@tanstack/react-query';
+import type { RowSelectionState } from '@tanstack/react-table';
+import { motion } from 'motion/react';
+import TaskBatchEditModal, {
+  type BatchEditField,
+} from '@/features/project/components/projects/TaskBatchEditModal';
+import { updateTask } from '@/features/project/api/task';
 
 interface Props {
   projectId: string;
@@ -120,6 +127,10 @@ const ProjectTasksTab = ({ projectId, isOwner }: Props) => {
     [createMutate, loginUser, projectId, queryClient, rowId, updateMutate],
   );
 
+  // 테이블 체크 상태
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  const selectedTaskIds = Object.keys(rowSelection);
+
   const columns = useMemo(
     () =>
       projectTaskColumns(
@@ -131,6 +142,54 @@ const ProjectTasksTab = ({ projectId, isOwner }: Props) => {
     [handleDeleteTask, handleModifyTask, isOwner, users],
   );
 
+  const [batchEditField, setBatchEditField] = useState<BatchEditField | null>(
+    null,
+  );
+
+  const handleBatchUpdate = async (data: Partial<UpdateProjectTask>) => {
+    const { status, dueDate, assigneeId } = data;
+    const statusStr = String(status);
+
+    const requestBody = {
+      ...(batchEditField === 'assigneeId' && {
+        assigneeId: assigneeId === '' ? null : assigneeId,
+      }),
+      ...(batchEditField === 'status' && {
+        status: statusStr === '' ? undefined : (status as TaskStatusEnum),
+      }),
+      ...(batchEditField === 'dueDate' && {
+        dueDate: dueDate === '' ? null : dueDate,
+      }),
+    };
+
+    const results = await Promise.allSettled(
+      selectedTaskIds.map((id) => updateTask(id, requestBody)),
+    );
+    await queryClient.invalidateQueries({
+      queryKey: ['task'],
+    });
+
+    const failedCount = results.filter(
+      (result) => result.status === 'rejected',
+    ).length;
+
+    if (failedCount === 0) {
+      toastAlert({
+        type: 'success',
+        content: `${selectedTaskIds.length}개 작업이 수정되었습니다.`,
+      });
+
+      setBatchEditField(null);
+      setRowSelection({});
+      return;
+    }
+
+    dialogAlert({
+      type: 'error',
+      content: `${failedCount}개의 작업 수정에 실패했습니다.`,
+    });
+  };
+
   return (
     <>
       {isModalOpen && (
@@ -138,6 +197,13 @@ const ProjectTasksTab = ({ projectId, isOwner }: Props) => {
           onClose={() => setIsModalOpen(false)}
           targetTask={targetTask}
           onSave={handleSaveTask}
+        />
+      )}
+      {batchEditField !== null && (
+        <TaskBatchEditModal
+          field={batchEditField}
+          onSave={handleBatchUpdate}
+          onClose={() => setBatchEditField(null)}
         />
       )}
 
@@ -166,8 +232,49 @@ const ProjectTasksTab = ({ projectId, isOwner }: Props) => {
               </div>
             </div>
 
-            <div className="m-3 min-h-0 flex-1">
-              <Table columns={columns} data={tasks ?? []} tableBorder />
+            <div className="relative m-3 min-h-0 flex-1">
+              <Table
+                columns={columns}
+                data={tasks ?? []}
+                tableBorder
+                rowSelection={rowSelection}
+                onRowSelectionChange={setRowSelection}
+              />
+
+              {selectedTaskIds.length > 0 && (
+                <motion.div
+                  initial={{ x: '-50%', y: 20, opacity: 0 }}
+                  animate={{ x: '-50%', y: 0, opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                  className="border-line bg-surface absolute bottom-3 left-1/2 z-10 flex gap-5 rounded-md border p-2 shadow-[0_12px_32px_rgba(15,23,42,0.18)]"
+                >
+                  <span className="text-primary flex shrink-0 items-center pl-3 font-semibold">{`${selectedTaskIds.length}개 작업 선택됨`}</span>
+                  <div className="bg-line my-1 w-px shrink-0" />
+                  <div className="flex gap-3">
+                    <Button
+                      text="담당자 변경"
+                      width="100px"
+                      height="40px"
+                      color="white"
+                      onClick={() => setBatchEditField('assigneeId')}
+                    />
+                    <Button
+                      text="상태 변경"
+                      width="100px"
+                      height="40px"
+                      color="white"
+                      onClick={() => setBatchEditField('status')}
+                    />
+                    <Button
+                      text="마감일 변경"
+                      width="100px"
+                      height="40px"
+                      color="white"
+                      onClick={() => setBatchEditField('dueDate')}
+                    />
+                  </div>
+                </motion.div>
+              )}
             </div>
           </section>
         </div>
