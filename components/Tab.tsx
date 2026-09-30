@@ -11,6 +11,11 @@ interface Props {
 const Tab = ({ TabItems, selected, setSelected }: Props) => {
   const TargetComponent = TabItems.find((v) => v.label === selected)?.component;
 
+  const buttonStyle = (label: string) =>
+    selected === label
+      ? 'border-primary text-primary'
+      : 'text-muted hover:text-heading border-transparent';
+
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       <div className="border-line mt-6 flex shrink-0 gap-7 overflow-x-auto border-b px-7">
@@ -19,7 +24,7 @@ const Tab = ({ TabItems, selected, setSelected }: Props) => {
             key={v.label}
             type="button"
             onClick={() => setSelected(v.label)}
-            className={`shrink-0 border-b-2 px-1 pb-3 font-semibold ${selected === v.label ? 'border-primary text-primary' : 'text-muted hover:text-heading border-transparent'}`}
+            className={`shrink-0 cursor-pointer border-b-2 px-1 pb-3 font-semibold ${buttonStyle(v.label)}`}
           >
             {v.label}
           </button>

@@ -40,7 +40,7 @@ const BannerBar = ({ dueTasks, onClose }: Props) => {
       <div className="absolute top-0 right-0 flex h-full items-center bg-gradient-to-l from-amber-50 via-amber-50 to-transparent pr-4 pl-6">
         <button
           type="button"
-          className="rounded-md p-1 text-amber-600 transition-colors hover:bg-amber-100 hover:text-amber-900"
+          className="cursor-pointer rounded-md p-1 text-amber-600 transition-colors hover:bg-amber-100 hover:text-amber-900"
           onClick={onClose}
         >
           <svg

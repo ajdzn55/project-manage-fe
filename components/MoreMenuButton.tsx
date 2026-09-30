@@ -65,7 +65,7 @@ const MoreMenuButton = ({ disabled = false, onModify, onDelete }: Props) => {
         ref={buttonRef}
         disabled={disabled}
         onClick={handleMenuClick}
-        className="inline-flex size-8 items-center justify-center rounded-md text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
+        className="inline-flex size-8 cursor-pointer items-center justify-center rounded-md text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
       >
         <svg viewBox="0 0 20 20" fill="currentColor" className="size-4">
           <circle cx="10" cy="4" r="1.5" />
@@ -83,12 +83,12 @@ const MoreMenuButton = ({ disabled = false, onModify, onDelete }: Props) => {
               top: buttonRect.bottom + 4,
               left: buttonRect.right - 80,
             }}
-            className="border-line fixed z-30 w-20 cursor-pointer rounded-md border bg-white shadow-lg"
+            className="border-line fixed z-30 w-20 rounded-md border bg-white shadow-lg"
           >
             <li>
               <button
                 type="button"
-                className="hover:bg-surface w-full rounded-t-md p-2"
+                className="hover:bg-surface w-full cursor-pointer rounded-t-md p-2"
                 onClick={onModifyClick}
               >
                 수정
@@ -97,7 +97,7 @@ const MoreMenuButton = ({ disabled = false, onModify, onDelete }: Props) => {
             <li>
               <button
                 type="button"
-                className="text-danger hover:bg-surface w-full rounded-b-md p-2"
+                className="text-danger hover:bg-surface w-full cursor-pointer rounded-b-md p-2"
                 onClick={onDeleteClick}
               >
                 삭제

@@ -115,3 +115,18 @@ export const WithFooter: Story = {
 export const Loading: Story = {
   args: { isLoading: true, skeletonRowCount: 4 },
 };
+
+// 스크롤 상태
+export const Scrollable: Story = {
+  args: {
+    data: Array.from({ length: 10 }, (_, index) => ({
+      id: `test${index + 1}`,
+      name: `테스트${index + 1}`,
+    })),
+  },
+  render: (args) => (
+    <div className="h-64">
+      <StoryTable {...args} />
+    </div>
+  ),
+};

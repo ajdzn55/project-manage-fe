@@ -63,7 +63,7 @@ const TextInput = ({
           <button
             type="button"
             onClick={() => setShowPassword((previous) => !previous)}
-            className="hover:text-body absolute inset-y-0 right-0 flex w-11 items-center justify-center p-2 text-slate-400"
+            className="hover:text-body absolute inset-y-0 right-0 flex w-11 cursor-pointer items-center justify-center p-2 text-slate-400"
           >
             {showPassword ? (
               <svg

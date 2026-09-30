@@ -8,8 +8,9 @@ import {
   TaskStatusDesc,
 } from '@/features/project/constants/task.const';
 import { useUserListQuery } from '@/features/user/hooks/useUser';
-import { useState, type DragEvent } from 'react';
+import { type DragEvent, useState } from 'react';
 import { useUpdateTaskMutation } from '@/features/project/hooks/useTask';
+import { dialogAlert } from '@/utils/alert';
 
 interface Props {
   status: TaskStatusEnum;
@@ -33,9 +34,12 @@ const TaskBoard = ({ status, data }: Props) => {
     }
   };
 
-  const handleDragStart = (e: DragEvent<HTMLDivElement>, taskId: string) => {
-    // 드래그하려는 카드 ID 저장 (드롭하는 곳에서 꺼내어 사용)
-    e.dataTransfer.setData('text/plain', taskId);
+  const handleDragStart = (e: DragEvent<HTMLDivElement>, task: ProjectTask) => {
+    // 드래그하려는 카드 정보 저장 (드롭하는 곳에서 꺼내어 사용)
+    e.dataTransfer.setData(
+      'application/json',
+      JSON.stringify({ taskId: task.id, taskStatus: task.status }),
+    );
     // 드래그 동작 허용 범위 결정
     e.dataTransfer.effectAllowed = 'move';
 
@@ -62,16 +66,31 @@ const TaskBoard = ({ status, data }: Props) => {
   };
 
   // 카드 드롭 시 해당 상태로 변경
-  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
+  const handleDrop = async (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragOver(false);
 
     // 드롭한 카드 ID
-    const taskId = e.dataTransfer.getData('text/plain');
+    const task = e.dataTransfer.getData('application/json');
 
-    if (!taskId) return;
+    if (!task) return;
+
+    const { taskId, taskStatus } = JSON.parse(task) as {
+      taskId: string;
+      taskStatus: string;
+    };
+
     // 원래 보드에 놓은 경우
     if (data.some((v) => v.id === taskId)) return;
+
+    if (taskStatus === TaskStatusEnum.Done && status !== TaskStatusEnum.Done) {
+      const alertRes = await dialogAlert({
+        type: 'question',
+        content: '완료된 작업을 이전 상태로 변경하시겠습니까?',
+        showCancelButton: true,
+      });
+      if (!alertRes.isConfirmed) return;
+    }
 
     mutate({
       id: taskId,
@@ -101,7 +120,7 @@ const TaskBoard = ({ status, data }: Props) => {
           <div
             key={v.id}
             draggable
-            onDragStart={(e) => handleDragStart(e, v.id)}
+            onDragStart={(e) => handleDragStart(e, v)}
             onDragEnd={handleDragEnd}
             className="border-line mb-2 flex cursor-grab flex-col gap-3 rounded-md border bg-white p-3 hover:border-blue-300 hover:shadow-md active:cursor-grabbing"
           >
