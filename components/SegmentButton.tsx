@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import type { ReactNode } from 'react';
 
-interface SegmentItem<T extends string> {
+export interface SegmentItem<T extends string> {
   label: string;
   value: T;
   icon: ReactNode;
