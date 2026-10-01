@@ -28,7 +28,7 @@ jobs:
         run: npm run lint
 
       - name: Run type check
-        run: npx tsc --noEmit
+        run: npx next typegen && npx tsc --noEmit
 
       - name: Run production build
         run: npm run build
