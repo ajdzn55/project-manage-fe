@@ -6,30 +6,17 @@ import TextInput from '@/components/TextInput';
 import Button from '@/components/Button';
 import { CreateUser } from '@/features/user/types/user.type';
 import { useForm } from 'react-hook-form';
-import {
-  useCreateUserMutation,
-  useUserListQuery,
-} from '@/features/user/hooks/useUser';
-import { dialogAlert } from '@/utils/alert';
+import { useCreateUserMutation } from '@/features/user/hooks/useUser';
 import { useRouter } from 'next/navigation';
 
 const SignUpForm = () => {
   const { handleSubmit, register } = useForm<CreateUser>();
 
-  const { data: users } = useUserListQuery();
   const { mutate: postMutate } = useCreateUserMutation();
 
   const router = useRouter();
 
-  const onSubmit = async (data: CreateUser) => {
-    // 중복 아이디 검사
-    const isDuplicate = users?.some((v) => v.id === data.id);
-
-    if (isDuplicate) {
-      await dialogAlert({ type: 'error', content: '중복된 ID 입니다.' });
-      return;
-    }
-
+  const onSubmit = (data: CreateUser) => {
     postMutate({ data }, { onSuccess: () => router.replace('/login') });
   };
 

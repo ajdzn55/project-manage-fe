@@ -17,7 +17,9 @@ import {
   restoreUser,
   updateUser,
 } from '@/features/user/api/user';
-import { toastAlert } from '@/utils/alert';
+import { dialogAlert, toastAlert } from '@/utils/alert';
+import type { AxiosError } from 'axios';
+import type { ApiErrorResponse } from '@/lib/axios';
 
 export const useUserListQuery = () => {
   const { data } = useQuery<User[]>({
@@ -81,8 +83,12 @@ export const useCreateUserMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['user'] });
       toastAlert({ type: 'success', content: '사용자가 생성되었습니다.' });
     },
-    onError: (error) => {
+    onError: async (error: AxiosError<ApiErrorResponse>) => {
       console.log(error);
+
+      if (error.response?.status === 409) {
+        await dialogAlert({ type: 'error', content: '중복된 ID입니다.' });
+      }
     },
   });
 
