@@ -1,6 +1,6 @@
-# ProjectHub Frontend
+## ProjectHub Frontend
 
-## 📌 프로젝트 소개
+### 📌 프로젝트 소개
 
 ProjectHub는 프로젝트, 작업, 구성원을 한곳에서 관리하는 협업 서비스입니다.
 
@@ -8,7 +8,7 @@ ProjectHub는 프로젝트, 작업, 구성원을 한곳에서 관리하는 협�
 
 ---
 
-## ✨ 주요 기능
+### ✨ 주요 기능
 
 - 회원가입, 로그인 및 사용자 정보 관리
 - 프로젝트 생성·수정·삭제 및 검색·상태 필터링
@@ -19,7 +19,7 @@ ProjectHub는 프로젝트, 작업, 구성원을 한곳에서 관리하는 협�
 
 ---
 
-## 🔄 핵심 사용자 흐름
+### 🔄 핵심 사용자 흐름
 **프로젝트 구성**  
 회원가입·로그인 → 프로젝트 생성 → 구성원 추가 → 역할 설정
 
@@ -31,7 +31,7 @@ ProjectHub는 프로젝트, 작업, 구성원을 한곳에서 관리하는 협�
 
 ---
 
-## 🚀 배포
+### 🚀 배포
 
 - **Production:** [https://project-manage-fe.vercel.app](https://project-manage-fe.vercel.app)
 - **Platform:** Vercel
@@ -44,7 +44,7 @@ ProjectHub는 프로젝트, 작업, 구성원을 한곳에서 관리하는 협�
 
 ---
 
-## 🛠 기술 스택
+### 🛠 기술 스택
 
 - **Language:** TypeScript
 - **Framework:** Next.js, React
@@ -54,15 +54,15 @@ ProjectHub는 프로젝트, 작업, 구성원을 한곳에서 관리하는 협�
 
 ---
 
-## 💻 실행 방법
+### 💻 실행 방법
 
-### 사전 요구사항
+#### 사전 요구사항
 
 - Node.js 20.9 이상
 - npm 설치
 - 실행 중인 ProjectHub 백엔드 API
 
-### 프로젝트 설치
+#### 프로젝트 설치
 
 ```bash
 git clone https://github.com/ajdzn55/project-manage-fe.git
@@ -70,7 +70,7 @@ cd project-manage-fe
 npm install
 ```
 
-### 환경 변수 설정
+#### 환경 변수 설정
 
 프로젝트 루트에 `.env.development` 파일을 생성하고 다음 값을 설정합니다.
 
@@ -78,7 +78,7 @@ npm install
 NEXT_PUBLIC_API_URL=http://localhost:3001/api
 ```
 
-### 개발 서버 실행
+#### 개발 서버 실행
 
 ```bash
 npm run dev
@@ -88,7 +88,7 @@ npm run dev
 
 ---
 
-## 📚 Storybook
+### 📚 Storybook
 
 공통 UI 컴포넌트는 Storybook에서 독립적으로 확인할 수 있습니다.
 
@@ -100,7 +100,7 @@ npm run storybook
 
 ---
 
-## 📁 폴더 구조
+### 📁 폴더 구조
 
 ```text
 project-manage-fe
