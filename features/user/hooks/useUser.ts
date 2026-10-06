@@ -136,13 +136,12 @@ export const useRestoreUserMutation = () => {
 };
 
 // 로그인 정보 조회
-export const useLoginInfoQuery = (enabled: boolean = true) => {
+export const useLoginInfoQuery = () => {
   return useQuery<LoginInfo>({
     queryKey: ['loginUser'],
     queryFn: getLoginInfo,
     staleTime: 5 * 60 * 1000,
     retry: false,
-    enabled,
   });
 };
 

@@ -1,32 +1,20 @@
 'use client';
 
-import { type ReactNode, useEffect } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { type ReactNode } from 'react';
+import { redirect } from 'next/navigation';
 import { useLoginInfoQuery } from '@/features/user/hooks/useUser';
 import { ClipLoader } from 'react-spinners';
+import { useAuthNavigation } from '@/utils/useAuthNavigation';
 
 interface Props {
   children: ReactNode;
 }
 
 const AuthGuard = ({ children }: Props) => {
-  const router = useRouter();
+  const { isPublicPage, currentPath, destination } = useAuthNavigation();
 
-  // 로그인 없이 접근 가능한 페이지 확인
-  const pathname = usePathname();
-  const isPublicPage = ['/login', '/sign-up'].includes(pathname);
-
-  // 로그인이 필요한 페이지에서 사용자 정보 조회
-  const { isPending, error } = useLoginInfoQuery(!isPublicPage);
-
-  // 로그인 없이 접근 시도 시 차단
-  useEffect(() => {
-    if (!isPublicPage && error) {
-      router.replace('/login');
-    }
-  }, [error, isPublicPage, router]);
-
-  if (isPublicPage) return children;
+  // 로그인 정보 조회
+  const { data: loginInfo, isPending, error } = useLoginInfoQuery();
 
   if (isPending)
     return (
@@ -39,7 +27,17 @@ const AuthGuard = ({ children }: Props) => {
       />
     );
 
-  if (error) return null;
+  if (isPublicPage) {
+    // 기존 로그인 정보가 확인된 경우
+    if (loginInfo) {
+      redirect(destination);
+    }
+    return children;
+  }
+
+  if (error) {
+    redirect(`/login?returnTo=${encodeURIComponent(currentPath)}`);
+  }
 
   return children;
 };

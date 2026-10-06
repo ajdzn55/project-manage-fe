@@ -3,6 +3,7 @@ import {
   TaskStatusEnum,
   TaskViewTypeEnum,
 } from '@/features/project/types/enums';
+import { BoardIcon, ListIcon } from '@/components/icons/SegmentIcons';
 
 export const TaskPriorityDesc = {
   [TaskPriorityEnum.Low]: '낮음',
@@ -26,3 +27,16 @@ export const TaskViewTypeDesc = {
   [TaskViewTypeEnum.List]: '목록',
   [TaskViewTypeEnum.Board]: '보드',
 };
+
+export const segmentList = [
+  {
+    label: TaskViewTypeDesc[TaskViewTypeEnum.List],
+    value: TaskViewTypeEnum.List,
+    icon: <ListIcon />,
+  },
+  {
+    label: TaskViewTypeDesc[TaskViewTypeEnum.Board],
+    value: TaskViewTypeEnum.Board,
+    icon: <BoardIcon />,
+  },
+];

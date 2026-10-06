@@ -116,3 +116,14 @@ export const checkDueTaskNotice = async () => {
     throw error;
   }
 };
+
+// 로그아웃
+export const logout = async () => {
+  try {
+    const response = await axiosInstance.post<string>('/auth/logout');
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};

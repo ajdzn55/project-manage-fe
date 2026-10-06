@@ -12,6 +12,8 @@ import { setAccessToken } from '@/lib/axios';
 import { dialogAlert } from '@/utils/alert';
 import { isAxiosError } from 'axios';
 import LogoIcon from '@/components/icons/LogoIcon';
+import { useQueryClient } from '@tanstack/react-query';
+import { useAuthNavigation } from '@/utils/useAuthNavigation';
 
 const LoginForm = () => {
   const {
@@ -21,11 +23,20 @@ const LoginForm = () => {
   } = useForm<UserLogin>();
   const router = useRouter();
 
+  const queryClient = useQueryClient();
+  const { destination } = useAuthNavigation();
+
   const onSubmit = async (data: UserLogin) => {
     try {
       const { accessToken } = await login(data);
       setAccessToken(accessToken);
-      router.replace('/project');
+
+      await queryClient.refetchQueries({
+        queryKey: ['loginUser'],
+        type: 'active', // 활성화 된 쿼리만 refetch
+      });
+
+      router.replace(destination);
     } catch (error) {
       const isUnauthorized =
         isAxiosError(error) && error.response?.status === 401;
