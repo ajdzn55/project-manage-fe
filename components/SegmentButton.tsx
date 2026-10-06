@@ -11,15 +11,22 @@ interface Props<T extends string> {
   segmentList: SegmentItem<T>[];
   selected: T;
   onChange: (value: T) => void;
+  width?: string;
+  height?: string;
 }
 
 const SegmentButton = <T extends string>({
   segmentList,
   selected,
   onChange,
+  width,
+  height,
 }: Props<T>) => {
   return (
-    <div className="border-line flex h-[44px] w-full items-center overflow-hidden rounded-md border bg-white font-semibold transition-colors focus-within:border-blue-500 hover:border-slate-300">
+    <div
+      style={{ width: width ?? 'auto', height: height ?? 'auto' }}
+      className="border-line flex items-center overflow-hidden rounded-md border bg-white font-semibold transition-colors focus-within:border-blue-500 hover:border-slate-300"
+    >
       {segmentList.map((segment) => {
         const isSelected = selected === segment.value;
 

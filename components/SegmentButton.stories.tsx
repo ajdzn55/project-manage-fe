@@ -47,11 +47,21 @@ const meta = {
       control: false,
       description: '버튼 클릭(변경) 시 실행되는 이벤트 핸들러',
     },
+    width: {
+      control: 'text',
+      description: '버튼 가로 너비 (예: "224px")',
+    },
+    height: {
+      control: 'text',
+      description: '버튼 세로 높이 (예: "40px")',
+    },
   },
   args: {
     segmentList,
     selected: TaskViewTypeEnum.List,
     onChange: fn(),
+    width: '224px',
+    height: '40px',
   },
 } satisfies Meta<typeof StorySegmentButton>;
 
