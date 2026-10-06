@@ -16,7 +16,10 @@ import {
   useTaskListQuery,
   useUpdateTaskMutation,
 } from '@/features/project/hooks/useTask';
-import { TaskStatusEnum } from '@/features/project/types/enums';
+import {
+  TaskStatusEnum,
+  TaskViewTypeEnum,
+} from '@/features/project/types/enums';
 import {
   useLoginInfoQuery,
   useUserListQuery,
@@ -28,6 +31,11 @@ import TaskBatchEditModal, {
   type BatchEditField,
 } from '@/features/project/components/projects/TaskBatchEditModal';
 import { updateTask } from '@/features/project/api/task';
+import { useStorage } from '@/utils/useStorage';
+import { TASK_VIEW_TYPE_KEY } from '@/constants/common.const';
+import TaskBoard from '@/features/project/components/tasks/TaskBoard';
+import SegmentButton from '@/components/SegmentButton';
+import { segmentList } from '@/features/project/constants/task.const';
 
 interface Props {
   projectId: string;
@@ -190,6 +198,16 @@ const ProjectTasksTab = ({ projectId, isOwner }: Props) => {
     });
   };
 
+  const todo = tasks?.filter((v) => v.status === TaskStatusEnum.Todo) ?? [];
+  const inProgress =
+    tasks?.filter((v) => v.status === TaskStatusEnum.InProgress) ?? [];
+  const done = tasks?.filter((v) => v.status === TaskStatusEnum.Done) ?? [];
+
+  const [viewType, changeViewType] = useStorage<TaskViewTypeEnum>(
+    TASK_VIEW_TYPE_KEY,
+    TaskViewTypeEnum.List,
+  );
+
   return (
     <>
       {isModalOpen && (
@@ -217,65 +235,83 @@ const ProjectTasksTab = ({ projectId, isOwner }: Props) => {
       ) : (
         <div className="h-full min-h-0 p-7">
           <section className="border-line flex h-full min-h-0 flex-col overflow-hidden rounded-xl border">
-            <div className="border-line flex shrink-0 items-center justify-between border-b px-5 py-3">
+            <div className="border-line flex h-16 shrink-0 items-center justify-between border-b px-5 py-3">
               <div className="flex items-center gap-3">
                 <h2 className="text-heading font-bold">전체 작업</h2>
                 <p className="text-muted text-xs">총 {tasks?.length}건</p>
               </div>
-              <div className="w-36">
+              <div className="flex gap-3">
+                <SegmentButton
+                  segmentList={segmentList}
+                  selected={viewType}
+                  onChange={changeViewType}
+                  width="224px"
+                  height="40px"
+                />
                 <Button
                   text="+ 새 작업"
-                  width="100%"
+                  width="144px"
                   height="40px"
                   onClick={onCreateTaskClick}
                 />
               </div>
             </div>
 
-            <div className="relative m-3 min-h-0 flex-1">
-              <Table
-                columns={columns}
-                data={tasks ?? []}
-                tableBorder
-                rowSelection={rowSelection}
-                onRowSelectionChange={setRowSelection}
-              />
+            {viewType === TaskViewTypeEnum.List ? (
+              <div className="relative m-3 min-h-0 flex-1">
+                <Table
+                  columns={columns}
+                  data={tasks ?? []}
+                  tableBorder
+                  rowSelection={rowSelection}
+                  onRowSelectionChange={setRowSelection}
+                />
 
-              {selectedTaskIds.length > 0 && (
-                <motion.div
-                  initial={{ x: '-50%', y: 20, opacity: 0 }}
-                  animate={{ x: '-50%', y: 0, opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                  className="border-line bg-surface absolute bottom-3 left-1/2 z-10 flex gap-5 rounded-md border p-2 shadow-[0_12px_32px_rgba(15,23,42,0.18)]"
-                >
-                  <span className="text-primary flex shrink-0 items-center pl-3 font-semibold">{`${selectedTaskIds.length}개 작업 선택됨`}</span>
-                  <div className="bg-line my-1 w-px shrink-0" />
-                  <div className="flex gap-3">
-                    <Button
-                      text="담당자 변경"
-                      width="100px"
-                      height="40px"
-                      color="white"
-                      onClick={() => setBatchEditField('assigneeId')}
-                    />
-                    <Button
-                      text="상태 변경"
-                      width="100px"
-                      height="40px"
-                      color="white"
-                      onClick={() => setBatchEditField('status')}
-                    />
-                    <Button
-                      text="마감일 변경"
-                      width="100px"
-                      height="40px"
-                      color="white"
-                      onClick={() => setBatchEditField('dueDate')}
-                    />
-                  </div>
-                </motion.div>
-              )}
-            </div>
+                {selectedTaskIds.length > 0 && (
+                  <motion.div
+                    initial={{ x: '-50%', y: 20, opacity: 0 }}
+                    animate={{ x: '-50%', y: 0, opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="border-line bg-surface absolute bottom-3 left-1/2 z-10 flex gap-5 rounded-md border p-2 shadow-[0_12px_32px_rgba(15,23,42,0.18)]"
+                  >
+                    <span className="text-primary flex shrink-0 items-center pl-3 font-semibold">{`${selectedTaskIds.length}개 작업 선택됨`}</span>
+                    <div className="bg-line my-1 w-px shrink-0" />
+                    <div className="flex gap-3">
+                      <Button
+                        text="담당자 변경"
+                        width="100px"
+                        height="40px"
+                        color="white"
+                        onClick={() => setBatchEditField('assigneeId')}
+                      />
+                      <Button
+                        text="상태 변경"
+                        width="100px"
+                        height="40px"
+                        color="white"
+                        onClick={() => setBatchEditField('status')}
+                      />
+                      <Button
+                        text="마감일 변경"
+                        width="100px"
+                        height="40px"
+                        color="white"
+                        onClick={() => setBatchEditField('dueDate')}
+                      />
+                    </div>
+                  </motion.div>
+                )}
+              </div>
+            ) : (
+              <div className="m-3 grid min-h-0 flex-1 grid-cols-3 gap-5 overflow-x-auto">
+                <TaskBoard status={TaskStatusEnum.Todo} data={todo} />
+                <TaskBoard
+                  status={TaskStatusEnum.InProgress}
+                  data={inProgress}
+                />
+                <TaskBoard status={TaskStatusEnum.Done} data={done} />
+              </div>
+            )}
           </section>
         </div>
       )}

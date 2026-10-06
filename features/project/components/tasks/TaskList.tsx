@@ -11,7 +11,6 @@ import EmptyState from '@/features/project/components/EmptyState';
 import { useRouter } from 'next/navigation';
 import { useUserListQuery } from '@/features/user/hooks/useUser';
 import SegmentButton from '@/components/SegmentButton';
-import { BoardIcon, ListIcon } from '@/components/icons/SegmentIcons';
 import TaskBoard from '@/features/project/components/tasks/TaskBoard';
 import {
   TaskStatusEnum,
@@ -20,7 +19,7 @@ import {
 import CheckboxInput from '@/components/CheckboxInput';
 import { TASK_VIEW_TYPE_KEY } from '@/constants/common.const';
 import { useStorage } from '@/utils/useStorage';
-import { TaskViewTypeDesc } from '../../constants/task.const';
+import { segmentList } from '@/features/project/constants/task.const';
 
 const TaskList = () => {
   const { register, control } = useForm<ProjectTask>();
@@ -72,19 +71,6 @@ const TaskList = () => {
 
   const router = useRouter();
 
-  const segmentList = [
-    {
-      label: TaskViewTypeDesc[TaskViewTypeEnum.List],
-      value: TaskViewTypeEnum.List,
-      icon: <ListIcon />,
-    },
-    {
-      label: TaskViewTypeDesc[TaskViewTypeEnum.Board],
-      value: TaskViewTypeEnum.Board,
-      icon: <BoardIcon />,
-    },
-  ];
-
   const [viewType, changeViewType] = useStorage<TaskViewTypeEnum>(
     TASK_VIEW_TYPE_KEY,
     TaskViewTypeEnum.List,
@@ -100,7 +86,7 @@ const TaskList = () => {
           onAction={() => router.push('/project')}
         />
       ) : (
-        <div className="p-7">
+        <div className="flex h-full min-h-0 flex-col p-7">
           <header>
             <h1 className="text-heading text-2xl font-bold">내 작업</h1>
             <p className="text-muted mt-1">내 작업 현황을 확인하세요.</p>
@@ -147,16 +133,14 @@ const TaskList = () => {
                 segmentList={segmentList}
                 selected={viewType}
                 onChange={changeViewType}
+                width="224px"
+                height="40px"
               />
             </div>
           </form>
-
-          <div className="mt-5 overflow-x-auto">
+          <div className="mt-5 min-h-0 flex-1 overflow-x-auto">
             {viewType === TaskViewTypeEnum.List ? (
-              <div
-                style={{ height: 'calc(100dvh - 270px)' }}
-                className="flex flex-grow"
-              >
+              <div className="h-full min-h-0">
                 <Table
                   columns={projectTaskColumns(users ?? [])}
                   data={filteredTasks ?? []}
@@ -164,7 +148,7 @@ const TaskList = () => {
                 />
               </div>
             ) : (
-              <div className="grid grid-cols-3 gap-5">
+              <div className="grid h-full min-h-0 grid-cols-3 gap-5">
                 <TaskBoard status={TaskStatusEnum.Todo} data={todo} />
                 <TaskBoard
                   status={TaskStatusEnum.InProgress}
