@@ -8,15 +8,10 @@ const ProjectCard = ({ project }: { project: ProjectSimple }) => {
       href={`/project/detail/${project.id}`}
       className="border-line rounded-xl border bg-white p-5 transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md"
     >
-      <div className="flex items-start gap-3">
-        <span className="bg-primary-soft text-primary flex size-9 shrink-0 items-center justify-center rounded-lg font-bold">
-          A
-        </span>
-        <div className="min-w-0 flex-1">
-          <h2 className="text-heading truncate font-bold">{project.name}</h2>
-          <div className="mt-2">
-            <StatusBadge status={project.status} />
-          </div>
+      <div className="min-w-0 flex-1">
+        <h2 className="text-heading truncate font-bold">{project.name}</h2>
+        <div className="mt-2">
+          <StatusBadge status={project.status} />
         </div>
       </div>
       <p className="text-muted mt-4 text-xs">
