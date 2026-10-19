@@ -24,7 +24,7 @@ export interface Project {
 
 export interface ProjectSimple extends Omit<
   Project,
-  'description' | 'members'
+  'description' | 'members' | 'taskSummary'
 > {
   createdById: string;
 }
@@ -37,3 +37,16 @@ export type CreateProject = Omit<Project, 'id' | 'members' | 'status'> & {
 export type UpdateProject = Omit<CreateProject, 'status' | 'createdById'> & {
   status?: ProjectStatusEnum;
 };
+
+export interface ProjectSearchParams {
+  name?: string;
+  status?: ProjectStatusEnum;
+  isMyProject?: boolean;
+  page: number;
+  limit: number;
+}
+
+export interface Projects {
+  totalCount: number;
+  data: ProjectSimple[];
+}
