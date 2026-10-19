@@ -2,7 +2,8 @@ import axiosInstance from '@/lib/axios';
 import type {
   CreateProject,
   Project,
-  ProjectSimple,
+  Projects,
+  ProjectSearchParams,
   UpdateProject,
 } from '@/features/project/types/project.type';
 import { omitInvalidValues } from '@/utils/common';
@@ -20,9 +21,11 @@ export const createProject = async (data: CreateProject) => {
 };
 
 // 프로젝트 목록 조회
-export const getProjectList = async () => {
+export const getProjectList = async (params: ProjectSearchParams) => {
   try {
-    const response = await axiosInstance.get<ProjectSimple[]>('/project');
+    const response = await axiosInstance.get<Projects>('/project', {
+      params,
+    });
     return response.data;
   } catch (error) {
     console.error(error);

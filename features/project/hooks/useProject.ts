@@ -1,4 +1,10 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  keepPreviousData,
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import {
   createProject,
   deleteProject,
@@ -9,7 +15,8 @@ import {
 import type {
   CreateProject,
   Project,
-  ProjectSimple,
+  Projects,
+  ProjectSearchParams,
   UpdateProject,
 } from '@/features/project/types/project.type';
 import { toastAlert } from '@/utils/alert';
@@ -31,13 +38,29 @@ export const useCreateProjectMutation = () => {
   return { mutate };
 };
 
-export const useProjectListQuery = () => {
-  const { data } = useQuery<ProjectSimple[]>({
-    queryKey: ['project'],
-    queryFn: getProjectList,
-  });
+export const useProjectInfiniteQuery = (
+  searchParams: Pick<ProjectSearchParams, 'name' | 'status' | 'isMyProject'>,
+) => {
+  return useInfiniteQuery<Projects>({
+    queryKey: ['project', searchParams], // 서로 다른 검색 겨과가 같은 캐시를 사용할 수도 있어서
+    queryFn: ({ pageParam }) => {
+      return getProjectList({
+        ...searchParams,
+        page: Number(pageParam),
+        limit: 16,
+      });
+    },
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, allPages) => {
+      const loadedCount = allPages.length * 16;
 
-  return { data };
+      // 수신 건수가 전체 건수보다 작으면 더 불러오고, 아니면 그만 불러오도록
+      return loadedCount < lastPage.totalCount
+        ? allPages.length + 1
+        : undefined;
+    },
+    placeholderData: keepPreviousData,
+  });
 };
 
 export const useProjectQuery = (id: string) => {
