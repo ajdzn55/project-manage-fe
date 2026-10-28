@@ -21,13 +21,13 @@ export const projectMenuItems = [
   },
   {
     label: '내 작업',
-    href: '/project/tasks',
+    href: '/my-task',
     defaultIcon: <TaskIcon />,
     activeIcon: <TaskIcon color="text-primary" />,
   },
   {
     label: '캘린더',
-    href: '/project/calendar',
+    href: '/calendar',
     defaultIcon: <CalendarIcon />,
     activeIcon: <CalendarIcon color="text-primary" />,
   },
@@ -35,7 +35,7 @@ export const projectMenuItems = [
 
 export const projectAccountMenu = {
   label: '내 정보',
-  href: '/project/profile',
+  href: '/profile',
   defaultIcon: <ProfileIcon />,
   activeIcon: <ProfileIcon color="text-primary" />,
 } as const;

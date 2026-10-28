@@ -19,7 +19,7 @@ interface Props {
   children: ReactNode;
 }
 
-const ProjectLayout = ({ children }: Props) => {
+const CommonLayout = ({ children }: Props) => {
   const [isSidebarCollapsed, toggleSidebar] = useStorage<boolean>(
     SIDEBAR_COLLAPSED_KEY,
     false,
@@ -117,4 +117,4 @@ const ProjectLayout = ({ children }: Props) => {
   );
 };
 
-export default ProjectLayout;
+export default CommonLayout;

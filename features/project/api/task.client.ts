@@ -1,4 +1,4 @@
-import axiosInstance from '@/lib/axios';
+import clientAxios from '@/lib/client';
 import type {
   CreateProjectTask,
   ProjectTask,
@@ -11,7 +11,7 @@ import { omitInvalidValues } from '@/utils/common';
 export const createTask = async (data: CreateProjectTask) => {
   try {
     const requestBody = omitInvalidValues(data);
-    const response = await axiosInstance.post<string>('/task', requestBody);
+    const response = await clientAxios.post<string>('/task', requestBody);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -22,7 +22,7 @@ export const createTask = async (data: CreateProjectTask) => {
 // 프로젝트 작업 목록 조회
 export const getTaskList = async (params: TaskSearchParams) => {
   try {
-    const response = await axiosInstance.get<ProjectTask[]>('/task', {
+    const response = await clientAxios.get<ProjectTask[]>('/task', {
       params,
     });
     return response.data;
@@ -36,10 +36,7 @@ export const getTaskList = async (params: TaskSearchParams) => {
 export const updateTask = async (id: string, data: UpdateProjectTask) => {
   try {
     const requestBody = omitInvalidValues(data);
-    const response = await axiosInstance.patch<void>(
-      `/task/${id}`,
-      requestBody,
-    );
+    const response = await clientAxios.patch<void>(`/task/${id}`, requestBody);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -50,7 +47,7 @@ export const updateTask = async (id: string, data: UpdateProjectTask) => {
 // 프로젝트 작업 삭제
 export const deleteTask = async (id: string) => {
   try {
-    const response = await axiosInstance.delete<void>(`/task/${id}`);
+    const response = await clientAxios.delete<void>(`/task/${id}`);
     return response.data;
   } catch (error) {
     console.error(error);

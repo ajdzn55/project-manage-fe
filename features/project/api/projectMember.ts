@@ -1,4 +1,4 @@
-import axiosInstance from '@/lib/axios';
+import clientAxios from '@/lib/client';
 import type {
   AddProjectMember,
   UpdateProjectMember,
@@ -12,7 +12,7 @@ export const addProjectMember = async (
 ) => {
   try {
     const requestBody = omitInvalidValues(data);
-    const response = await axiosInstance.post<string>(
+    const response = await clientAxios.post<string>(
       `/project/${projectId}/members`,
       requestBody,
     );
@@ -30,7 +30,7 @@ export const changeProjectMemberRole = async (
   data: UpdateProjectMember,
 ) => {
   try {
-    const response = await axiosInstance.patch<void>(
+    const response = await clientAxios.patch<void>(
       `/project/${projectId}/members/${userId}`,
       data,
     );
@@ -47,7 +47,7 @@ export const removeProjectMember = async (
   memberId: string,
 ) => {
   try {
-    const response = await axiosInstance.delete<void>(
+    const response = await clientAxios.delete<void>(
       `/project/${projectId}/members/${memberId}`,
     );
     return response.data;

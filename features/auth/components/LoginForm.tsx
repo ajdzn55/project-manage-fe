@@ -6,16 +6,13 @@ import TextInput from '@/components/TextInput';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { login } from '@/features/user/api/user';
+import { login } from '@/features/user/api/user.client';
 import type { UserLogin } from '@/features/user/types/user.type';
-import { setAccessToken } from '@/lib/axios';
 import { dialogAlert } from '@/utils/alert';
 import { isAxiosError } from 'axios';
 import LogoIcon from '@/components/icons/LogoIcon';
-import { useQueryClient } from '@tanstack/react-query';
-import { useAuthNavigation } from '@/utils/useAuthNavigation';
 
-const LoginForm = () => {
+const LoginForm = ({ destination }: { destination: string }) => {
   const {
     register,
     handleSubmit,
@@ -23,19 +20,10 @@ const LoginForm = () => {
   } = useForm<UserLogin>();
   const router = useRouter();
 
-  const queryClient = useQueryClient();
-  const { destination } = useAuthNavigation();
-
   const onSubmit = async (data: UserLogin) => {
     try {
-      const { accessToken } = await login(data);
-      setAccessToken(accessToken);
-
-      await queryClient.refetchQueries({
-        queryKey: ['loginUser'],
-        type: 'active', // 활성화 된 쿼리만 refetch
-      });
-
+      await login(data);
+      // 로그인 전에 접근했던 경로로 이동
       router.replace(destination);
     } catch (error) {
       const isUnauthorized =

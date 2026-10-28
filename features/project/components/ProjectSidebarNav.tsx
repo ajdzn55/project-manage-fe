@@ -9,9 +9,8 @@ import {
 } from '../constants/project.const';
 import { dialogAlert } from '@/utils/alert';
 import { useState } from 'react';
-import { clearAccessToken } from '@/lib/axios';
 import { useQueryClient } from '@tanstack/react-query';
-import { logout } from '@/features/user/api/user';
+import { logout } from '@/features/user/api/user.client';
 
 interface Props {
   isCollapsed: boolean;
@@ -43,7 +42,6 @@ const ProjectSidebarNav = ({ isCollapsed }: Props) => {
 
     if (alertRes.isConfirmed) {
       await logout();
-      clearAccessToken();
       queryClient.clear();
       router.replace('/login');
     }

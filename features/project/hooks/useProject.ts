@@ -11,7 +11,7 @@ import {
   getProject,
   getProjectList,
   updateProject,
-} from '@/features/project/api/project';
+} from '@/features/project/api/project.client';
 import type {
   CreateProject,
   Project,
