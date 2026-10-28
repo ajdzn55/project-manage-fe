@@ -1,7 +1,6 @@
 import './globals.css';
 import ReactQueryProvider from '@/lib/ReactQueryProvider';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import AuthGuard from '@/features/auth/components/AuthGuard';
 import { Suspense } from 'react';
 import { ClipLoader } from 'react-spinners';
 
@@ -21,7 +20,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
               />
             }
           >
-            <AuthGuard>{children}</AuthGuard>
+            {children}
           </Suspense>
 
           {process.env.NODE_ENV === 'development' && <ReactQueryDevtools />}
