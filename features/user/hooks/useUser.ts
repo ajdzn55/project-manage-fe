@@ -16,10 +16,10 @@ import {
   getUserList,
   restoreUser,
   updateUser,
-} from '@/features/user/api/user';
+} from '@/features/user/api/user.client';
 import { dialogAlert, toastAlert } from '@/utils/alert';
 import type { AxiosError } from 'axios';
-import type { ApiErrorResponse } from '@/lib/axios';
+import type { ApiErrorResponse } from '@/lib/client';
 
 export const useUserListQuery = () => {
   const { data } = useQuery<User[]>({

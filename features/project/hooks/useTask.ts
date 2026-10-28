@@ -4,7 +4,7 @@ import {
   deleteTask,
   getTaskList,
   updateTask,
-} from '@/features/project/api/task';
+} from '@/features/project/api/task.client';
 import type {
   CreateProjectTask,
   ProjectTask,

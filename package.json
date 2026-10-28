@@ -26,6 +26,7 @@
     "react-hook-form": "^7.85.0",
     "react-spinners": "^0.17.1",
     "react-tooltip": "^6.0.8",
+    "server-only": "^0.0.1",
     "sweetalert2": "^11.26.25"
   },
   "devDependencies": {

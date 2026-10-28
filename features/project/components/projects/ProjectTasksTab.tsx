@@ -30,7 +30,7 @@ import { motion } from 'motion/react';
 import TaskBatchEditModal, {
   type BatchEditField,
 } from '@/features/project/components/projects/TaskBatchEditModal';
-import { updateTask } from '@/features/project/api/task';
+import { updateTask } from '@/features/project/api/task.client';
 import { useStorage } from '@/utils/useStorage';
 import { TASK_VIEW_TYPE_KEY } from '@/constants/common.const';
 import TaskBoard from '@/features/project/components/tasks/TaskBoard';

@@ -1,4 +1,4 @@
-import axiosInstance from '@/lib/axios';
+import clientAxios from '@/lib/client';
 import type {
   CreateProject,
   Project,
@@ -12,7 +12,7 @@ import { omitInvalidValues } from '@/utils/common';
 export const createProject = async (data: CreateProject) => {
   try {
     const requestBody = omitInvalidValues(data);
-    const response = await axiosInstance.post<string>('/project', requestBody);
+    const response = await clientAxios.post<string>('/project', requestBody);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -23,7 +23,7 @@ export const createProject = async (data: CreateProject) => {
 // 프로젝트 목록 조회
 export const getProjectList = async (params: ProjectSearchParams) => {
   try {
-    const response = await axiosInstance.get<Projects>('/project', {
+    const response = await clientAxios.get<Projects>('/project', {
       params,
     });
     return response.data;
@@ -36,7 +36,7 @@ export const getProjectList = async (params: ProjectSearchParams) => {
 // 프로젝트 상세 조회
 export const getProject = async (id: string) => {
   try {
-    const response = await axiosInstance.get<Project>(`/project/${id}`);
+    const response = await clientAxios.get<Project>(`/project/${id}`);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -48,7 +48,7 @@ export const getProject = async (id: string) => {
 export const updateProject = async (id: string, data: UpdateProject) => {
   try {
     const requestBody = omitInvalidValues(data);
-    const response = await axiosInstance.patch<void>(
+    const response = await clientAxios.patch<void>(
       `/project/${id}`,
       requestBody,
     );
@@ -62,7 +62,7 @@ export const updateProject = async (id: string, data: UpdateProject) => {
 // 프로젝트 삭제
 export const deleteProject = async (id: string) => {
   try {
-    const response = await axiosInstance.delete<void>(`/project/${id}`);
+    const response = await clientAxios.delete<void>(`/project/${id}`);
     return response.data;
   } catch (error) {
     console.error(error);
