@@ -4,7 +4,7 @@ import {
   addProjectMember,
   changeProjectMemberRole,
   removeProjectMember,
-} from '@/features/project/api/projectMember';
+} from '@/features/project/api/projectMember.client';
 import type {
   AddProjectMember,
   UpdateProjectMember,
