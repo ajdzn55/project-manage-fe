@@ -78,6 +78,25 @@ clientAxios.interceptors.response.use(
       // 원래 요청 재시도
       return clientAxios(originalRequest);
     } catch (refreshError) {
+      // refresh token 만료 여부
+      const isRefreshUnauthorized =
+        axios.isAxiosError(refreshError) &&
+        refreshError.response?.status === 401;
+
+      if (!isRefreshUnauthorized) {
+        return Promise.reject(refreshError);
+      }
+
+      const returnTo = `${window.location.pathname}${window.location.search}`;
+
+      try {
+        await refreshAxiosInstance.post<void>('/auth/logout'); // 로그아웃을 통한 쿠키 제거
+      } finally {
+        window.location.replace(
+          `/login?returnTo=${encodeURIComponent(returnTo)}`,
+        );
+      }
+
       return Promise.reject(refreshError);
     }
   },
