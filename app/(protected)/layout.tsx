@@ -25,7 +25,7 @@ const ProtectedLayout = async ({ children }: { children: React.ReactNode }) => {
     });
   } catch (error) {
     if (isAxiosError(error) && error.response?.status === 401) {
-      redirect(`/login?returnTo=${encodeURIComponent(returnTo)}`);
+      redirect(`/api/auth/refresh?returnTo=${encodeURIComponent(returnTo)}`);
     }
 
     throw error;
