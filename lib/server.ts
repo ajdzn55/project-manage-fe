@@ -10,10 +10,10 @@ const createServerAxios = async () => {
   const accessToken = cookieStore.get('accessToken')?.value || '';
 
   const instance = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_URL,
+    baseURL: process.env.API_URL,
     timeout: 10_000,
     headers: {
-      ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+      ...(accessToken ? { Cookie: `accessToken=${accessToken}` } : {}),
     },
   });
 
