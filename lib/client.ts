@@ -26,16 +26,14 @@ let refreshPromise: Promise<void> | null = null;
  * 클라이언트 컴포넌트에서 사용하는 Axios 공통 인스턴스 생성
  */
 const clientAxios = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: '/api/backend',
   timeout: 10_000,
-  withCredentials: true, // 교차 출처 요청에 인증 쿠키 포함
 });
 
 // 토큰 갱신 API만 호출하는 별도 인스턴스
 const refreshAxiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: '/api/backend',
   timeout: 10_000,
-  withCredentials: true,
 });
 
 const refreshAccessToken = async () => {
