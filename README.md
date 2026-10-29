@@ -22,14 +22,31 @@ ProjectHub는 프로젝트, 작업, 구성원을 한곳에서 관리하는 협�
 ---
 
 ### 🔄 핵심 사용자 흐름
+
+**인증**  
+회원가입·로그인 → 보호 경로 접근 → 인증 만료 시 토큰 자동 갱신 → 로그아웃
+
 **프로젝트 구성**  
-회원가입·로그인 → 프로젝트 생성 → 구성원 추가 → 역할 설정
+프로젝트 생성 → 구성원 추가 → 역할 설정
 
 **작업 관리**  
 작업 생성 → 담당자·우선순위·상태·마감일 설정 → 목록·보드에서 진행 상황 관리
 
 **일정 및 현황 확인**  
 내 작업 확인 → 상태별 필터링 → 캘린더 일정 확인 → 마감 임박 알림 및 프로젝트 현황 확인
+
+---
+
+### 🔐 인증 및 API 요청 구조
+
+- Next.js Route Handler를 BFF로 사용해 브라우저의 API 요청을 동일 출처의
+  `/api/backend/*` 경로로 통합합니다.
+- 보호 경로는 Proxy에서 인증 쿠키 존재 여부를 먼저 확인하고, 서버
+  레이아웃에서 로그인 정보를 조회해 실제 인증 상태를 검증합니다.
+- Server Component에서 초기 데이터를 조회한 뒤 TanStack Query의
+  `HydrationBoundary`를 통해 클라이언트 캐시로 전달합니다.
+- Access Token 만료 시 클라이언트 요청은 Axios 인터셉터에서, 서버 렌더링
+  요청은 토큰 갱신 Route Handler에서 Refresh Token을 이용해 복구합니다.
 
 ---
 
@@ -60,7 +77,7 @@ ProjectHub는 프로젝트, 작업, 구성원을 한곳에서 관리하는 협�
 
 #### 사전 요구사항
 
-- Node.js 20.9 이상
+- Node.js 22.23.4 이상, 23 미만
 - npm 설치
 - 실행 중인 ProjectHub 백엔드 API
 
@@ -77,8 +94,11 @@ npm install
 프로젝트 루트에 `.env.development` 파일을 생성하고 다음 값을 설정합니다.
 
 ```dotenv
-NEXT_PUBLIC_API_URL=http://localhost:3001/api
+API_URL=http://localhost:3001/api
 ```
+
+`API_URL`은 Next.js 서버에서 실행되는 Route Handler와 Server Component가
+NestJS API를 호출할 때 사용하는 서버 전용 환경 변수입니다.
 
 #### 개발 서버 실행
 
@@ -108,7 +128,10 @@ npm run storybook
 project-manage-fe
 ├── app/                 # 라우트, 페이지 및 레이아웃
 │   ├── (public)/        # 로그인 및 회원가입 페이지
-│   └── (protected)/     # 인증이 필요한 프로젝트·내 작업·캘린더·프로필 페이지
+│   ├── (protected)/     # 인증이 필요한 프로젝트·내 작업·캘린더·프로필 페이지
+│   └── api/
+│       ├── backend/[...path]/ # 백엔드 API를 중계하는 BFF Route Handler
+│       └── auth/refresh/      # 서버 렌더링 중 인증 토큰 갱신
 ├── components/          # 공통 UI 컴포넌트 및 Storybook 스토리
 ├── features/            # 도메인별 기능
 │   ├── auth/            # 인증 화면과 폼
