@@ -41,12 +41,16 @@ ProjectHub는 프로젝트, 작업, 구성원을 한곳에서 관리하는 협�
 
 - Next.js Route Handler를 BFF로 사용해 브라우저의 API 요청을 동일 출처의
   `/api/backend/*` 경로로 통합합니다.
-- 보호 경로는 Proxy에서 인증 쿠키 존재 여부를 먼저 확인하고, 서버
-  레이아웃에서 로그인 정보를 조회해 실제 인증 상태를 검증합니다.
-- Server Component에서 초기 데이터를 조회한 뒤 TanStack Query의
-  `HydrationBoundary`를 통해 클라이언트 캐시로 전달합니다.
-- Access Token 만료 시 클라이언트 요청은 Axios 인터셉터에서, 서버 렌더링
-  요청은 토큰 갱신 Route Handler에서 Refresh Token을 이용해 복구합니다.
+- 보호 경로는 Proxy에서 인증 쿠키 존재 여부를 먼저 확인하고, 서버 레이아웃에서
+  로그인 정보를 조회해 실제 인증 상태를 검증합니다.
+- Server Component에서는 페이지 진입에 필요한 핵심 데이터를 fetchQuery로
+  먼저 조회합니다. 조회에 성공한 데이터는 dehydrate와 HydrationBoundary를
+  통해 클라이언트 캐시로 전달하고, 조회에 실패하면 route 오류 경계에서
+  재시도 가능한 공통 오류 화면을 제공합니다.
+- Access Token 만료 시 클라이언트 요청은 Axios 인터셉터에서, 서버 렌더링 요청은
+  토큰 갱신 Route Handler에서 Refresh Token을 이용해 복구합니다.
+- Axios 인터셉터에서 API 오류 메시지를 공통 형식으로 정리하고, 클라이언트의
+  QueryCache와 MutationCache를 통해 조회 오류와 mutation 실패를 공통 처리합니다.
 
 ---
 
@@ -129,6 +133,7 @@ project-manage-fe
 ├── app/                 # 라우트, 페이지 및 레이아웃
 │   ├── (public)/        # 로그인 및 회원가입 페이지
 │   ├── (protected)/     # 인증이 필요한 프로젝트·내 작업·캘린더·프로필 페이지
+│   │   └── error.tsx    # 공통 오류 화면 및 재시도 처리
 │   └── api/
 │       ├── backend/[...path]/ # 백엔드 API를 중계하는 BFF Route Handler
 │       └── auth/refresh/      # 서버 렌더링 중 인증 토큰 갱신
