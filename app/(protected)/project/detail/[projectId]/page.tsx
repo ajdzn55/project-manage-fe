@@ -18,17 +18,17 @@ export default async function ProjectDetailPage({ params }: Props) {
 
   await Promise.all([
     // 프로젝트 상세 조회
-    queryClient.prefetchQuery<Project>({
+    queryClient.fetchQuery<Project>({
       queryKey: ['project', projectId],
       queryFn: () => getProject(projectId),
     }),
     // 프로젝트 작업 목록 조회
-    queryClient.prefetchQuery<ProjectTask[]>({
+    queryClient.fetchQuery<ProjectTask[]>({
       queryKey: ['task', { projectId }],
       queryFn: () => getTaskList({ projectId }),
     }),
     // 사용자 목록 조회
-    queryClient.prefetchQuery<User[]>({
+    queryClient.fetchQuery<User[]>({
       queryKey: ['user'],
       queryFn: getUserList,
     }),

@@ -15,12 +15,12 @@ export default async function TasksPage() {
 
   await Promise.all([
     // 프로젝트 작업 목록 조회
-    queryClient.prefetchQuery<ProjectTask[]>({
+    queryClient.fetchQuery<ProjectTask[]>({
       queryKey: ['task', params],
       queryFn: () => getTaskList(params),
     }),
     // 사용자 목록 조회
-    queryClient.prefetchQuery<User[]>({
+    queryClient.fetchQuery<User[]>({
       queryKey: ['user'],
       queryFn: getUserList,
     }),

@@ -8,7 +8,7 @@ export default async function ProjectPage() {
   const queryClient = createServerQueryClient();
 
   // 사용자 목록 조회
-  await queryClient.prefetchQuery<User[]>({
+  await queryClient.fetchQuery<User[]>({
     queryKey: ['user'],
     queryFn: getUserList,
   });
