@@ -22,9 +22,6 @@ export const useAddProjectMemberMutation = (projectId: string) => {
         content: '프로젝트 멤버가 추가되었습니다.',
       });
     },
-    onError: (error) => {
-      console.log(error);
-    },
   });
 
   return { mutate };
@@ -48,9 +45,6 @@ export const useChangeProjectMemberRoleMutation = (projectId: string) => {
         content: '프로젝트 멤버 역할이 변경되었습니다.',
       });
     },
-    onError: (error) => {
-      console.log(error);
-    },
   });
 
   return { mutate };
@@ -67,9 +61,6 @@ export const useRemoveProjectMemberMutation = (projectId: string) => {
         type: 'success',
         content: '프로젝트 멤버가 제거되었습니다.',
       });
-    },
-    onError: (error) => {
-      console.log(error);
     },
   });
 
