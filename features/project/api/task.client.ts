@@ -9,48 +9,26 @@ import { omitInvalidValues } from '@/utils/common';
 
 // 프로젝트 작업 생성
 export const createTask = async (data: CreateProjectTask) => {
-  try {
-    const requestBody = omitInvalidValues(data);
-    const response = await clientAxios.post<string>('/task', requestBody);
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
+  const requestBody = omitInvalidValues(data);
+  const response = await clientAxios.post<string>('/task', requestBody);
+  return response.data;
 };
 
 // 프로젝트 작업 목록 조회
 export const getTaskList = async (params: TaskSearchParams) => {
-  try {
-    const response = await clientAxios.get<ProjectTask[]>('/task', {
-      params,
-    });
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
+  const response = await clientAxios.get<ProjectTask[]>('/task', {
+    params,
+  });
+  return response.data;
 };
 
 // 프로젝트 작업 정보 수정
 export const updateTask = async (id: string, data: UpdateProjectTask) => {
-  try {
-    const requestBody = omitInvalidValues(data);
-    const response = await clientAxios.patch<void>(`/task/${id}`, requestBody);
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
+  const requestBody = omitInvalidValues(data);
+  await clientAxios.patch<void>(`/task/${id}`, requestBody);
 };
 
 // 프로젝트 작업 삭제
 export const deleteTask = async (id: string) => {
-  try {
-    const response = await clientAxios.delete<void>(`/task/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
+  await clientAxios.delete<void>(`/task/${id}`);
 };
