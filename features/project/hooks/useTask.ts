@@ -22,9 +22,6 @@ export const useCreateTaskMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['task'] });
       toastAlert({ type: 'success', content: '작업이 생성되었습니다.' });
     },
-    onError: (error) => {
-      console.log(error);
-    },
   });
 
   return { mutate };
@@ -90,9 +87,6 @@ export const useDeleteTaskMutation = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['task'] });
       toastAlert({ type: 'success', content: '작업이 삭제되었습니다.' });
-    },
-    onError: (error) => {
-      console.log(error);
     },
   });
 

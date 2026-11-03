@@ -8,6 +8,8 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   labelWidth?: string;
   labelTooltip?: LabelTooltip;
   register?: UseFormRegisterReturn<any>;
+  width?: string;
+  height?: string;
 }
 
 const SearchInput = ({
@@ -15,14 +17,16 @@ const SearchInput = ({
   labelWidth = '0px',
   labelTooltip,
   register,
+  width,
+  height,
   ...inputProps
 }: Props) => {
   return (
     <div
       className="relative flex items-center gap-[3px]"
       style={{
-        width: inputProps.width ? inputProps.width : 'auto',
-        height: inputProps.height ? inputProps.height : 'auto',
+        width: width ?? 'auto',
+        height: height ?? '44px',
       }}
     >
       <InputLabel
@@ -31,7 +35,7 @@ const SearchInput = ({
         tooltip={labelTooltip}
       />
 
-      <div className="relative min-w-0 flex-1">
+      <div className="relative h-full min-w-0 flex-1">
         <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center">
           <SearchIcon />
         </span>
@@ -39,7 +43,7 @@ const SearchInput = ({
           {...register}
           id={label || undefined}
           type="search"
-          className="border-line text-body h-11 w-full rounded-lg border bg-white pr-3 pl-9 transition outline-none placeholder:text-slate-400 hover:border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+          className="border-line text-body h-full w-full rounded-lg border bg-white pr-3 pl-9 transition outline-none placeholder:text-slate-400 hover:border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
           {...inputProps}
         />
       </div>

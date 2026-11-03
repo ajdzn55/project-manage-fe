@@ -6,11 +6,9 @@ import TextInput from '@/components/TextInput';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { login } from '@/features/user/api/user.client';
 import type { UserLogin } from '@/features/user/types/user.type';
-import { dialogAlert } from '@/utils/alert';
-import { isAxiosError } from 'axios';
 import LogoIcon from '@/components/icons/LogoIcon';
+import { useLoginMutation } from '@/features/user/hooks/useUser';
 
 const LoginForm = ({ destination }: { destination: string }) => {
   const {
@@ -20,23 +18,15 @@ const LoginForm = ({ destination }: { destination: string }) => {
   } = useForm<UserLogin>();
   const router = useRouter();
 
-  const onSubmit = async (data: UserLogin) => {
-    try {
-      await login(data);
-      // 로그인 전에 접근했던 경로로 이동
-      router.replace(destination);
-    } catch (error) {
-      const isUnauthorized =
-        isAxiosError(error) && error.response?.status === 401;
+  const { mutate: login } = useLoginMutation();
 
-      await dialogAlert({
-        type: 'error',
-        content: isUnauthorized
-          ? error.response?.data.message
-          : '로그인에 실패했습니다. 잠시 후 다시 시도해주세요.',
-      });
-      return;
-    }
+  const onSubmit = async (data: UserLogin) => {
+    login(data, {
+      onSuccess: () => {
+        // 로그인 전에 접근했던 경로로 이동
+        router.replace(destination);
+      },
+    });
   };
 
   return (

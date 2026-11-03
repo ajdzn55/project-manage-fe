@@ -11,6 +11,8 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   register?: UseFormRegisterReturn<any>;
   hasError?: boolean;
   required?: boolean;
+  width?: string;
+  height?: string;
 }
 
 const TextInput = ({
@@ -21,6 +23,8 @@ const TextInput = ({
   register,
   hasError = false,
   required = false,
+  width,
+  height,
   ...inputProps
 }: Props) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -36,8 +40,8 @@ const TextInput = ({
     <div
       className="flex items-center gap-[3px]"
       style={{
-        width: inputProps.width ? inputProps.width : 'auto',
-        height: inputProps.height ? inputProps.height : 'auto',
+        width: width ?? 'auto',
+        height: height ?? '44px',
       }}
     >
       <InputLabel
@@ -47,12 +51,12 @@ const TextInput = ({
         tooltip={labelTooltip}
       />
 
-      <div className="relative min-w-0 flex-1">
+      <div className="relative h-full min-w-0 flex-1">
         <input
           {...register}
           id={label}
           type={inputType}
-          className={`${borderClassName} text-heading h-11 w-full rounded-lg border bg-white px-3 transition outline-none placeholder:text-slate-400 focus:ring-3 ${
+          className={`${borderClassName} text-heading h-full w-full rounded-lg border bg-white px-3 transition outline-none placeholder:text-slate-400 focus:ring-3 ${
             isPassword ? 'pr-11' : ''
           }`}
           required={required}

@@ -1,4 +1,5 @@
-import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios';
+import axios, { AxiosError, type InternalAxiosRequestConfig } from 'axios';
+import { toApiError } from '@/utils/error';
 
 // 호출부에서 전달하기 위한 타입 확장
 declare module 'axios' {
@@ -40,8 +41,50 @@ const refreshAccessToken = async () => {
   try {
     await refreshAxiosInstance.post<void>('/auth/refresh');
   } finally {
-    // 완료된 refresh Promise 초기화
+    // refresh 종료 후 상태 초기화
     refreshPromise = null;
+  }
+};
+
+const handleUnauthorized = async (error: AxiosError<ApiErrorResponse>) => {
+  const originalRequest = error.config as RetryRequestConfig;
+
+  // 이미 refresh 후 재시도한 요청인 경우
+  if (originalRequest._retry) {
+    return Promise.reject(error);
+  }
+  // 재시도 표시 (무한 재요청 방지를 위함)
+  originalRequest._retry = true;
+
+  try {
+    // 동시 refresh 제어
+    // refreshPromise가 null이면 refreshAccessToken() 실행 결과를 저장
+    // 이미 Promise가 있으면 새 refresh를 실행하지 않고 기존 Promise 사용
+    // await으로 쿠키 갱신이 끝날 때까지 기다림
+    await (refreshPromise ??= refreshAccessToken());
+
+    // 원래 요청 재시도
+    return clientAxios(originalRequest);
+  } catch (refreshError) {
+    // refresh token 만료 여부
+    const isRefreshUnauthorized =
+      axios.isAxiosError(refreshError) && refreshError.response?.status === 401;
+
+    if (!isRefreshUnauthorized) {
+      return Promise.reject(refreshError);
+    }
+
+    const returnTo = `${window.location.pathname}${window.location.search}`;
+
+    try {
+      await refreshAxiosInstance.post<void>('/auth/logout'); // 로그아웃을 통한 쿠키 제거
+    } finally {
+      window.location.replace(
+        `/login?returnTo=${encodeURIComponent(returnTo)}`,
+      );
+    }
+
+    return Promise.reject(refreshError);
   }
 };
 
@@ -51,54 +94,20 @@ const refreshAccessToken = async () => {
 clientAxios.interceptors.response.use(
   (response) => response,
   async (error: AxiosError<ApiErrorResponse>) => {
+    // 실패한 요청 정보
     const originalRequest = error.config as RetryRequestConfig | undefined;
 
+    // 401 오류 처리 (로그인 실패로 발생한 경우 제외)
     if (
-      error.response?.status !== 401 ||
-      !originalRequest ||
-      originalRequest.skipAuthRefresh
+      error.response?.status === 401 &&
+      originalRequest &&
+      !originalRequest.skipAuthRefresh
     ) {
-      return Promise.reject(error);
+      return handleUnauthorized(error);
     }
 
-    // 이미 refresh 후 재시도한 요청인 경우
-    if (originalRequest._retry) {
-      return Promise.reject(error);
-    }
-    // 재시도 표시 (무한 재요청 방지를 위함)
-    originalRequest._retry = true;
-
-    try {
-      // 동시 refresh 제어
-      // refreshPromise가 null이면 refreshAccessToken() 실행 결과를 저장
-      // 이미 Promise가 있으면 새 refresh를 실행하지 않고 기존 Promise 사용
-      // await으로 쿠키 갱신이 끝날 때까지 기다림
-      await (refreshPromise ??= refreshAccessToken());
-
-      // 원래 요청 재시도
-      return clientAxios(originalRequest);
-    } catch (refreshError) {
-      // refresh token 만료 여부
-      const isRefreshUnauthorized =
-        axios.isAxiosError(refreshError) &&
-        refreshError.response?.status === 401;
-
-      if (!isRefreshUnauthorized) {
-        return Promise.reject(refreshError);
-      }
-
-      const returnTo = `${window.location.pathname}${window.location.search}`;
-
-      try {
-        await refreshAxiosInstance.post<void>('/auth/logout'); // 로그아웃을 통한 쿠키 제거
-      } finally {
-        window.location.replace(
-          `/login?returnTo=${encodeURIComponent(returnTo)}`,
-        );
-      }
-
-      return Promise.reject(refreshError);
-    }
+    // 공통 오류 처리
+    return Promise.reject(toApiError(error));
   },
 );
 

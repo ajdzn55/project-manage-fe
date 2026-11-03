@@ -5,6 +5,7 @@ import type {
   NoticeCheck,
   UpdateUser,
   User,
+  UserLogin,
 } from '@/features/user/types/user.type';
 import {
   checkDueTaskNotice,
@@ -14,6 +15,7 @@ import {
   getLoginInfo,
   getUser,
   getUserList,
+  login,
   restoreUser,
   updateUser,
 } from '@/features/user/api/user.client';
@@ -66,9 +68,6 @@ export const useUpdateUserMutation = () => {
 
       toastAlert({ type: 'success', content: '사용자 정보가 수정되었습니다.' });
     },
-    onError: (error) => {
-      console.log(error);
-    },
   });
 
   return { mutate, isPending };
@@ -79,13 +78,12 @@ export const useCreateUserMutation = () => {
 
   const { mutate } = useMutation({
     mutationFn: ({ data }: { data: CreateUser }) => createUser(data),
+    meta: { skipErrorToast: true },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user'] });
       toastAlert({ type: 'success', content: '사용자가 생성되었습니다.' });
     },
     onError: async (error: AxiosError<ApiErrorResponse>) => {
-      console.log(error);
-
       if (error.response?.status === 409) {
         await dialogAlert({ type: 'error', content: '중복된 ID입니다.' });
       }
@@ -107,9 +105,6 @@ export const useDeleteUserMutation = () => {
         content: '사용자가 미사용 처리 되었습니다.',
       });
     },
-    onError: (error) => {
-      console.log(error);
-    },
   });
 
   return { mutate };
@@ -126,9 +121,6 @@ export const useRestoreUserMutation = () => {
         type: 'success',
         content: '사용자가 복구되었습니다.',
       });
-    },
-    onError: (error) => {
-      console.log(error);
     },
   });
 
@@ -158,9 +150,22 @@ export const useCheckDueTaskNoticeMutation = () => {
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
-    mutationFn: () => checkDueTaskNotice(),
+    mutationFn: checkDueTaskNotice,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['check-notice'] });
+    },
+  });
+
+  return { mutate };
+};
+
+export const useLoginMutation = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation({
+    mutationFn: (data: UserLogin) => login(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['loginUser'] });
     },
   });
 

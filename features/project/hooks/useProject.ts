@@ -30,9 +30,6 @@ export const useCreateProjectMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['project'] });
       toastAlert({ type: 'success', content: '프로젝트가 생성되었습니다.' });
     },
-    onError: (error) => {
-      console.log(error);
-    },
   });
 
   return { mutate };
@@ -83,9 +80,6 @@ export const useUpdateProjectMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['project'] });
       toastAlert({ type: 'success', content: '프로젝트가 수정되었습니다.' });
     },
-    onError: (error) => {
-      console.log(error);
-    },
   });
 
   return { mutate };
@@ -99,9 +93,6 @@ export const useDeleteProjectMutation = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['project'] });
       toastAlert({ type: 'success', content: '프로젝트가 삭제되었습니다.' });
-    },
-    onError: (error) => {
-      console.log(error);
     },
   });
 

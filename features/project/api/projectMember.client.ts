@@ -10,17 +10,12 @@ export const addProjectMember = async (
   projectId: string,
   data: AddProjectMember,
 ) => {
-  try {
-    const requestBody = omitInvalidValues(data);
-    const response = await clientAxios.post<string>(
-      `/project/${projectId}/members`,
-      requestBody,
-    );
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
+  const requestBody = omitInvalidValues(data);
+  const response = await clientAxios.post<string>(
+    `/project/${projectId}/members`,
+    requestBody,
+  );
+  return response.data;
 };
 
 // 프로젝트 멤버 역할 변경
@@ -29,16 +24,10 @@ export const changeProjectMemberRole = async (
   userId: string,
   data: UpdateProjectMember,
 ) => {
-  try {
-    const response = await clientAxios.patch<void>(
-      `/project/${projectId}/members/${userId}`,
-      data,
-    );
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
+  await clientAxios.patch<void>(
+    `/project/${projectId}/members/${userId}`,
+    data,
+  );
 };
 
 // 프로젝트 멤버 삭제
@@ -46,13 +35,5 @@ export const removeProjectMember = async (
   projectId: string,
   memberId: string,
 ) => {
-  try {
-    const response = await clientAxios.delete<void>(
-      `/project/${projectId}/members/${memberId}`,
-    );
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
+  await clientAxios.delete<void>(`/project/${projectId}/members/${memberId}`);
 };
