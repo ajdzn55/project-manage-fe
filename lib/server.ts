@@ -12,7 +12,7 @@ const createServerAxios = async () => {
   const requestHeaders = await headers();
 
   const accessToken = cookieStore.get('accessToken')?.value || '';
-  const returnTo = requestHeaders.get('return-to') ?? '/project';
+  const returnTo = requestHeaders.get('x-return-to') ?? '/project';
 
   const instance = axios.create({
     baseURL: process.env.API_URL,
