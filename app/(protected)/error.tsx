@@ -3,10 +3,8 @@ import { useEffect } from 'react';
 
 export default function ErrorPage({
   error,
-  reset,
 }: {
   error: Error & { digest?: string };
-  reset: () => void;
 }) {
   useEffect(() => {
     // if (process.env.NODE_ENV !== 'production') {
@@ -35,7 +33,10 @@ export default function ErrorPage({
       <h2 className="text-2xl font-bold">데이터를 불러오지 못했습니다.</h2>
       <p className="text-sm text-slate-500">잠시 후 다시 시도해주세요.</p>
       <button
-        onClick={reset}
+        onClick={() => {
+          // 전체 페이지 새로고침
+          window.location.reload();
+        }}
         className="mt-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
       >
         다시 시도
