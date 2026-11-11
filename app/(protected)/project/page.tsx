@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import ProjectList from '@/features/project/components/projects/ProjectList';
 import { getUserList } from '@/features/user/api/user.server';
 import { createServerQueryClient } from '@/lib/queryClient';

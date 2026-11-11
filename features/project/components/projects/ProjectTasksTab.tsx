@@ -170,12 +170,31 @@ const ProjectTasksTab = ({ projectId, isOwner }: Props) => {
       }),
     };
 
+    // PERF_TEST
+    // const startedAt = performance.now();
+
     const results = await Promise.allSettled(
       selectedTaskIds.map((id) => updateTask(id, requestBody)),
     );
+
+    // PERF_TEST
+    // const mutationFinishedAt = performance.now();
+    // console.log('[측정] 수정 요청 전체 완료', {
+    //   elapsed: mutationFinishedAt - startedAt,
+    // });
+    // const countLabel = '[측정] task 캐시 무효화';
+    // console.count(countLabel);
+
     await queryClient.invalidateQueries({
       queryKey: ['task'],
     });
+
+    // PERF_TEST
+    // console.countReset(countLabel);
+    // const finishedAt = performance.now();
+    // console.log('[측정] 후속 조회 포함 전체 완료', {
+    //   elapsed: finishedAt - startedAt,
+    // });
 
     const failedCount = results.filter(
       (result) => result.status === 'rejected',
