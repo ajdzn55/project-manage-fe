@@ -92,9 +92,13 @@ const TaskBoard = ({ status, data }: Props) => {
       if (!alertRes.isConfirmed) return;
     }
 
+    // PERF_TEST (낙관적 UI 반영 및 서버 응답 시간 측정)
+    // const startedAt = performance.now();
+
     mutate({
       id: taskId,
       data: { status },
+      // startedAt,
     });
   };
 

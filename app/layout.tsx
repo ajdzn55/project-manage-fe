@@ -11,13 +11,13 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
         <ReactQueryProvider>
           <Suspense
             fallback={
-              <ClipLoader
-                color="#fff"
-                loading
-                size={150}
-                aria-label="Loading Spinner"
-                data-testid="loader"
-              />
+              <div
+                className="flex min-h-screen w-full items-center justify-center"
+                role="status"
+                aria-label="페이지 로딩 중"
+              >
+                <ClipLoader color="var(--color-primary)" loading size={48} />
+              </div>
             }
           >
             {children}
