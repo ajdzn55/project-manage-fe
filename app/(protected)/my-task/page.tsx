@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import TaskList from '@/features/project/components/tasks/TaskList';
 import { createServerQueryClient } from '@/lib/queryClient';
 import { getTaskList } from '@/features/project/api/task.server';
